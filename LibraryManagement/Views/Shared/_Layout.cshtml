@@ -1,0 +1,349 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="assets/css/pace.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/demo/favicon.png">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>@ViewBag.Title</title>
+    <!-- CSS -->
+    <link href="~/assets/vendors/material-icons/material-icons.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/vendors/mono-social-icons/monosocialiconsfont.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.4/sweetalert2.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.1.3/mediaelementplayer.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.7.0/css/perfect-scrollbar.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,600,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/vendors/weather-icons-master/weather-icons.min.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/vendors/weather-icons-master/weather-icons-wind.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqvmap/1.5.1/jqvmap.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/style.css" rel="stylesheet" type="text/css">
+    <!-- Head Libs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+</head>
+
+<body class="header-centered sidebar-horizontal">
+    <div id="wrapper" class="wrapper">
+        <!-- HEADER & TOP NAVIGATION -->
+        <nav class="navbar">
+            <!-- Logo Area -->
+            <div class="navbar-header">
+                <a href="" class="navbar-brand text-center">
+                    @*<h3 class="logo-expand text-white">QUẢN LÝ THƯ VIỆN</h3>*@
+                    <img class="logo-expand" alt="" src="assets/demo/logo-expand.png">
+                    <img class="logo-collapse" alt="" src="assets/demo/logo-collapse.png">
+                    <!-- <p>OSCAR</p> -->
+                </a>
+            </div>
+            <!-- /.navbar-header -->
+            <!-- Left Menu & Sidebar Toggle -->
+            <ul class="nav navbar-nav">
+                <li class="sidebar-toggle">
+                    <a href="javascript:void(0)" class="ripple"><i class="material-icons list-icon">menu</i></a>
+                </li>
+            </ul>
+            <!-- /.navbar-left -->
+            <!-- Search Form -->
+            <form class="navbar-search hidden-xs-down" role="search">
+                <i class="material-icons list-icon">search</i>
+                <input type="text" class="search-query" placeholder="Tìm sách, độc giả..."> <a href="javascript:void(0);" class="remove-focus"><i class="material-icons">clear</i></a>
+            </form>
+            <!-- /.navbar-search -->
+            <div class="spacer"></div>
+            <!-- Right Menu -->
+            <ul class="nav navbar-nav hidden-sm-down">
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle ripple" data-toggle="dropdown"><i class="material-icons list-icon">mail_outline</i> <span class="badge badge-pill bg-primary">3</span></a>
+                    <div class="dropdown-menu dropdown-left dropdown-card animated flipInY">
+                        <div class="card">
+                            <header class="card-header">
+                                New messages <span class="mr-l-10 badge badge-border bg-primary">3</span>
+                            </header>
+                            <ul class="list-unstyled dropdown-list-group">
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user3.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Steve Smith</span> <small>10.14.2016  2:30pm</small> <span class="media-content">I slowly updated my Behance with some recent projects ...</span></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex user--offline thumb-xs"><img src="assets/demo/users/user6.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Emily Lee</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Hi John!</span></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user2.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Christopher Palmer</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Like the illustration and the indicator style. Best of luck ...</span></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user3.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Steve Smith</span> <small>10.14.2016  2:30pm</small> <span class="media-content">I slowly updated my Behance with some recent projects ...</span></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex user--offline thumb-xs"><img src="assets/demo/users/user6.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Emily Lee</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Hi John!</span></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex user--offline thumb-xs"><img src="assets/demo/users/user2.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Christopher Palmer</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Like the illustration and the indicator style. Best of luck ...</span></span></a>
+                                </li>
+                            </ul>
+                            <!-- /.dropdown-list-group -->
+                        </div>
+                        <!-- /.card-->
+                    </div>
+                    <!-- /.dropdown-menu -->
+                </li>
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle ripple" data-toggle="dropdown"><i class="material-icons list-icon">event_available</i> <span class="badge badge-pill bg-primary">9</span></a>
+                    <div class="dropdown-menu dropdown-left dropdown-card animated flipInY">
+                        <div class="card">
+                            <header class="card-header">
+                                New notifications <span class="mr-l-10 badge badge-border bg-primary">4</span>
+                            </header>
+                            <ul class="list-unstyled dropdown-list-group">
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">check</i> </span><span class="media-body"><span class="media-heading">Invitation accepted</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Your invitation for Mars has been accepted ...</span></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user3.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Steve Smith</span> <small>10.14.2016  2:30pm</small> <span class="media-content">I slowly updated my Behance with some recent projects ...</span></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">event_available</i> </span><span class="media-body"><span class="media-heading">To Do</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Meeting with Nathan McCullum on Friday 8 AM ...</span></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">check</i> </span><span class="media-body"><span class="media-heading">Invitation accepted</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Your invitation for Mars has been accepted ...</span></span></a>
+                                </li>
+                            </ul>
+                            <!-- /.dropdown-list-group -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.dropdown-menu -->
+                </li>
+                <!-- /.dropdown -->
+                <li>
+                    <a href="javascript:void(0);" class="right-sidebar-toggle ripple"><i class="material-icons list-icon">comment</i></a>
+                </li>
+            </ul>
+            <!-- /.navbar-right -->
+            <!-- User Image with Dropdown -->
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle ripple" data-toggle="dropdown"><span class="avatar thumb-sm"><img src="assets/demo/users/user-image.png" class="rounded-circle" alt=""> <i class="material-icons list-icon">expand_more</i></span></a>
+                    <div class="dropdown-menu dropdown-left dropdown-card dropdown-card-wide">
+                        <div class="card">
+                            <header class="card-heading-extra">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <h3 class="mr-b-10 sub-heading-font-family fw-300">Scott Adams</h3><span class="user--online">Available <i class="material-icons list-icon">expand_more</i></span>
+                                    </div>
+                                    <div class="col-4 d-flex justify-content-end">
+                                        <a href="http://dharansh.in/oscarhtml/horizontal-nav-icons/logout.html" class="mr-t-10"><i class="material-icons list-icon">power_settings_new</i> Logout</a>
+                                    </div>
+                                    <!-- /.col-4 -->
+                                </div>
+                                <!-- /.row -->
+                            </header>
+                            <section class="card-header">
+                                New notifications <span class="badge badge-border bg-danger mr-l-10">4</span>
+                            </section>
+                            <ul class="list-unstyled dropdown-list-group">
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">check</i> </span><span class="media-body"><span class="media-heading">Invitation accepted</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Your invitation for Mars has been accepted ...</span></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user3.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Steve Smith</span> <small>10.14.2016  2:30pm</small> <span class="media-content">I slowly updated my Behance with some recent projects and finally added a case study for thus great project ...</span></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">event_available</i> </span><span class="media-body"><span class="media-heading">To Do</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Meeting with Nathan McCullum on Friday 8 AM to discuss about an ongoing project ...</span></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">check</i> </span><span class="media-body"><span class="media-heading">Invitation accepted</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Your invitation for Mars has been accepted ...</span></span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <!-- /.navbar-right -->
+        </nav>
+        <!-- /.navbar -->
+        <div class="content-wrapper">
+            <!-- SIDEBAR -->
+            <aside class="site-sidebar clearfix">
+                <nav class="sidebar-nav">
+                    <ul class="nav in side-menu">
+                        <li class="current-page menu-item-has-children" data-page-name="@Url.Action("Index","Home")">
+                            <a href="@Url.Action("Index","Home")">
+                                <i class="list-icon material-icons">home</i>
+                                <span class="hide-menu">Trang Chủ<span class="badge badge-border bg-primary pull-right">5</span></span>
+                            </a>
+                        </li>
+                        <li class="menu-item-has-children" data-page-name="@Url.Action("Index","BookPay")">
+                            @*<span class="color-color-scheme"></span>*@
+                            <a href="@Url.Action("Index","BookPay")">
+                                <i class="list-icon material-icons">repeat</i>
+                                <span class="hide-menu">
+                                    Mượn/Trả Sách
+                                </span>
+                            </a>
+                            <ul class="list-unstyled sub-menu">
+                                <li>
+                                    <a href="app-calender.html">Phiếu mượn</a>
+                                </li>
+                                <li>
+                                    <a href="app-chat.html">Phiếu trả</a>
+                                </li>
+                                <li>
+                                    <a href="app-chat.html">Mất sách</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="menu-item-has-children" data-page-name="@Url.Action("Index","User")">
+                            <a href="@Url.Action("Index","User")">
+                                <i class="list-icon material-icons">contacts</i>
+                                <span class="hide-menu">Quản Lý Độc Giả</span>
+                            </a>
+                            @*<ul class="list-unstyled sub-menu">
+                                    <li>
+                                        <a href="form-elements.html">Danh sách</a>
+                                    </li>
+
+                                </ul>*@
+                        </li>
+                        <li class="menu-item-has-children" data-page-name="@Url.Action("Index","Book")">
+                            <a href="@Url.Action("Index","Book")">
+                                <i class="list-icon material-icons">library_books</i>
+                                <span class="hide-menu">Quản Lý Sách<span class="badge badge-border bg-primary pull-right">9</span></span>
+                            </a>
+
+                        </li>
+                        <li class="menu-item-has-children" data-page-name="@Url.Action("Index","Category")">
+                            <a href="@Url.Action("Index","Category")">
+                                <i class="list-icon material-icons">folder_open</i>
+                                <span class="hide-menu">Quản Lý Danh Mục</span>
+                            </a>
+                        </li>
+
+                        <li class="menu-item-has-children" data-page-name="@Url.Action("Index","Report")">
+                            <a href="@Url.Action("Index","Report")">
+                                <i class="list-icon material-icons">receipt</i>
+                                <span class="hide-menu">Báo Cáo/ Thống Kê<span class="badge badge-border bg-info pull-right">13</span></span>
+                            </a>
+                            <ul class="list-unstyled sub-menu">
+                                <li>
+                                    <a href="page-blank.html">Báo Cáo Đọc Giả</a>
+                                </li>
+                                <li>
+                                    <a href="page-lightbox.html">Báo Cáo Sách</a>
+                                </li>
+                                <li>
+                                    <a href="page-sitemap.html">Thống Kê Người Dùng</a>
+                                </li>
+                                <li>
+                                    <a href="page-sitemap.html">Thống Kê Mất Sách</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="menu-item-has-children">
+                            <a href="@Url.Action("Index","System")">
+                                <i class="list-icon material-icons">settings</i>
+                                <span class="hide-menu">Hệ Thống</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                    <!-- /.side-menu -->
+                </nav>
+                <!-- /.sidebar-nav -->
+            </aside>
+            <!-- /.site-sidebar -->
+            <main class="main-wrapper clearfix">
+                <!-- Page Title Area -->
+                <div class="row page-title clearfix">
+                    <div class="page-title-left">
+                        <h5 class="mr-0 mr-r-5">Horizontal Navigation</h5>
+                        <p class="mr-0 text-muted hidden-sm-down">statistics, charts, events and reports</p>
+                    </div>
+                    <!-- /.page-title-left -->
+                    <div class="page-title-right d-inline-flex">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="">Dashboard</a>
+                            </li>
+                            <li class="breadcrumb-item active">Horizontal Navigation</li>
+                        </ol>
+                        <div class="d-inline-flex justify-center align-items-center hidden-sm-down">
+                            <a href="javascript: void(0);" class="btn btn-outline-primary mr-l-20 btn-sm btn-rounded hidden-xs hidden-sm ripple" target="_blank">Buy Now</a>
+                        </div>
+                    </div>
+                    <!-- /.page-title-right -->
+                </div>
+                <!-- /.page-title -->
+                @RenderBody()
+            </main>
+
+        </div>
+        <!-- /.content-wrapper -->
+        <!-- FOOTER -->
+
+        <footer class="footer text-center clearfix">2017 © Oscar Admin brought to you by UnifatoThemes</footer>
+    </div>
+    <!--/ #wrapper -->
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.2/umd/popper.min.js"></script>
+    <script src="~/assets/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.1.3/mediaelementplayer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.7.0/metisMenu.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.7.0/js/perfect-scrollbar.jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.4/sweetalert2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js"></script>
+    <script src="~/assets/vendors/charts/utils.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Knob/1.2.13/jquery.knob.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min.js"></script>
+    <script src="~/assets/vendors/charts/excanvas.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mithril/1.1.1/mithril.js"></script>
+    <script src="~/assets/vendors/theme-widgets/widgets.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clndr/1.4.7/clndr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqvmap/1.5.1/jquery.vmap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqvmap/1.5.1/maps/jquery.vmap.usa.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.js"></script>
+    <script src="~/assets/js/theme.js"></script>
+    <script src="~/assets/js/custom.js"></script>
+    <script>
+        $(document).ready(function () {
+            var curpage = window.location.pathname;
+            $('.menu-item-has-children').each(function (i, item) {
+                var page = $(item).data('page-name');
+                if (page == curpage) {
+                    $(item).addClass('current-page color-color-scheme');
+                    $(item).find(' a ').addClass('color-color-scheme');
+                } else {
+                    $(item).removeClass('current-page color-color-scheme');
+                    $(item).find(' a ').removeClass('color-color-scheme');
+                }
+            })
+        });
+
+    </script>
+
+
+</body>
+
+</html>
