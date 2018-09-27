@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewBag.Title = "Quản lý nhà xuất bản";
+}
+<div class="row">
+    <div class="col-md-4 widget-holder">
+
+        <div class="widget-bg">
+            <div class="widget-body clearfix">
+                <h5 class="box-title mr-b-0">THÊM NHÀ XUẤT BẢN</h5>
+
+                <form action="">
+                    <div class="form-group mr-t-30">
+                        <label for="sample1UserName">Tên NXB</label>
+                        <div class="input-group">
+
+                            <input type="text" class="form-control" id="sample1UserName" placeholder="Nhập tên nhà xuất bản...">
+                        </div>
+
+                    </div>
+                    <div class="form-actions">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12 btn-list">
+                                    <button type="submit" class="btn btn-success"> <i class="material-icons list-icon">check</i>Hoàn tất</button>
+                                    <button type="button" class="btn btn-default"><i class="material-icons list-icon">close</i> Đóng</button>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="widget-holder col-md-8">
+        <div class="widget-bg">
+            <div class="widget-body">
+                <h5 class="box-title">DANH SÁCH NHÀ XUẤT BẢN</h5>
+                @*<p>Add <code>.table-hover</code> to enable a hover state on table rows within a <code>&lt;tbody&gt;</code>.</p>*@
+                <table class="table table-hover" data-toggle="datatables">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên NXB</th>
+                            <th>Thao tác</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < 200; i++)
+                        {
+                            <tr>
+                                <td>@(i + 1)</td>
+                                <td>NXB trẻ</td>
+                                <td>
+                                    <a href="javascript: void(0);" class="color-info mr-2" title="Cập nhật NXB" data-id="@(i)">
+                                        <i class="material-icons md-18">edit</i>
+                                    </a>
+
+                                    <a href="javascript: void(0);" class="color-danger" title="Xóa NXB" data-id="@(i)">
+                                        <i class="material-icons md-18">clear</i>
+                                    </a>
+                                    <button class="modal-alert-warning btn btn-outline-default ripple del-submit ">Warning</button>
+
+
+                                </td>
+                            </tr>
+                        }
+
+
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.widget-body -->
+        </div>
+        <!-- /.widget-bg -->
+    </div>
+
+
+</div>
+
+@section js{
+    <script>
+        $(document).ready(function () {
+            $('.del-submit').on('click', function () {
+                //alert('ok');
+                swal({
+                    title: 'XÁC NHẬN?',
+                    text: "Bạn có chắc chắn muốn xóa NXB này!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonClass: 'btn btn-danger',
+                    confirmButtonText: 'Xác nhận',
+                    cancelButtonText: "Đóng",
+                }).then( (result) =>{
+                    //swal({
+                    //    title: 'Deleted!',
+                    //    text: 'Your file has been deleted.',
+                    //    type: 'success',
+                    //    confirmButtonClass: 'btn btn-success'
+                    //});
+                    if (result.value) {
+                        swal(
+                            'Deleted!',
+                            'Your imaginary file has been deleted.',
+                            'success'
+                        )
+                        // For more information about handling dismissals please visit
+                        // https://sweetalert2.github.io/#handling-dismissals
+                    } else if (result.dismiss === "cancel") {
+                        swal(
+                            'Cancelled',
+                            'Your imaginary file is safe :)',
+                            'error'
+                        )
+                    }   
+                });
+
+
+
+            });
+
+        });
+
+    </script>
+
+}

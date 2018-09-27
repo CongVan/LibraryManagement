@@ -6,9 +6,9 @@ using System.Web.Mvc;
 
 namespace LibraryManagement.Controllers
 {
-    public class BookPayController : Controller
+    public class PublisherController : Controller
     {
-        // GET: BookPay
+        // GET: Publisher
         public ActionResult Index()
         {
             return View();

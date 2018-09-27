@@ -225,7 +225,7 @@
       }
       else if ( document.body.classList.contains('sidebar-horizontal') ) {
         $(".site-sidebar").show();
-        $('.side-menu').metisMenu('dispose');
+        //$('.side-menu').metisMenu('dispose');
       }
       else {
         $(".site-sidebar").show();
@@ -247,7 +247,7 @@
           $(".side-user > a").removeClass("active");
           $(".side-user > a").siblings(".side-menu").hide();
           $('.side-menu .sub-menu').css('height', 'auto');
-          $('.side-menu').metisMenu('dispose');
+          //$('.side-menu').metisMenu('dispose');
         }
         else if ($body.hasClass("sidebar-collapse")) {
           $body.removeClass("sidebar-collapse");
@@ -269,15 +269,15 @@
         return false;
 			});
 
-      document.addEventListener('click', function(event) {
-        var $rightSidebar = document.getElementsByClassName('right-sidebar')[0],
-            $chatPanel = document.getElementsByClassName('chat-panel')[0];
-        var isInsideContainer = $rightSidebar.contains( event.target ) || $chatPanel.contains(event.target);
-        if( !isInsideContainer ) {
-          document.body.classList.remove('right-sidebar-expand');
-          $chatPanel.hidden = 'hidden';
-        }
-      });
+      //document.addEventListener('click', function(event) {
+      //  var $rightSidebar = document.getElementsByClassName('right-sidebar')[0],
+      //      $chatPanel = document.getElementsByClassName('chat-panel')[0];
+      //  var isInsideContainer = $rightSidebar.contains( event.target ) || $chatPanel.contains(event.target);
+      //  if( !isInsideContainer ) {
+      //    document.body.classList.remove('right-sidebar-expand');
+      //    $chatPanel.hidden = 'hidden';
+      //  }
+      //});
 		},
 
     sidebarUserToggle: function() {

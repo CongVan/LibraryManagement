@@ -1,4 +1,4 @@
-/*
+﻿/*
 * Name:        Oscar
 * Written by: 	Unifato - (http://unifato.com)
 * Version:     1.0.0
@@ -77,7 +77,7 @@
       if ( !el.length ) return;
       el.on('click', function () {
         swal({
-          title: 'Are you sure?',
+          title: 'Bạn có chắc?',
           text: "You won't be able to revert this!",
           type: 'warning',
           showCancelButton: true,
