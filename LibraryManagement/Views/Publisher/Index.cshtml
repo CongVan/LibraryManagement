@@ -1,7 +1,9 @@
-﻿
+﻿@using LibraryManagement.Models
+@model List<Publisher>
 @{
     ViewBag.Title = "Quản lý nhà xuất bản";
 }
+
 <div class="row">
     <div class="col-md-4 widget-holder">
 
@@ -9,21 +11,27 @@
             <div class="widget-body clearfix">
                 <h5 class="box-title mr-b-0">THÊM NHÀ XUẤT BẢN</h5>
 
-                <form action="">
+                <form id="frmInsertPublisher" action="@Url.Action("InsertPublisher","Publisher")" method="post">
                     <div class="form-group mr-t-30">
                         <label for="sample1UserName">Tên NXB</label>
-                        <div class="input-group">
 
-                            <input type="text" class="form-control" id="sample1UserName" placeholder="Nhập tên nhà xuất bản...">
-                        </div>
+                        <input type="text" class="form-control " name="Name" id="namePublisher" placeholder="Nhập tên nhà xuất bản...">
+                        <div class="invalid-feedback"></div>
 
                     </div>
                     <div class="form-actions">
                         <div class="form-group">
                             <div class="row">
+                                <div class="col-md-12 error-area">
+
+                                </div>
                                 <div class="col-sm-12 btn-list">
-                                    <button type="submit" class="btn btn-success"> <i class="material-icons list-icon">check</i>Hoàn tất</button>
-                                    <button type="button" class="btn btn-default"><i class="material-icons list-icon">close</i> Đóng</button>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="material-icons list-icon">check</i>&nbsp; Hoàn tất
+                                    </button>
+                                    <button type="button" class="btn btn-default" id="btnTest">
+                                        <i class="material-icons list-icon">close</i>&nbsp;Đóng
+                                    </button>
                                 </div>
 
                             </div>
@@ -44,29 +52,43 @@
                         <tr>
                             <th>ID</th>
                             <th>Tên NXB</th>
+                            <th>Trạng thái</th>
                             <th>Thao tác</th>
 
                         </tr>
                     </thead>
                     <tbody>
-                        @for (int i = 0; i < 200; i++)
+                        @for (int i = 0; i < Model.Count; i++)
                         {
-                            <tr>
-                                <td>@(i + 1)</td>
-                                <td>NXB trẻ</td>
-                                <td>
-                                    <a href="javascript: void(0);" class="color-info mr-2" title="Cập nhật NXB" data-id="@(i)">
-                                        <i class="material-icons md-18">edit</i>
-                                    </a>
+                        <tr>
+                            <td>@(i + 1)</td>
+                            <td>@Model[i].Name</td>
+                            <td onclick="javascript: void(0);">
+                                <input type="checkbox" onclick="javascript: void(0);" data-secondary-color="#e6614f" checked="@Model[i].Flag.Value" class="js-switch" data-color="#38d57a" data-size="small">
+                                @*@if (Model[i].Flag.Value == true)
+                                {
+                                    <input type="checkbox" void(0);" data-secondary-color="#e6614f" checked="checked" class="js-switch" data-color="#38d57a" data-size="small">
+                                }
+                                else
+                                {
+                                    <input type="checkbox" readonly class="js-switch" data-color="#38d57a" data-size="small">
 
-                                    <a href="javascript: void(0); " class="color-danger del-submit" title="Xóa NXB" data-id="@(i)">
-                                        <i class="material-icons md-18">clear</i>
-                                    </a>
-                                    @*<button class="modal-alert-warning btn btn-outline-default ripple  ">Warnin>g</button*@
+                                }*@
+
+                            </td>
+                            <td>
+                                <a href="javascript: void(0);" class="color-info mr-2" title="Cập nhật NXB" data-id="@(i)">
+                                    <i class="material-icons md-18">edit</i>
+                                </a>
+
+                                <a href="javascript: void(0); " class="color-danger del-submit" title="Xóa NXB" data-id="@(i)">
+                                    <i class="material-icons md-18">clear</i>
+                                </a>
+                                @*<button class="modal-alert-warning btn btn-outline-default ripple  ">Warnin>g</button*@
 
 
-                                </td>
-                            </tr>
+                            </td>
+                        </tr>
                         }
 
 
@@ -82,8 +104,74 @@
 </div>
 
 @section js{
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
     <script>
         $(document).ready(function () {
+            $('.switchery').on('click', function (event) {
+                event.stopPropagation();
+            });
+            if ('@Html.Raw(Json.Encode(ViewBag.msgSuccess))'!= 'null') {
+                $.toast({
+                    heading: 'THÔNG BÁO: ',
+                    text: '@Html.Raw(Json.Encode(ViewBag.msgSuccess))',
+                    position: 'top-right',
+                    icon: 'success',
+                    stack: false
+                });
+            }
+            if ('@Html.Raw(Json.Encode(ViewBag.msgSuccess))'!= 'null') {
+                $.toast({
+                    heading: 'THÔNG BÁO: ',
+                    text: '@Html.Raw(Json.Encode(ViewBag.msgError))',
+                    position: 'top-right',
+                    icon: 'error',
+                    stack: false
+                });
+            }
+            $("#frmInsertPublisher").validate({
+                errorClass: 'invalid-feedback',
+                rules: {
+                    Name: {
+                        required: true,
+                        minlength: 20
+                    }
+                },
+                messages: {
+                    Name: {
+                        required: "Vui lòng nhập tên nhà xuất bản!",
+                        minlength: "Tên NXB tối thiểu 20 ký tự"
+                    },
+                },
+                //errorElement: 'div',
+                //errorLabelContainer: '.invalid-feedback',
+                errorPlacement: function (error, element) {
+                    $(element).next('div').html(error);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    if (element.type == "radio") {
+                        this.findByName(element.name).addClass(errorClass).removeClass(validClass);
+                    } else {
+                        $(element).closest('.form-group').find('input').removeClass('is-valid').addClass('is-invalid ');
+                        //$(element).closest('.form-group').find('input').append('<div class="invalid-feedback"></div>')
+                        //$(element).closest('.col-sm-8').find('span.glyphicon').remove();
+                        //$(element).closest('.col-sm-8').find('.is-invalid').remove();
+                        //$(element).closest('.col-sm-8').append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>');
+                    }
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    if (element.type == "radio") {
+                        this.findByName(element.name).removeClass(errorClass).addClass(validClass);
+                    } else {
+                        $(element).closest('.form-group').find('input').removeClass('is-invalid').addClass('is-valid');
+                        //$(element).closest('.col-sm-8').find('span.glyphicon').remove();
+                        //$(element).closest('.col-sm-8').find('.is-invalid').remove();
+                        //$(element).closest('.col-sm-8').append('<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>');
+                    }
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                }
+            });
             $('.del-submit').on('click', function () {
                 //alert('ok');
                 swal({
@@ -94,7 +182,7 @@
                     confirmButtonClass: 'btn btn-danger',
                     confirmButtonText: 'Xác nhận',
                     cancelButtonText: "Đóng",
-                }).then( (result) =>{
+                }).then((result) => {
                     //swal({
                     //    title: 'Deleted!',
                     //    text: 'Your file has been deleted.',
@@ -115,13 +203,12 @@
                             'Your imaginary file is safe :)',
                             'error'
                         )
-                    }   
+                    }
                 });
 
 
 
             });
-
         });
 
     </script>
