@@ -9,7 +9,7 @@
 
         <div class="widget-bg">
             <div class="widget-body clearfix">
-                <h5 class="box-title mr-b-0">THÊM NHÀ XUẤT BẢN</h5>
+                <h5 class="box-title mr-b-0">THÊM NHÀ XUẤT BẢN <a id="show-area-insert" href="javascript: void(0);">&nbsp;<i id="icon-insert" class="material-icons list-icon">arrow_downward</i></a></h5>
 
                 <form id="frmInsertPublisher" action="@Url.Action("InsertPublisher","Publisher")" method="post">
                     <div class="form-group mr-t-30">
@@ -29,7 +29,7 @@
                                     <button type="submit" class="btn btn-success">
                                         <i class="material-icons list-icon">check</i>&nbsp; Hoàn tất
                                     </button>
-                                    <button type="button" class="btn btn-default" id="btnTest">
+                                    <button type="button" class="btn btn-default" id="btn-close-insert">
                                         <i class="material-icons list-icon">close</i>&nbsp;Đóng
                                     </button>
                                 </div>
@@ -41,54 +41,97 @@
                 </form>
             </div>
         </div>
+
+
+        <div class="modal modal-color-scheme fade bs-modal-sm-color-scheme" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header text-inverse">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h5 class="modal-title" id="mySmallModalLabel">CẬP NHẬT NHÀ XUẤT BẢN</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form id="frmUpdatePublisher" action="@Url.Action("UpdatePublisher","Publisher")" method="post">
+                            <input type="hidden" name="ID" value="" />
+                            <div class="form-group row">
+
+                                <label for="sample1UserName" class="col-md-3 col-form-label">Tên NXB</label>
+
+                                <input type="text" class="form-control col-md-9" name="Name" placeholder="Nhập tên nhà xuất bản...">
+
+                                <div class="col-md-3"></div>
+                                <div class="invalid-feedback col-md-9"></div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="sample1UserName" class="col-md-3 ">Trạng thái</label>
+
+                                <input type="checkbox" name="status" data-secondary-color="#e6614f" class="col-md-9 js-switch" data-color="#38d57a" data-size="small">
+                                <input type="hidden" name="Flag" />
+
+                            </div>
+                            <div class="form-actions">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-12 error-area">
+
+                                        </div>
+                                        <div class="col-sm-12 btn-list d-flex justify-content-end">
+                                            <button type="submit" class="btn btn-success">
+                                                <i class="material-icons list-icon">check</i>&nbsp; Hoàn tất
+                                            </button>
+                                            <button type="button" class="btn btn-default" id="btnTest" data-dismiss="modal">
+                                                <i class="material-icons list-icon">close</i>&nbsp;Đóng
+                                            </button>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
     </div>
+
     <div class="widget-holder col-md-8">
         <div class="widget-bg">
             <div class="widget-body">
                 <h5 class="box-title">DANH SÁCH NHÀ XUẤT BẢN</h5>
                 @*<p>Add <code>.table-hover</code> to enable a hover state on table rows within a <code>&lt;tbody&gt;</code>.</p>*@
-                <table class="table table-hover" data-toggle="datatables">
+                <table class="table table-hover " data-toggle="datatables" id="table-data">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Tên NXB</th>
                             <th>Trạng thái</th>
                             <th>Thao tác</th>
-
                         </tr>
                     </thead>
                     <tbody>
                         @for (int i = 0; i < Model.Count; i++)
                         {
-                        <tr>
-                            <td>@(i + 1)</td>
-                            <td>@Model[i].Name</td>
-                            <td onclick="javascript: void(0);">
-                                <input type="checkbox" onclick="javascript: void(0);" data-secondary-color="#e6614f" checked="@Model[i].Flag.Value" class="js-switch" data-color="#38d57a" data-size="small">
-                                @*@if (Model[i].Flag.Value == true)
-                                {
-                                    <input type="checkbox" void(0);" data-secondary-color="#e6614f" checked="checked" class="js-switch" data-color="#38d57a" data-size="small">
-                                }
-                                else
-                                {
-                                    <input type="checkbox" readonly class="js-switch" data-color="#38d57a" data-size="small">
-
-                                }*@
-
-                            </td>
-                            <td>
-                                <a href="javascript: void(0);" class="color-info mr-2" title="Cập nhật NXB" data-id="@(i)">
-                                    <i class="material-icons md-18">edit</i>
-                                </a>
-
-                                <a href="javascript: void(0); " class="color-danger del-submit" title="Xóa NXB" data-id="@(i)">
-                                    <i class="material-icons md-18">clear</i>
-                                </a>
-                                @*<button class="modal-alert-warning btn btn-outline-default ripple  ">Warnin>g</button*@
+                            <tr id="tb-row-@Model[i].ID">
+                                <td>@(i + 1)</td>
+                                <td>@Model[i].Name</td>
+                                <td id="status-area">
+                                    <input type="checkbox" data-secondary-color="#e6614f" checked="@Model[i].Flag.Value" class="js-switch" data-color="#38d57a" data-size="small">
+                                </td>
+                                <td>
+                                    <a href="javascript: void(0);" data-id="@Model[i].ID" data-toggle="modal" data-target=".bs-modal-sm-color-scheme" class="color-info mr-2 btn-edit-click" title="Cập nhật NXB">
+                                        <i class="material-icons">edit</i>
+                                    </a>
+                                    <a href="javascript: void(0); " data-id="@Model[i].ID" class="color-danger del-submit" title="Xóa NXB">
+                                        <i class="material-icons">clear</i>
+                                    </a>
+                                    @*<button class="modal-alert-warning btn btn-outline-default ripple  ">Warnin>g</button*@
 
 
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
                         }
 
 
@@ -106,74 +149,134 @@
 @section js{
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $('.switchery').on('click', function (event) {
-                event.stopPropagation();
+        var changeIconPanel = () => {
+            if ($('#frmInsertPublisher').is(":visible")) {
+                $('#icon-insert').html('arrow_upward');
+                $('#frmInsertPublisher').hide().fadeOut();
+                return;
+            } else {
+                $('#icon-insert').html('arrow_downward');
+                $('#frmInsertPublisher').hide().fadeIn();
+                return;
+            }
+        }
+        $(document).ready(() => {
+
+            $('#frmUpdatePublisher input[name="status"]').on('change', function (event) {
+                $('#frmUpdatePublisher input[name="Flag"]').val($(this).is(':checked')?"true":"false");
+                //console.log($(this));
             });
-            if ('@Html.Raw(Json.Encode(ViewBag.msgSuccess))'!= 'null') {
+
+            $('.btn-edit-click').on('click', (e) => {
+                $('#frmUpdatePublisher').find('input').removeClass('is-invalid').removeClass('is-valid');
+                $('#frmUpdatePublisher').find('div .invalid-feedback').empty();
+                var id = $(e.currentTarget).data('id')
+                var url = '/Publisher/GetListPublisher?' + $.param({ "id": id });
+                fetch(url)
+                    .then(res => {
+                        if (res.ok) {
+                            return Promise.resolve(res);
+                        } else {
+                            return Promise.reject(new Error('Failed to load'));
+                        }
+                    })
+                    .then(res => res.json())
+                    .then((data) => {
+                        console.log(data);
+                        $('#frmUpdatePublisher input[name="Name"]').val(data[0].Name);
+                        $('#frmUpdatePublisher input[name="ID"]').val(data[0].ID);
+                        $('#frmUpdatePublisher input[name="Flag"]').val(data[0].Flag);
+                        var check = $('#frmUpdatePublisher input[name="status"]').is(':checked');
+                        if (data[0].Flag == true && check==false || (data[0].Flag == false && check==true) ) {
+                            //$('#frmUpdatePublisher input[name="status"]').prop('checked', true);
+                            $('#frmUpdatePublisher input[name="status"]').trigger('click');
+                        } else {
+                            //$('#frmUpdatePublisher input[name="status"]').removeAttr('checked');
+                            //$('#frmUpdatePublisher input[name="status"]').trigger('click');
+                        }
+                    }).catch((error) => {
+                        console.log(`Error:${error.messages}`);
+
+                    });
+
+            });
+
+            $('#show-area-insert').on('click', () => {
+                changeIconPanel();
+            });
+            $('#btn-close-insert').on('click', () => {
+                changeIconPanel();
+            });
+
+            if('@Html.Raw(Json.Encode(ViewBag.msgSuccess))'!= 'null') {
                 $.toast({
                     heading: 'THÔNG BÁO: ',
-                    text: '@Html.Raw(Json.Encode(ViewBag.msgSuccess))',
+                    text: @Html.Raw(Json.Encode(ViewBag.msgSuccess)),
                     position: 'top-right',
                     icon: 'success',
                     stack: false
                 });
             }
-            if ('@Html.Raw(Json.Encode(ViewBag.msgSuccess))'!= 'null') {
+            if('@Html.Raw(Json.Encode(ViewBag.msgError))'!= 'null') {
                 $.toast({
                     heading: 'THÔNG BÁO: ',
-                    text: '@Html.Raw(Json.Encode(ViewBag.msgError))',
+                    text: @Html.Raw(Json.Encode(ViewBag.msgError)),
                     position: 'top-right',
                     icon: 'error',
                     stack: false
                 });
             }
-            $("#frmInsertPublisher").validate({
-                errorClass: 'invalid-feedback',
-                rules: {
-                    Name: {
-                        required: true,
-                        minlength: 20
-                    }
-                },
-                messages: {
-                    Name: {
-                        required: "Vui lòng nhập tên nhà xuất bản!",
-                        minlength: "Tên NXB tối thiểu 20 ký tự"
+            $('form').each(function () {
+                $(this).validate({
+                    errorClass: 'invalid-feedback',
+                    rules: {
+                        Name: {
+                            required: true,
+                            minlength: 20
+                        }
                     },
-                },
-                //errorElement: 'div',
-                //errorLabelContainer: '.invalid-feedback',
-                errorPlacement: function (error, element) {
-                    $(element).next('div').html(error);
-                },
-                highlight: function (element, errorClass, validClass) {
-                    if (element.type == "radio") {
-                        this.findByName(element.name).addClass(errorClass).removeClass(validClass);
-                    } else {
-                        $(element).closest('.form-group').find('input').removeClass('is-valid').addClass('is-invalid ');
-                        //$(element).closest('.form-group').find('input').append('<div class="invalid-feedback"></div>')
-                        //$(element).closest('.col-sm-8').find('span.glyphicon').remove();
-                        //$(element).closest('.col-sm-8').find('.is-invalid').remove();
-                        //$(element).closest('.col-sm-8').append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>');
+                    messages: {
+                        Name: {
+                            required: "Vui lòng nhập tên nhà xuất bản!",
+                            minlength: "Tên NXB tối thiểu 20 ký tự"
+                        },
+                    },
+                    //errorElement: 'div',
+                    //errorLabelContainer: '.invalid-feedback',
+                    errorPlacement: function (error, element) {
+                        $(element).next('div').next('div').html(error);
+                    },
+                    highlight: function (element, errorClass, validClass) {
+                        if (element.type == "radio") {
+                            this.findByName(element.name).addClass(errorClass).removeClass(validClass);
+                        } else {
+                            $(element).closest('.form-group').find('input').removeClass('is-valid').addClass('is-invalid');
+                            //$(element).closest('.form-group').find('input').append('<div class="invalid-feedback"></div>')
+                            //$(element).closest('.col-sm-8').find('span.glyphicon').remove();
+                            //$(element).closest('.col-sm-8').find('.is-invalid').remove();
+                            //$(element).closest('.col-sm-8').append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>');
+                        }
+                    },
+                    unhighlight: function (element, errorClass, validClass) {
+                        if (element.type == "radio") {
+                            this.findByName(element.name).removeClass(errorClass).addClass(validClass);
+                        } else {
+                            $(element).closest('.form-group').find('input').removeClass('is-invalid').addClass('is-valid');
+                            //$(element).closest('.col-sm-8').find('span.glyphicon').remove();
+                            //$(element).closest('.col-sm-8').find('.is-invalid').remove();
+                            //$(element).closest('.col-sm-8').append('<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>');
+                        }
+                    },
+                    submitHandler: function (form) {
+                        form.submit();
                     }
-                },
-                unhighlight: function (element, errorClass, validClass) {
-                    if (element.type == "radio") {
-                        this.findByName(element.name).removeClass(errorClass).addClass(validClass);
-                    } else {
-                        $(element).closest('.form-group').find('input').removeClass('is-invalid').addClass('is-valid');
-                        //$(element).closest('.col-sm-8').find('span.glyphicon').remove();
-                        //$(element).closest('.col-sm-8').find('.is-invalid').remove();
-                        //$(element).closest('.col-sm-8').append('<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>');
-                    }
-                },
-                submitHandler: function (form) {
-                    form.submit();
-                }
+                });
             });
+
+
             $('.del-submit').on('click', function () {
                 //alert('ok');
+
                 swal({
                     title: 'XÁC NHẬN?',
                     text: "Bạn có chắc chắn muốn xóa NXB này!",
@@ -190,19 +293,36 @@
                     //    confirmButtonClass: 'btn btn-success'
                     //});
                     if (result.value) {
-                        swal(
-                            'Deleted!',
-                            'Your imaginary file has been deleted.',
-                            'success'
-                        )
-                        // For more information about handling dismissals please visit
-                        // https://sweetalert2.github.io/#handling-dismissals
+                        var id = $(this).data('id');
+                        var url = "/Publisher/DeletePublisher"
+                        fetch(url, {
+                            method: 'post',
+                            headers: {
+                                'Accept': 'application/json, text/plain, */*',
+                                'Content-Type':'application/json'
+                            },
+                            body: JSON.stringify({ id: id })
+                        }).then(res => res.json())
+                            .then(data => {
+                                if (data.result === 1) {
+                                    $('#tb-row-' + id).hide().remove();
+                                    swal(
+                                        'Thành công!',
+                                        '',
+                                        'success'
+                                    )
+                                } else {
+                                    swal(
+                                        'Thất bại!',
+                                        data.msg,
+                                        'error'
+                                    )                                }
+                            }).catch((error) => {
+                                console.log(`Error:${error.messages}`);
+                            });
+                        
                     } else if (result.dismiss === "cancel") {
-                        swal(
-                            'Cancelled',
-                            'Your imaginary file is safe :)',
-                            'error'
-                        )
+                       
                     }
                 });
 
