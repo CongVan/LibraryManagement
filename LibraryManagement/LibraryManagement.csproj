@@ -318,6 +318,8 @@
       <DependentUpon>LibraryDB.edmx</DependentUpon>
       <LastGenOutput>LibraryDB.cs</LastGenOutput>
     </Content>
+    <Content Include="modules\nestable2\jquery.nestable.css" />
+    <Content Include="modules\nestable2\jquery.nestable.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
