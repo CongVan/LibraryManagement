@@ -32,7 +32,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.1/jquery.toast.min.css" rel="stylesheet" type="text/css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.css" rel="stylesheet" type="text/css">
-    
+
     <link href="~/assets/css/style.css" rel="stylesheet" type="text/css">
     <!-- Head Libs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
@@ -239,6 +239,12 @@
                             <a href="@Url.Action("Index","Publisher")">
                                 <i class="list-icon material-icons">cloud</i>
                                 <span class="hide-menu">Quản Lý NXB</span>
+                            </a>
+                        </li>
+                        <li class="menu-item-has-children" data-page-name="@Url.Action("Index","Location")">
+                            <a href="@Url.Action("Index","Location")">
+                                <i class="list-icon material-icons">view_module</i>
+                                <span class="hide-menu">Quản Lý Kệ Sách</span>
                             </a>
                         </li>
                         <li class="menu-item-has-children" data-page-name="@Url.Action("Index","Report")">

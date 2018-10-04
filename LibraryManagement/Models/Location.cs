@@ -17,5 +17,6 @@ namespace LibraryManagement.Models
         public int ID { get; set; }
         public string BookCase { get; set; }
         public Nullable<int> Shelf { get; set; }
+        public Nullable<int> Flag { get; set; }
     }
 }

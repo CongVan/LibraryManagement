@@ -157,6 +157,7 @@
     <Compile Include="Controllers\BookBillController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\PublisherController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SystemController.cs" />
@@ -365,6 +366,7 @@
     <Content Include="Views\System\Index.cshtml" />
     <Content Include="Views\BookPay\Index.cshtml" />
     <Content Include="Views\Publisher\Index.cshtml" />
+    <Content Include="Views\Location\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
