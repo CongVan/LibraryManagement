@@ -1,6 +1,193 @@
-﻿
+﻿@using LibraryManagement.Models
+@model List<Location>
 @{
     ViewBag.Title = "Quản lý kệ sách";
 }
 
+<div class="row">
+    <div class="col-md-4 mr-b-20">
+        <div class="row">
+            <div class="col-md-12 mb-2">
+                <div class="card card-expandable bg-white card-expanded">
+                    <div class="card-header border-bottom-1 pb-2">
+                        <h5 class="card-title mt-3 fs-15">Thêm Tủ Sách</h5>  <i class="material-icons list-icon ripple">keyboard_arrow_down</i>
+                    </div>
+                    <form id="frm-insert-bookCase" method="post" action="@Url.Action("InsertBookCase","Location")" onsubmit="javascript: void (0);">
+                        <div class="card-body pt-2">
+                            <div class="form-group mb-0">
+                                <label class="form-control-label">Tên tủ sách</label>
+                                <input type="text" class="form-control " name="Name" placeholder="Nhập tên tủ sách">
+                                <div class="invalid-feedback"></div>
+                            </div>
+                        </div>
+                        <div class="card-action pb-0 ">
+                            <div class=" btn-list d-flex justify-content-end">
+                                <button type="submit" class="btn btn-success" id="sumit-insert-bookCase">
+                                    <i class="material-icons ">done</i>&nbsp;Hoàn tất
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card card-expandable bg-white card-expanded">
+                    <div class="card-header border-bottom-1 pb-2">
+                        <h5 class="card-title mt-3 fs-15">Thêm Kệ Sách</h5>  <i class="material-icons list-icon ripple">keyboard_arrow_down</i>
+                    </div>
+                    <form id="frm-insert-shelf" method="post" action="@Url.Action("InsertShelf","Location")">
+                        <div class="card-body pt-2">
+                            <div class="form-group">
+                                <label class="form-control-label">Tên tủ sách</label>
+                                <select class="form-control parent-id" name="ParentID"></select>
+                            </div>
+                            <div class="form-group mb-0">
+                                <label class="form-control-label">Tên kệ sách</label>
+                                <input type="text" class="form-control " name="Name" id="nameCategory" placeholder="Nhập tên kệ sách">
+                                <div class="invalid-feedback"></div>
+                            </div>
+                        </div>
+                        <div class="card-action pb-0 ">
+                            <div class=" btn-list d-flex justify-content-end">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="material-icons ">done</i>&nbsp;Hoàn tất
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
+
+    </div>
+
+
+    <div class="col-md-8 widget-holder">
+
+        <div class="widget-bg">
+            <div class="widget-body clearfix">
+                <table class="table table-hover " id="table-data">
+                    <thead>
+                        <tr class="bg-info">
+
+                            <th>ID</th>
+                            <th>Tủ sách</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tb-data-bookCase">
+                        @foreach (var item in Model)
+                        {
+                        <tr>
+                            <td>@item.ID</td>
+                            <td>@item.Name</td>
+                            <td>
+                                <input type="checkbox" data-secondary-color="#e6614f" checked="@item.Flag" class="js-switch" data-color="#38d57a" data-size="small">
+                            </td>
+                            <td>
+                                <a href="javascript: void(0);" data-id="@item.ID"
+                                   data-toggle="modal" data-target=".bs-modal-sm-color-scheme"
+                                   class="color-info mr-2 btn-edit-click" title="Cập nhật tủ sách">
+                                    <i class="material-icons">edit</i>
+                                </a>
+                                <a href="javascript: void(0); " data-id="@item.ID" 
+                                   class="color-danger del-submit" title="Xóa tủ sách">
+                                    <i class="material-icons">clear</i>
+                                </a>
+                            </td>
+                        </tr>
+
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section js{
+    <script>
+        $(document).ready(function () {
+            $('form').each(function () {
+                $(this).validate({
+                    errorClass: 'invalid-feedback',
+                    rules: {
+                        Name: {
+                            required: true,
+                            minlength: 5
+                        }
+                    },
+                    messages: {
+                        Name: {
+                            required: "Vui lòng nhập tên!",
+                            minlength: "Tên tối thiểu 5 ký tự!"
+                        },
+                    },
+                    //errorElement: 'div',
+                    //errorLabelContainer: '.invalid-feedback',
+                    errorPlacement: function (error, element) {
+                        $(element).next('div').html(error);
+                    },
+                    highlight: function (element, errorClass, validClass) {
+                        if (element.type == "radio") {
+                            this.findByName(element.name).addClass(errorClass).removeClass(validClass);
+                        } else {
+                            $(element).closest('.form-group').find('input').removeClass('is-valid').addClass('is-invalid');
+                        }
+                    },
+                    unhighlight: function (element, errorClass, validClass) {
+                        if (element.type == "radio") {
+                            this.findByName(element.name).removeClass(errorClass).addClass(validClass);
+                        } else {
+                            $(element).closest('.form-group').find('input').removeClass('is-invalid').addClass('is-valid');
+                        }
+                    },
+                    //submitHandler: function (form) {
+                    //    form.submit();
+                    //}
+                });
+            });
+
+            $('#frm-insert-bookCase').on('submit', function (event) {
+                const data = $('#frm-insert-bookCase').serialize();
+                //var formData = new URLSearchParams(new FormData())
+                var url = $('#frm-insert-bookCase').attr('action');
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: data
+
+                }).done((data) => {
+                    if (data === 1) {
+                        swal(
+                            'Thành công!',
+                            '',
+                            'success'
+                        )
+                    }
+
+                }).catch((e) => {
+                    swal(
+                        'Thất bại!',
+                        e,
+                        'error'
+                    )
+                });
+
+                event.preventDefault();
+                return false;
+            });
+        });
+        var loadDataBookCase(){
+            $.getJSON('/Location/GetBookCase', (data) => {
+                let html="";
+                
+                $('#tb-data-bookCase').append(html);
+
+            });
+        }
+    </script>
+}

@@ -15,8 +15,9 @@ namespace LibraryManagement.Models
     public partial class Location
     {
         public int ID { get; set; }
-        public string BookCase { get; set; }
-        public Nullable<int> Shelf { get; set; }
-        public Nullable<int> Flag { get; set; }
+        public Nullable<int> ParentID { get; set; }
+        public string Name { get; set; }
+        public Nullable<int> Type { get; set; }
+        public Nullable<bool> Flag { get; set; }
     }
 }

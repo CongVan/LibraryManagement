@@ -59,9 +59,10 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BookCase" Type="varchar" MaxLength="50" />
-          <Property Name="Shelf" Type="int" />
-          <Property Name="Flag" Type="int" />
+          <Property Name="ParentID" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Type" Type="int" />
+          <Property Name="Flag" Type="bit" />
         </EntityType>
         <EntityType Name="LostBook">
           <Key>
@@ -174,15 +175,6 @@
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Flag" Type="Boolean" />
         </EntityType>
-        <EntityType Name="Location">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BookCase" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Shelf" Type="Int32" />
-          <Property Name="Flag" Type="Int32" />
-        </EntityType>
         <EntityType Name="LostBook">
           <Key>
             <PropertyRef Name="ID" />
@@ -234,13 +226,23 @@
           <EntitySet Name="BookBills" EntityType="Self.BookBill" />
           <EntitySet Name="BookBillDetails" EntityType="Self.BookBillDetail" />
           <EntitySet Name="Categories" EntityType="Self.Category" />
-          <EntitySet Name="Locations" EntityType="Self.Location" />
           <EntitySet Name="LostBooks" EntityType="Self.LostBook" />
           <EntitySet Name="Publishers" EntityType="Self.Publisher" />
           <EntitySet Name="Roles" EntityType="Self.Role" />
           <EntitySet Name="Settings" EntityType="Self.Setting" />
           <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="Locations" EntityType="LibraryManagementModel.Location" />
         </EntityContainer>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParentID" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="Int32" />
+          <Property Name="Flag" Type="Boolean" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -300,16 +302,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Locations">
-            <EntityTypeMapping TypeName="LibraryManagementModel.Location">
-              <MappingFragment StoreEntitySet="Location">
-                <ScalarProperty Name="Flag" ColumnName="Flag" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="BookCase" ColumnName="BookCase" />
-                <ScalarProperty Name="Shelf" ColumnName="Shelf" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="LostBooks">
             <EntityTypeMapping TypeName="LibraryManagementModel.LostBook">
               <MappingFragment StoreEntitySet="LostBook">
@@ -358,6 +350,17 @@
                 <ScalarProperty Name="ConfirmEmail" ColumnName="ConfirmEmail" />
                 <ScalarProperty Name="RoleID" ColumnName="RoleID" />
                 <ScalarProperty Name="Flag" ColumnName="Flag" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="LibraryManagementModel.Location">
+              <MappingFragment StoreEntitySet="Location">
+                <ScalarProperty Name="Flag" ColumnName="Flag" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
