@@ -39,7 +39,13 @@
                         <div class="card-body pt-2">
                             <div class="form-group">
                                 <label class="form-control-label">Tên tủ sách</label>
-                                <select class="form-control parent-id" name="ParentID"></select>
+                                <select class="form-control parent-id" name="ParentID" id="bookCases">
+                                    @foreach (var item in Model)
+                                    {
+                                        <option value="@item.ID">@item.Name</option>
+                                    }
+
+                                </select>
                             </div>
                             <div class="form-group mb-0">
                                 <label class="form-control-label">Tên kệ sách</label>
@@ -156,6 +162,18 @@
 </div>
 @section js{
     <script>
+        var loadBookCases = () => {
+            $.ajax({
+                url: "/Location/GetBookCases",
+                type: "get",
+                success: function (data) {
+
+                },
+                error: function (x, e) {
+
+                }
+            })
+        }
         $(document).ready(function () {
             $('form').each(function () {
                 $(this).validate({
@@ -272,29 +290,37 @@
             var refreshTableData = () => {
                 $.getJSON('/Location/GetBookCases', (data) => {
                     let html = "";
+                    $('#tb-data-bookCase').empty();
                     $.each(data, (i, item) => {
                         html +=
                             `<tr><td>${item.ID}</td>
-                                                 <td>${item.Name}</td>
-                                                 <td><input type="checkbox" data-secondary-color="#e6614f" checked="${item.Flag}" class="js-switch" data-color="#38d57a" data-size="small"></td>
-                                                 <td>
-                                                    <a href="javascript: void(0);" data-id="${item.ID}"
-                                                       data-toggle="modal" data-target=".bs-modal-sm-color-scheme"
-                                                       class="color-info mr-2 btn-edit-click" title="Cập nhật tủ sách">
-                                                        <i class="material-icons">edit</i>
-                                                    </a>
-                                                    <a href="javascript: void(0); " data-id="${item.ID}"
-                                                       class="color-danger del-submit" title="Xóa tủ sách">
-                                                        <i class="material-icons">clear</i>
-                                                    </a>
-                                                </td></tr>`
+                                                     <td>${item.Name}</td>`;
+                        if (item.Flag == true) {
+                            html += `<td><input type="checkbox" data-secondary-color="#e6614f" checked="${item.Flag}" class="js-switch" data-color="#38d57a" data-size="small"></td>`
+                        } else {
+                            html += `<td><input type="checkbox" data-secondary-color="#e6614f"  class="js-switch" data-color="#38d57a" data-size="small"></td>`
+                        }
+                        html += `<td>
+                                                        <a href="javascript: void(0);" data-id="${item.ID}"
+                                                           data-toggle="modal" data-target=".bs-modal-sm-color-scheme"
+                                                           class="color-info mr-2 btn-edit-click" title="Cập nhật tủ sách">
+                                                            <i class="material-icons">edit</i>
+                                                        </a>
+                                                        <a href="javascript: void(0); " data-id="${item.ID}"
+                                                           class="color-danger del-submit" title="Xóa tủ sách">
+                                                            <i class="material-icons">clear</i>
+                                                        </a>
+                                                    </td></tr>`
                     });
 
                     $('#tb-data-bookCase').html(html);
                     var elems = Array.prototype.slice.call($('#tb-data-bookCase').find('.js-switch'));
 
-                    elems.forEach(function (html) {
-                        var switchery = new Switchery(html, { size: 'small', color: '#38d57a', secondaryColor: '#e6614f' });
+                    elems.forEach(function (el) {
+                        var switchery = new Switchery(el, { size: 'small', color: '#38d57a', secondaryColor: '#e6614f', });
+                        if ($(el).is(':checked') == false) {
+                            $(html).trigger('click');
+                        }
                     });
                     //var elem = $('#tb-data-bookCase').find('.js-switch');
                     //var init = new Switchery(elem);
@@ -324,7 +350,7 @@
             });
             $('#tb-data-bookCase').on('click', '.del-submit', function () {
                 var id = $(this).data('id');
-             
+
                 swal({
                     title: 'XÁC NHẬN?',
                     text: "Bạn có chắc chắn muốn xóa tủ sách này!",
@@ -359,7 +385,7 @@
                                         'error'
                                     )
                                 }
-                                
+
                             }).catch((error) => {
                                 console.log(`Error:${error.messages}`);
                             });

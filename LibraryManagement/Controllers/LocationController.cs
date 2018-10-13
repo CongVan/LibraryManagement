@@ -15,7 +15,7 @@ namespace LibraryManagement.Controllers
 
             using (var ctx = new LibraryManagementEntities())
             {
-                var lcs = ctx.Locations.ToList();
+                var lcs = ctx.Locations.Where(c=>!c.ParentID.HasValue).ToList();
                 return View(lcs);
             }
 
@@ -44,7 +44,7 @@ namespace LibraryManagement.Controllers
         {
             using (var ctx = new LibraryManagementEntities())
             {
-                var lcs = ctx.Locations.ToList();
+                var lcs = ctx.Locations.Where(c=>!c.ParentID.HasValue).ToList();
                 return Json(lcs, JsonRequestBehavior.AllowGet);
             }
         }
