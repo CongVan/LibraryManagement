@@ -80,24 +80,24 @@
                     <tbody id="tb-data-bookCase">
                         @foreach (var item in Model)
                         {
-                        <tr>
-                            <td>@item.ID</td>
-                            <td>@item.Name</td>
-                            <td>
-                                <input type="checkbox" data-secondary-color="#e6614f" checked="@item.Flag" class="js-switch" data-color="#38d57a" data-size="small">
-                            </td>
-                            <td>
-                                <a href="javascript: void(0);" data-id="@item.ID"
-                                   data-toggle="modal" data-target=".bs-modal-sm-color-scheme"
-                                   class="color-info mr-2 btn-edit-click" title="Cập nhật tủ sách">
-                                    <i class="material-icons">edit</i>
-                                </a>
-                                <a href="javascript: void(0); " data-id="@item.ID" 
-                                   class="color-danger del-submit" title="Xóa tủ sách">
-                                    <i class="material-icons">clear</i>
-                                </a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>@item.ID</td>
+                                <td>@item.Name</td>
+                                <td>
+                                    <input type="checkbox" data-secondary-color="#e6614f" checked="@item.Flag" class="js-switch" data-color="#38d57a" data-size="small">
+                                </td>
+                                <td>
+                                    <a href="javascript: void(0);" data-id="@item.ID"
+                                       data-toggle="modal" data-target=".bs-modal-sm-color-scheme"
+                                       class="color-info mr-2 btn-edit-click" title="Cập nhật tủ sách">
+                                        <i class="material-icons">edit</i>
+                                    </a>
+                                    <a href="javascript: void(0); " data-id="@item.ID"
+                                       class="color-danger del-submit" title="Xóa tủ sách">
+                                        <i class="material-icons">clear</i>
+                                    </a>
+                                </td>
+                            </tr>
 
 
                         }
@@ -107,7 +107,53 @@
         </div>
     </div>
 </div>
+<div id="modal-update" class="modal modal-color-scheme fade bs-modal-sm-color-scheme" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header text-inverse">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h5 class="modal-title" id="mySmallModalLabel">Cập Nhật Tủ Sách</h5>
+            </div>
+            <div class="modal-body">
+                <form id="frm-update-bookCase" action="@Url.Action("UpdateBookCase","Location")" method="post" onsubmit="javascript: void (0);">
+                    <input type="hidden" name="ID" value="" />
 
+                    <div class="form-group">
+                        <label for="sample1UserName" class="form-control-label">Tên tủ sách</label>
+                        <input type="text" class="form-control " name="Name" id="nameBookCase" placeholder="Nhập tên tủ sách...">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label">Trạng thái &nbsp;</label>
+                        <input type="checkbox" name="status" data-secondary-color="#e6614f" class="col-md-9 js-switch" data-color="#38d57a" data-size="small">
+                        <input type="hidden" name="Flag" />
+                    </div>
+                    <div class="form-actions">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12 error-area">
+
+                                </div>
+                                <div class="col-sm-12 btn-list d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="material-icons list-icon">check</i>&nbsp; Hoàn tất
+                                    </button>
+                                    <button type="button" class="btn btn-default" id="btnTest" data-dismiss="modal">
+                                        <i class="material-icons list-icon">close</i>&nbsp;Đóng
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 @section js{
     <script>
         $(document).ready(function () {
@@ -145,13 +191,28 @@
                             $(element).closest('.form-group').find('input').removeClass('is-invalid').addClass('is-valid');
                         }
                     },
-                    //submitHandler: function (form) {
-                    //    form.submit();
-                    //}
+                    submitHandler: function (form) {
+                        if ($(form).attr('id') == "frm-insert-bookCase") {
+                            submitInsert();
+                        }
+                        if ($(form).attr('id') == "frm-update-bookCase") {
+                            submitUpdate();
+                        }
+
+                        return false;
+                    }
                 });
             });
 
-            $('#frm-insert-bookCase').on('submit', function (event) {
+            $('#frm-insert-bookCase').on('submit', function (e) {
+                e.preventDefault();
+                return false;
+            });
+            $('#frm-update-bookCase').on('submit', function (e) {
+                e.preventDefault();
+                return false;
+            });
+            var submitInsert = () => {
                 const data = $('#frm-insert-bookCase').serialize();
                 //var formData = new URLSearchParams(new FormData())
                 var url = $('#frm-insert-bookCase').attr('action');
@@ -166,7 +227,8 @@
                             'Thành công!',
                             '',
                             'success'
-                        )
+                        );
+                        refreshTableData();
                     }
 
                 }).catch((e) => {
@@ -176,18 +238,140 @@
                         'error'
                     )
                 });
+            }
+            var submitUpdate = () => {
+                const data = $('#frm-update-bookCase').serialize();
+                //var formData = new URLSearchParams(new FormData())
+                var url = $('#frm-update-bookCase').attr('action');
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: data
 
-                event.preventDefault();
-                return false;
+                }).done((data) => {
+                    $('#modal-update').modal('hide');
+                    if (data === 1) {
+                        swal(
+                            'Thành công!',
+                            '',
+                            'success'
+                        );
+
+                        refreshTableData();
+                    }
+
+                }).catch((e) => {
+                    swal(
+                        'Thất bại!',
+                        e,
+                        'error'
+                    )
+                });
+            }
+
+            var refreshTableData = () => {
+                $.getJSON('/Location/GetBookCases', (data) => {
+                    let html = "";
+                    $.each(data, (i, item) => {
+                        html +=
+                            `<tr><td>${item.ID}</td>
+                                                 <td>${item.Name}</td>
+                                                 <td><input type="checkbox" data-secondary-color="#e6614f" checked="${item.Flag}" class="js-switch" data-color="#38d57a" data-size="small"></td>
+                                                 <td>
+                                                    <a href="javascript: void(0);" data-id="${item.ID}"
+                                                       data-toggle="modal" data-target=".bs-modal-sm-color-scheme"
+                                                       class="color-info mr-2 btn-edit-click" title="Cập nhật tủ sách">
+                                                        <i class="material-icons">edit</i>
+                                                    </a>
+                                                    <a href="javascript: void(0); " data-id="${item.ID}"
+                                                       class="color-danger del-submit" title="Xóa tủ sách">
+                                                        <i class="material-icons">clear</i>
+                                                    </a>
+                                                </td></tr>`
+                    });
+
+                    $('#tb-data-bookCase').html(html);
+                    var elems = Array.prototype.slice.call($('#tb-data-bookCase').find('.js-switch'));
+
+                    elems.forEach(function (html) {
+                        var switchery = new Switchery(html, { size: 'small', color: '#38d57a', secondaryColor: '#e6614f' });
+                    });
+                    //var elem = $('#tb-data-bookCase').find('.js-switch');
+                    //var init = new Switchery(elem);
+                });
+            }
+
+
+            $('#frm-update-bookCase input[name="status"]').on('change', function (event) {
+                $('#frm-update-bookCase input[name="Flag"]').val($(this).is(':checked') ? "true" : "false");
             });
+
+
+            $('#tb-data-bookCase').on('click', '.btn-edit-click', function () {
+                var id = $(this).data('id');
+                $.getJSON('/Location/getBookCaseWithID?id=' + id, (data) => {
+                    $('#frm-update-bookCase input[name="Name"]').val(data.Name);
+                    $('#frm-update-bookCase input[name="ID"]').val(data.ID);
+                    $('#frm-update-bookCase input[name="Flag"]').val(data.Flag);
+                    var check = $('#frm-update-bookCase input[name="status"]').is(':checked');
+                    if (data.Flag == true && check == false || (data.Flag == false && check == true)) {
+                        $('#frm-update-bookCase input[name="status"]').trigger('click');
+                    }
+                });
+                //var bookCase = getBookCaseWithID();
+
+
+            });
+            $('#tb-data-bookCase').on('click', '.del-submit', function () {
+                var id = $(this).data('id');
+             
+                swal({
+                    title: 'XÁC NHẬN?',
+                    text: "Bạn có chắc chắn muốn xóa tủ sách này!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonClass: 'btn btn-danger',
+                    confirmButtonText: 'Xác nhận',
+                    cancelButtonText: "Đóng",
+                }).then((result) => {
+                    if (result.value) {
+                        var url = "/Location/DeleteBookCase"
+                        fetch(url, {
+                            method: 'post',
+                            headers: {
+                                'Accept': 'application/json, text/plain, */*',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ id: id })
+                        }).then(res => res.json())
+                            .then(data => {
+                                if (data.result == 1) {
+                                    refreshTableData();
+                                    swal(
+                                        'Thành công!',
+                                        '',
+                                        'success'
+                                    )
+                                } else {
+                                    swal(
+                                        'Thất bại!',
+                                        data.msg,
+                                        'error'
+                                    )
+                                }
+                                
+                            }).catch((error) => {
+                                console.log(`Error:${error.messages}`);
+                            });
+
+                    } else if (result.dismiss === "cancel") {
+
+                    }
+                });
+            });
+
+
         });
-        var loadDataBookCase(){
-            $.getJSON('/Location/GetBookCase', (data) => {
-                let html="";
-                
-                $('#tb-data-bookCase').append(html);
 
-            });
-        }
     </script>
 }

@@ -48,5 +48,51 @@ namespace LibraryManagement.Controllers
                 return Json(lcs, JsonRequestBehavior.AllowGet);
             }
         }
+        public ActionResult getBookCaseWithID(int id)
+        {
+            using (var ctx = new LibraryManagementEntities())
+            {
+                var lcs = ctx.Locations.Where(c=>c.ID==id).FirstOrDefault();
+                return Json(lcs, JsonRequestBehavior.AllowGet);
+            }
+        }
+        [HttpPost]
+        public ActionResult UpdateBookCase(Location lc)
+        {
+            using (var ctx = new LibraryManagementEntities())
+            {
+                var lcUpdate = ctx.Locations.Where(c => c.ID == lc.ID).FirstOrDefault();
+                if (lcUpdate != null)
+                { 
+                    lcUpdate.Name = lc.Name;
+                    lcUpdate.Flag = lc.Flag;
+                    ctx.Entry(lcUpdate).State = System.Data.Entity.EntityState.Modified;
+                    ctx.SaveChanges();
+                    return Json(1, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(-1, JsonRequestBehavior.AllowGet);
+                }
+            }
+        }
+        [HttpPost]
+        public ActionResult DeleteBookCase(int id)
+        {
+            using (var ctx=new LibraryManagementEntities())
+            {
+                var lc = ctx.Locations.Where(c => c.ID == id).FirstOrDefault();
+                if (lc != null)
+                {
+                    ctx.Entry(lc).State = System.Data.Entity.EntityState.Deleted;
+                    ctx.SaveChanges();
+                    return Json(new { result = 1, msg = "OK" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { result = -1, msg = "Có lỗi xảy ra" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+        }
     }
 }

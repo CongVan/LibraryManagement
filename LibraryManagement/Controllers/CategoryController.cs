@@ -135,6 +135,7 @@ namespace LibraryManagement.Controllers
         [HttpPost]
         public ActionResult UpdateCategory(Category cate)
         {
+            
             using (var ctx=new LibraryManagementEntities())
             {
                 try
