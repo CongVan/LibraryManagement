@@ -39,7 +39,7 @@ namespace LibraryManagement.Controllers
 
         public ActionResult GetListCategory()
         {
-            using (var ctx=new LibraryManagementEntities())
+            using (var ctx = new LibraryManagementEntities())
             {
                 var lstParent = ctx.Categories.Where(c => !c.ParentID.HasValue).ToList();
                 var lstRet = new List<Dictionary<object, object>>();
@@ -61,22 +61,51 @@ namespace LibraryManagement.Controllers
                 return Json(lstRet, JsonRequestBehavior.AllowGet);
             }
 
-            
+
+        }
+        public ActionResult GetListCategoryForSelect()
+        {
+            using (var ctx = new LibraryManagementEntities())
+            {
+                var lstParent = ctx.Categories.Where(c => !c.ParentID.HasValue && c.Flag == true).ToList();
+                var lstRet = new List<Dictionary<object, object>>();
+                foreach (var parent in lstParent)
+                {
+                    var item = new Dictionary<object, object>();
+                    var lstChild = ctx.Categories.Where(c => c.ParentID == parent.ID && c.Flag == true).Select(c => new { id = c.ID, text = c.Name }).ToList();
+                    if (lstChild == null || lstChild.Count==0)
+                    {
+                        item.Add("id", parent.ID);
+                        item.Add("text", parent.Name);
+                    }
+                    else
+                    {
+                        item.Add("id", parent.ID);
+                        item.Add("text", parent.Name);
+                        item.Add("children", lstChild);
+                    }
+                    
+                    lstRet.Add(item);
+                }
+                return Json(lstRet, JsonRequestBehavior.AllowGet);
+            }
+
+
         }
         public ActionResult GetListCategoryParent()
         {
             using (var ctx = new LibraryManagementEntities())
             {
                 var lstParent = ctx.Categories.Where(c => !c.ParentID.HasValue).ToList();
-               
+
                 return Json(lstParent, JsonRequestBehavior.AllowGet);
             }
         }
         [HttpPost]
         public ActionResult InsertCategory(Category cate)
         {
-            
-            using (var ctx=new LibraryManagementEntities())
+
+            using (var ctx = new LibraryManagementEntities())
             {
                 try
                 {
@@ -97,9 +126,9 @@ namespace LibraryManagement.Controllers
         [HttpPost]
         public ActionResult DeleteCategory(int id)
         {
-            using (var ctx=new LibraryManagementEntities())
+            using (var ctx = new LibraryManagementEntities())
             {
-                
+
                 try
                 {
                     var cate = ctx.Categories.Where(c => c.ID == id).FirstOrDefault();
@@ -123,26 +152,27 @@ namespace LibraryManagement.Controllers
         }
         public ActionResult GetCategory(int id)
         {
-            using (var ctx=new LibraryManagementEntities())
+            using (var ctx = new LibraryManagementEntities())
             {
                 return Json(
                     ctx.Categories.Where(c => c.ID == id).FirstOrDefault(),
                     JsonRequestBehavior.AllowGet
                 );
             }
-            
+
         }
         [HttpPost]
         public ActionResult UpdateCategory(Category cate)
         {
-            
-            using (var ctx=new LibraryManagementEntities())
+
+            using (var ctx = new LibraryManagementEntities())
             {
                 try
                 {
-                    
+
                     var cateUpdate = ctx.Categories.Where(c => c.ID == cate.ID).FirstOrDefault();
-                    if (cateUpdate != null) {
+                    if (cateUpdate != null)
+                    {
                         cateUpdate.Name = cate.Name;
                         cateUpdate.ParentID = cate.ParentID == -1 ? null : cate.ParentID;
                         cateUpdate.Flag = cate.Flag;

@@ -13,5 +13,9 @@ namespace LibraryManagement.Controllers
         {
             return View();
         }
+        public ActionResult AddBook()
+        {
+            return View();
+        }
     }
 }

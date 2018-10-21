@@ -213,6 +213,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\css\jquery.bootstrap-touchspin.css" />
+    <Content Include="assets\js\jquery.bootstrap-touchspin.js" />
     <Content Include="assets\css\pace.css" />
     <Content Include="assets\css\style.css" />
     <Content Include="assets\demo\body-bg.jpg" />
@@ -367,6 +369,7 @@
     <Content Include="Views\BookPay\Index.cshtml" />
     <Content Include="Views\Publisher\Index.cshtml" />
     <Content Include="Views\Location\Index.cshtml" />
+    <Content Include="Views\Book\AddBook.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

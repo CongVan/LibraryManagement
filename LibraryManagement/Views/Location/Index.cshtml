@@ -3,7 +3,13 @@
 @{
     ViewBag.Title = "Quản lý kệ sách";
 }
-
+@section css{
+    <style>
+        body {
+            padding-right: 0 !important;
+        }
+    </style>
+}
 <div class="row">
     <div class="col-md-4 mr-b-20">
         <div class="row">
@@ -274,11 +280,12 @@
                             '',
                             'success'
                         );
-
+                        $('body').css('padding-right:0px');
                         refreshTableData();
                     }
 
                 }).catch((e) => {
+                    $('body').css('padding-right:0px');
                     swal(
                         'Thất bại!',
                         e,
@@ -290,27 +297,27 @@
             var refreshTableData = () => {
                 $.getJSON('/Location/GetBookCases', (data) => {
                     let html = "";
-                    $('#tb-data-bookCase').empty();
+                    //$('#tb-data-bookCase').empty();
                     $.each(data, (i, item) => {
                         html +=
                             `<tr><td>${item.ID}</td>
-                                                     <td>${item.Name}</td>`;
+                                                         <td>${item.Name}</td>`;
                         if (item.Flag == true) {
                             html += `<td><input type="checkbox" data-secondary-color="#e6614f" checked="${item.Flag}" class="js-switch" data-color="#38d57a" data-size="small"></td>`
                         } else {
                             html += `<td><input type="checkbox" data-secondary-color="#e6614f"  class="js-switch" data-color="#38d57a" data-size="small"></td>`
                         }
                         html += `<td>
-                                                        <a href="javascript: void(0);" data-id="${item.ID}"
-                                                           data-toggle="modal" data-target=".bs-modal-sm-color-scheme"
-                                                           class="color-info mr-2 btn-edit-click" title="Cập nhật tủ sách">
-                                                            <i class="material-icons">edit</i>
-                                                        </a>
-                                                        <a href="javascript: void(0); " data-id="${item.ID}"
-                                                           class="color-danger del-submit" title="Xóa tủ sách">
-                                                            <i class="material-icons">clear</i>
-                                                        </a>
-                                                    </td></tr>`
+                                                            <a href="javascript: void(0);" data-id="${item.ID}"
+                                                               data-toggle="modal" data-target=".bs-modal-sm-color-scheme"
+                                                               class="color-info mr-2 btn-edit-click" title="Cập nhật tủ sách">
+                                                                <i class="material-icons">edit</i>
+                                                            </a>
+                                                            <a href="javascript: void(0); " data-id="${item.ID}"
+                                                               class="color-danger del-submit" title="Xóa tủ sách">
+                                                                <i class="material-icons">clear</i>
+                                                            </a>
+                                                        </td></tr>`
                     });
 
                     $('#tb-data-bookCase').html(html);
@@ -322,9 +329,11 @@
                             $(html).trigger('click');
                         }
                     });
+
                     //var elem = $('#tb-data-bookCase').find('.js-switch');
                     //var init = new Switchery(elem);
                 });
+
             }
 
 

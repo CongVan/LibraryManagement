@@ -48,6 +48,32 @@ namespace LibraryManagement.Controllers
                 return Json(lcs, JsonRequestBehavior.AllowGet);
             }
         }
+        public ActionResult GetBookCasesForSelect()
+        {
+            using (var ctx = new LibraryManagementEntities())
+            {
+                var lcs = ctx.Locations.Where(c => !c.ParentID.HasValue).ToList();
+                var lstRet = new List<Dictionary<object, object>>();
+                foreach (var lc in lcs)
+                {
+                    var bs = ctx.Locations.Where(c => c.ParentID == lc.ID).Select(c=>new {id=c.ID,text=c.Name }).ToList();
+                    var item = new Dictionary<object, object>();
+                    if (bs == null || bs.Count==0)
+                    {
+                        item.Add("id", lc.ID);
+                        item.Add("text", lc.Name);
+                    }
+                    else
+                    {
+                        item.Add("id", lc.ID);
+                        item.Add("text", lc.Name);
+                        item.Add("children", bs);
+                    }
+                    lstRet.Add(item);
+                }
+                return Json(lstRet, JsonRequestBehavior.AllowGet);
+            }
+        }
         public ActionResult getBookCaseWithID(int id)
         {
             using (var ctx = new LibraryManagementEntities())

@@ -45,6 +45,15 @@ namespace LibraryManagement.Controllers
             TempData["msgSuccess"] = msgSuccess;
             return RedirectToAction("Index", "Publisher");
         }
+        public ActionResult GetListAllPublisher()
+        {
+            using (var ctx = new LibraryManagementEntities())
+            {
+
+                return Json(ctx.Publishers.Where(c => c.Flag.Value == true).Select(c=>new { id=c.ID,text=c.Name}).ToList()
+                    , JsonRequestBehavior.AllowGet);
+            }
+        }
         public ActionResult GetListPublisher(int? id)
         {
             using (var ctx = new LibraryManagementEntities())
@@ -92,10 +101,10 @@ namespace LibraryManagement.Controllers
             {
                 return Json(new { result = -1, msg = "Mã NXB không hợp lệ!" }, JsonRequestBehavior.AllowGet);
             }
-            
+
             try
             {
-                using (var ctx=new LibraryManagementEntities())
+                using (var ctx = new LibraryManagementEntities())
                 {
                     var ps = ctx.Publishers.Where(c => c.ID == id.Value).FirstOrDefault();
                     if (ps != null)
@@ -112,7 +121,7 @@ namespace LibraryManagement.Controllers
             catch (Exception ex)
             {
                 return Json(new { result = -1, msg = $"Có lỗi xảy ra.\nLỗi: {ex.Message}" }, JsonRequestBehavior.AllowGet);
-                
+
             }
             return Json(new { result = 1, msg = "OK" }, JsonRequestBehavior.AllowGet);
         }

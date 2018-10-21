@@ -1,0 +1,203 @@
+﻿
+@{
+    ViewBag.Title = "AddBook";
+}
+@section css{
+    <link href="~/assets/css/jquery.bootstrap-touchspin.css" rel="stylesheet" />
+}
+<div class="row">
+    <div class="col-md-12 widget-holder">
+        <div class="widget-bg">
+            <div class="widget-body clearfix">
+                <h5 class="box-title mr-b-0">NHẬP SÁCH VÀO THƯ VIỆN</h5>
+                <p class="text-muted">Thủ thư nhập sách vào thư viện.</p>
+                <div class="row">
+                    <div class="col-md-8">
+                        <form id="frmAddBook">
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">Tiêu đề sách</label>
+                                <div class="col-md-10">
+                                    <input class="form-control" placeholder="Tiêu đề sách" type="text">
+                                </div>
+                                @*<label class="col-md-1 col-form-label pr-0">SKU</label>
+                                    <div class="col-md-3">
+                                        <input class="form-control" placeholder="SKU" type="text">
+                                    </div>*@
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">Nhà xuất bản</label>
+                                <div class="col-md-4">
+                                    <select class="form-control" name="publisherID">
+                                        <option></option>
+                                    </select>
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">Ngày xuất bản</label>
+                                <div class="col-md-4">
+                                    <input class="form-control datepicker" placeholder="Ngày xuất bản" type="text" value="@DateTime.Now.ToString("dd/MM/yyyy")" name="publishDate">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">Danh mục</label>
+                                <div class="col-md-4">
+                                    <select class="form-control js-states" name="CategoryID">
+                                        <option></option>
+                                    </select>
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">Các tác giả</label>
+                                <div class="col-md-4">
+                                    <input class="form-control" placeholder="Các tác giả" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">Giá sách</label>
+                                <div class="col-md-4">
+                                    <input class="form-control" name="Price">
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">Số trang</label>
+                                <div class="col-md-4">
+                                    <input class="form-control" name="numberOfPage" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">Vị trí tủ sách</label>
+                                <div class="col-md-4">
+                                    <select class="form-control" name="LocationID">
+                                        <option></option>
+                                    </select>
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">Số lượng</label>
+                                <div class="col-md-4">
+                                    <input class="form-control"  name="Quantity" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label text-right">Mô tả</label>
+                                <div class="col-md-10">
+                                    <textarea class="form-control" placeholder="Vị trí kệ sách" rows="4"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="form-group row">
+                                    <div class="col-md-9 ml-md-auto btn-list">
+                                        <button class="btn btn-primary btn-rounded" type="button">Submit</button>
+                                        <button class="btn btn-outline-default btn-rounded" type="button">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class=" col-md-4">
+                        <h5 class="box-title mr-b-0">Dropzone</h5>
+                        <p class="text-muted">For multiple file upload</p>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.widget-body -->
+        </div>
+        <!-- /.widget-bg -->
+    </div>
+</div>
+@section js{
+    <script src="~/assets/js/jquery.bootstrap-touchspin.js"></script>
+    <script>
+        var createElement = {
+            init: function () {
+                this.loadPublisher();
+                this.loadCategory();
+                this.priceBook();
+                this.numberOfPage();
+                this.Quantity();
+                this.loadLocation();
+            },
+            loadPublisher: () => {
+                $.get('/Publisher/GetListAllPublisher')
+                    .then((result) => {
+                        console.log(result);
+                        $('#frmAddBook select[name="publisherID"]').select2({
+                            placeholder: 'Chọn nhà xuất bản sách',
+                            data: result,
+
+
+                        });
+                    });
+            },
+            loadCategory: () => {
+                $.get('/Category/GetListCategoryForSelect')
+                    .then((result) => {
+                        console.log(result);
+                        $('#frmAddBook select[name="CategoryID"]').select2({
+                            placeholder: {
+                                id: '', text: 'Chọn danh mục sách'
+                            },
+                            data: result
+                        });
+                    });
+            },
+            priceBook: () => {
+                $('#frmAddBook input[name="Price"]').TouchSpin({
+                    min: 500,
+                    max: 999999999,
+                    step: 500,
+                    decimals: 0,
+                    buttondown_class: "btn btn-success",
+                    buttonup_class: "btn btn-success",
+                    postfix: 'vnđ',
+                    postfix_extraclass: "btn btn-ouline-info",
+                });
+            },
+            numberOfPage: () => {
+                $('#frmAddBook input[name="numberOfPage"]').TouchSpin({
+                    min: 1,
+                    max: 999999999,
+                    step: 1,
+                    decimals: 0,
+                    buttondown_class: "btn btn-success",
+                    buttonup_class: "btn btn-success",
+                    postfix: 'trang',
+                    postfix_extraclass: "btn btn-ouline-info",
+                });
+            },
+            Quantity: () => {
+                $('#frmAddBook input[name="Quantity"]').TouchSpin({
+                    min: 1,
+                    max: 999999999,
+                    step: 1,
+                    decimals: 0,
+                    buttondown_class: "btn btn-success",
+                    buttonup_class: "btn btn-success",
+                    postfix: 'cuốn',
+                    postfix_extraclass: "btn btn-ouline-info",
+                });
+            },
+            loadLocation: () => {
+                $.get('/Location/GetBookCasesForSelect')
+                    .then((result) => {
+                        console.log(result);
+                        $('#frmAddBook select[name="LocationID"]').select2({
+                            placeholder: {
+                                id: '', text: 'Chọn vị trí tủ sách'
+                            },
+                            data: result
+                        });
+                    });
+            },
+        }
+
+        $(document).ready(function () {
+            createElement.init();
+            $('#frmAddBook input[name="publishDate"]').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                locale: {
+                    format: "DD/MM/YYYY"
+                }
+            });
+        });
+    </script>
+
+
+
+
+
+}
