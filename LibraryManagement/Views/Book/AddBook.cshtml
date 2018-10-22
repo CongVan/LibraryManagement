@@ -6,7 +6,7 @@
     <link href="~/assets/css/glyphiconCustom.css" rel="stylesheet" />
     <link href="~/assets/css/jquery.bootstrap-touchspin.css" rel="stylesheet" />
     <link href="~/assets/plugins/file-input/css/fileinput.min.css" rel="stylesheet" />
-    
+
     <link href="~/assets/plugins/file-input/themes/explorer/theme.min.css" rel="stylesheet" />
     <style>
         .caption-cell {
@@ -24,11 +24,11 @@
                 <p class="text-muted">Thủ thư nhập sách vào thư viện.</p>
                 <div class="row">
                     <div class="col-md-8">
-                        <form id="frmAddBook">
+                        <form id="frmAddBook" action="@Url.Action("AddBook","Book")" method="post">
                             <div class="form-group row">
                                 <label class="col-md-2 col-form-label pr-0">Tiêu đề sách</label>
                                 <div class="col-md-10">
-                                    <input class="form-control" placeholder="Tiêu đề sách" type="text">
+                                    <input class="form-control" placeholder="Tiêu đề sách" type="text" autofocus tabindex="0" name="Title">
                                 </div>
                                 @*<label class="col-md-1 col-form-label pr-0">SKU</label>
                                     <div class="col-md-3">
@@ -38,59 +38,59 @@
                             <div class="form-group row">
                                 <label class="col-md-2 col-form-label pr-0">Nhà xuất bản</label>
                                 <div class="col-md-4">
-                                    <select class="form-control" name="publisherID">
+                                    <select class="form-control" name="publisherID" tabindex="1">
                                         <option></option>
                                     </select>
                                 </div>
                                 <label class="col-md-2 col-form-label pr-0">Ngày xuất bản</label>
                                 <div class="col-md-4">
-                                    <input class="form-control datepicker" placeholder="Ngày xuất bản" type="text" value="@DateTime.Now.ToString("dd/MM/yyyy")" name="publishDate">
+                                    <input class="form-control datepicker" tabindex="2" placeholder="Ngày xuất bản" type="text" value="@DateTime.Now.ToString("dd/MM/yyyy")" name="publishDate">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-md-2 col-form-label pr-0">Danh mục</label>
                                 <div class="col-md-4">
-                                    <select class="form-control js-states" name="CategoryID">
+                                    <select class="form-control js-states" name="CategoryID" tabindex="3">
                                         <option></option>
                                     </select>
                                 </div>
                                 <label class="col-md-2 col-form-label pr-0">Các tác giả</label>
                                 <div class="col-md-4">
-                                    <input class="form-control" placeholder="Các tác giả" type="text">
+                                    <input class="form-control" placeholder="Các tác giả" type="text" tabindex="4" name="Author">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-md-2 col-form-label pr-0">Giá sách</label>
                                 <div class="col-md-4">
-                                    <input class="form-control" name="Price">
+                                    <input class="form-control" name="Price" tabindex="5">
                                 </div>
                                 <label class="col-md-2 col-form-label pr-0">Số trang</label>
                                 <div class="col-md-4">
-                                    <input class="form-control" name="numberOfPage" type="text">
+                                    <input class="form-control" name="NumberOfPages" type="text" tabindex="6">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-md-2 col-form-label pr-0">Vị trí tủ sách</label>
                                 <div class="col-md-4">
-                                    <select class="form-control" name="LocationID">
+                                    <select class="form-control" name="LocationID" tabindex="7">
                                         <option></option>
                                     </select>
                                 </div>
                                 <label class="col-md-2 col-form-label pr-0">Số lượng</label>
                                 <div class="col-md-4">
-                                    <input class="form-control" name="Quantity" type="text">
+                                    <input class="form-control" name="Quantity" type="text" tabindex="8">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-md-2 col-form-label text-right">Mô tả</label>
                                 <div class="col-md-10">
-                                    <textarea class="form-control" placeholder="Giớ thiệu về sách" rows="4"></textarea>
+                                    <textarea class="form-control" placeholder="Giớ thiệu về sách" rows="4" tabindex="9" name="Description"></textarea>
                                 </div>
                             </div>
                             <div class="form-actions">
                                 <div class="form-group row">
                                     <div class="col-md-9 ml-md-auto btn-list">
-                                        <button class="btn btn-primary btn-rounded" type="button">Submit</button>
+                                        <button class="btn btn-primary btn-rounded" type="submit">Submit</button>
                                         <button class="btn btn-outline-default btn-rounded" type="button">Cancel</button>
                                     </div>
                                 </div>
@@ -99,8 +99,8 @@
                     </div>
                     <div class=" col-md-4">
                         <h5 class="box-title mr-b-0">Hình ảnh sách</h5>
-
                         <input id="imagesBook" type="file" multiple accept="image/*" />
+                        <input type="hidden" id="checkUpload" value="0" />
                     </div>
                 </div>
 
@@ -126,11 +126,14 @@
                 this.loadPublisher();
                 this.loadCategory();
                 this.priceBook();
-                this.numberOfPage();
+                this.numberOfPages();
                 this.Quantity();
                 this.loadLocation();
                 this.imagesBook();
-
+                this.imageBookHandleChange();
+                this.imageBookUploadComplete();
+                this.frmAddBookHandleSubmit();
+                this.publishDate();
             },
             loadPublisher: () => {
                 $.get('/Publisher/GetListAllPublisher')
@@ -168,8 +171,8 @@
                     postfix_extraclass: "btn btn-ouline-info",
                 });
             },
-            numberOfPage: () => {
-                $('#frmAddBook input[name="numberOfPage"]').TouchSpin({
+            numberOfPages: () => {
+                $('#frmAddBook input[name="NumberOfPages"]').TouchSpin({
                     min: 1,
                     max: 999999999,
                     step: 1,
@@ -192,6 +195,15 @@
                     postfix_extraclass: "btn btn-ouline-info",
                 });
             },
+            publishDate: () => {
+                $('#frmAddBook input[name="publishDate"]').daterangepicker({
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    locale: {
+                        format: "DD/MM/YYYY"
+                    }
+                });
+            },
             loadLocation: () => {
                 $.get('/Location/GetBookCasesForSelect')
                     .then((result) => {
@@ -207,7 +219,7 @@
             imagesBook: () => {
                 $("#imagesBook").fileinput({
                     theme: "explorer",
-                    uploadUrl: "/Account/UpImage/",
+                    uploadUrl: "/Book/UploadImage/",
                     language: 'vi',
                     minFileSize: '1',
                     maxFileSize: '2000',
@@ -216,7 +228,7 @@
                     maxImageHeight: 640,
                     resizePreference: 'width',
                     validateInitialCount: true,
-                    uploadAsync: true,
+                    uploadAsync: false,
                     minFileCount: '1',
                     accept: 'image/*',
                     maxFileCount: '10',
@@ -260,19 +272,55 @@
 
                 });
             },
+            imageBookHandleChange: () => {
+                $('#imagesBook').on('change', function () {
+                    $("#checkUpload").val(0);
+                });
+            },
+            imageBookUploadComplete: () => {
+                $('#imagesBook').on('filebatchuploadcomplete', function (event, files, extra) {
+                    $("#checkUpload").val(1);
+                });
+            },
+            frmAddBookHandleSubmit: () => {
+                $('#frmAddBook').on('submit', function (e) {
+                    if ($("#checkUpload").val() == 0) {
+                        swal(
+                            'Thông báo!',
+                            "Vui lòng tải ảnh lên trước khi thêm sách",
+                            'error'
+                        );
+                        e.preventDefault();
+                        return false;
+                    } else {
+                        var publishDate = $('#frmAddBook input[name="publishDate"]').val().split('/');
+                        $('#frmAddBook input[name="publishDate"]').val(publishDate[2] + "/" + publishDate[1] + "/" + publishDate[0])
 
+                    }
+                });
+            }
         }
 
         $(document).ready(function () {
             createElement.init();
-            $('#frmAddBook input[name="publishDate"]').daterangepicker({
-                singleDatePicker: true,
-                showDropdowns: true,
-                locale: {
-                    format: "DD/MM/YYYY"
-                }
-            });
+            showMessage();
         });
+        function showMessage() {
+            if (@Html.Raw(Json.Encode(ViewBag.msgSuccess))!= null) {
+                swal(
+                    "Thông báo",
+                     @Html.Raw(Json.Encode(ViewBag.msgSuccess)),
+                    "success"
+                );
+            } 
+            if (@Html.Raw(Json.Encode(ViewBag.msgError))!= null) {
+                swal(
+                    "Thông báo",
+                     @Html.Raw(Json.Encode(ViewBag.msgError)),
+                    "error"
+                );
+            } 
+        }
     </script>
 
 

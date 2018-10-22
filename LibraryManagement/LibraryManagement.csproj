@@ -415,6 +415,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Public\BookImages\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\vendors\material-icons\MaterialIcons-Regular.eot" />
