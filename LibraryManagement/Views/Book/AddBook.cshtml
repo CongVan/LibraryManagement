@@ -3,7 +3,18 @@
     ViewBag.Title = "AddBook";
 }
 @section css{
+    <link href="~/assets/css/glyphiconCustom.css" rel="stylesheet" />
     <link href="~/assets/css/jquery.bootstrap-touchspin.css" rel="stylesheet" />
+    <link href="~/assets/plugins/file-input/css/fileinput.min.css" rel="stylesheet" />
+    
+    <link href="~/assets/plugins/file-input/themes/explorer/theme.min.css" rel="stylesheet" />
+    <style>
+        .caption-cell {
+            white-space: pre-line;
+            overflow: auto;
+            max-width: 10rem;
+        }
+    </style>
 }
 <div class="row">
     <div class="col-md-12 widget-holder">
@@ -67,13 +78,13 @@
                                 </div>
                                 <label class="col-md-2 col-form-label pr-0">Số lượng</label>
                                 <div class="col-md-4">
-                                    <input class="form-control"  name="Quantity" type="text">
+                                    <input class="form-control" name="Quantity" type="text">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-md-2 col-form-label text-right">Mô tả</label>
                                 <div class="col-md-10">
-                                    <textarea class="form-control" placeholder="Vị trí kệ sách" rows="4"></textarea>
+                                    <textarea class="form-control" placeholder="Giớ thiệu về sách" rows="4"></textarea>
                                 </div>
                             </div>
                             <div class="form-actions">
@@ -87,8 +98,9 @@
                         </form>
                     </div>
                     <div class=" col-md-4">
-                        <h5 class="box-title mr-b-0">Dropzone</h5>
-                        <p class="text-muted">For multiple file upload</p>
+                        <h5 class="box-title mr-b-0">Hình ảnh sách</h5>
+
+                        <input id="imagesBook" type="file" multiple accept="image/*" />
                     </div>
                 </div>
 
@@ -100,6 +112,14 @@
 </div>
 @section js{
     <script src="~/assets/js/jquery.bootstrap-touchspin.js"></script>
+    <script src="~/assets/plugins/file-input/js/plugins/piexif.min.js"></script>
+    <script src="~/assets/plugins/file-input/js/plugins/sortable.min.js"></script>
+
+    <script src="~/assets/plugins/file-input/js/plugins/purify.min.js"></script>
+    <script src="~/assets/plugins/file-input/js/fileinput.min.js"></script>
+    <script src="~/assets/plugins/file-input/js/locales/LANG.js"></script>
+    <script src="~/assets/plugins/file-input/js/locales/vi.js"></script>
+    <script src="~/assets/plugins/file-input/themes/explorer/theme.min.js"></script>
     <script>
         var createElement = {
             init: function () {
@@ -109,6 +129,8 @@
                 this.numberOfPage();
                 this.Quantity();
                 this.loadLocation();
+                this.imagesBook();
+
             },
             loadPublisher: () => {
                 $.get('/Publisher/GetListAllPublisher')
@@ -182,6 +204,63 @@
                         });
                     });
             },
+            imagesBook: () => {
+                $("#imagesBook").fileinput({
+                    theme: "explorer",
+                    uploadUrl: "/Account/UpImage/",
+                    language: 'vi',
+                    minFileSize: '1',
+                    maxFileSize: '2000',
+                    resizeImage: true,
+                    maxImageWidth: 640,
+                    maxImageHeight: 640,
+                    resizePreference: 'width',
+                    validateInitialCount: true,
+                    uploadAsync: true,
+                    minFileCount: '1',
+                    accept: 'image/*',
+                    maxFileCount: '10',
+                    browseOnZoneClick: true,
+                    showBrowse: false,
+                    allowedPreviewTypes: ['image'], // allow only preview of image & text files
+                    allowedFileExtensions: ['jpg', 'png'],
+                    overwriteInitial: false,
+                    initialPreviewAsData: true,
+                    fileActionSettings: {
+                        showRemove: true,
+                        showUpload: false,
+                        showZoom: true,
+                        showDrag: false,
+                    },
+                    //previewFileIconSettings: {
+                    //    'docx': '<i class="fa fa-file-word-o text-primary"></i>',
+                    //    'xlsx': '<i class="fa fa-file-excel-o text-success"></i>',
+                    //    'pptx': '<i class="fa fa-file-powerpoint-o text-danger"></i>',
+                    //    'pdf':  '<i class="fa fa-file-pdf-o text-danger"></i>',
+                    //    'zip':  '<i class="fa fa-file-archive-o text-muted"></i>',
+                    //},
+                    previewSettings: {
+                        image: { width: "60px", height: "50px" },
+
+                    },
+                    layoutTemplates: {
+                        footer: "" +
+                            "<td class='file-details-cell caption-cell'>" +
+                            "<label >{caption}\n{size}</label>" +
+                            "</td>" +
+                            "<td class='file-actions-cell'>" +
+                            "{indicator}\n{actions}" +
+                            "</td>",
+                    },
+                    removeClass: "btn btn-danger",
+                    uploadClass: "btn btn-info",
+                    uploadIcon: "<i class='material-icons list-icon'>file_upload</i> ",
+                    removeIcon: "<i class='material-icons list-icon'>delete</i> ",
+                    uploadLabel: "Tải ảnh lên",
+
+                });
+            },
+
         }
 
         $(document).ready(function () {
