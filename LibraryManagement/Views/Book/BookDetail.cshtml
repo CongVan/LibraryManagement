@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "AddBook";
+    ViewBag.Title = "Chi tiết sách";
 }
 @section css{
     <link href="~/assets/css/glyphiconCustom.css" rel="stylesheet" />
@@ -8,6 +8,21 @@
     <link href="~/assets/plugins/file-input/css/fileinput.min.css" rel="stylesheet" />
     <link href="~/assets/plugins/tinymce/skins/oxide/skin.min.css" rel="stylesheet" />
     <link href="~/assets/plugins/file-input/themes/explorer/theme.min.css" rel="stylesheet" />
+    <style>
+        table.dataTable thead th,
+        table.dataTable tbody td {
+            white-space: nowrap;
+        }
+
+        .dataTables_wrapper.no-footer .dataTables_scrollBody {
+            border-bottom: 1px solid #808080;
+        }
+
+        .showInfoBook:hover, .delBook:hover {
+            background-color: transparent !important;
+            font-weight: bold;
+        }
+    </style>
     <style>
         .caption-cell {
             white-space: pre-line;
@@ -20,8 +35,8 @@
     <div class="col-md-12 widget-holder">
         <div class="widget-bg">
             <div class="widget-body clearfix">
-                <h5 class="box-title mr-b-0 text-success"><i class="material-icons ">library_add</i> NHẬP SÁCH VÀO THƯ VIỆN</h5>
-                <p class="text-muted">Thủ thư nhập sách vào thư viện.</p>
+                <h5 class="box-title mr-b-0 text-success"><i class="material-icons ">library_books</i> THÔNG TIN CHI TIẾT SÁCH</h5>
+                <p class="text-muted mb-0">&nbsp;</p>
                 <div class="row">
                     <div class="col-md-8">
                         <form id="frmAddBook" action="@Url.Action("AddBook","Book")" method="post">
@@ -99,11 +114,10 @@
                                         <button class="btn btn-primary bg-success" type="submit"><i class="material-icons list-icon">check</i> Nhập sách</button>
                                         <a href="@Url.Action("Index","Book")" class="btn btn-outline-default"><i class="material-icons list-icon">library_books</i>Kho sách</a>
                                     </div>
-
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-9 ml-md-auto btn-list" id="viewError">
-                                        
+
                                     </div>
 
                                 </div>
@@ -116,14 +130,15 @@
                         <input type="hidden" id="checkUpload" value="0" />
                     </div>
                 </div>
-
             </div>
-            <!-- /.widget-body -->
         </div>
-        <!-- /.widget-bg -->
     </div>
 </div>
+
+
+
 @section js{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
     <script src="~/assets/js/jquery.bootstrap-touchspin.js"></script>
     <script src="~/assets/plugins/file-input/js/plugins/piexif.min.js"></script>
     <script src="~/assets/plugins/file-input/js/plugins/sortable.min.js"></script>
@@ -136,6 +151,8 @@
     <script src="~/assets/plugins/tinymce/tinymce.min.js"></script>
     <script src="~/assets/plugins/tinymce/themes/silver/theme.min.js"></script>
     <script>
+
+       
         var createElement = {
             init: function () {
                 this.loadPublisher();
@@ -311,7 +328,7 @@
                             e.preventDefault();
                             return false;
                         }
-                        
+
                     } else {
 
                         var publishDate = $('#frmAddBook input[name="publishDate"]').val().split('/');
@@ -377,7 +394,7 @@
 
                     },
                     messages: {
-                       
+
                         Title: {
                             required: "Vui lòng nhập tiêu đề sách!",
                             minlength: "Tiêu đề sách tối thiểu 20 ký tự"
@@ -435,11 +452,6 @@
                 });
             }
         }
-
-        $(document).ready(function () {
-            createElement.init();
-            showMessage();
-        });
         function showMessage() {
             if (@Html.Raw(Json.Encode(ViewBag.msgSuccess))!= null) {
                 swal(
@@ -456,10 +468,9 @@
                 );
             }
         }
+        $(document).ready(function () {
+            createElement.init();
+           
+        });
     </script>
-
-
-
-
-
 }
