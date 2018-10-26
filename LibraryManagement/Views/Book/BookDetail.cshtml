@@ -1,6 +1,7 @@
-﻿
+﻿@using LibraryManagement.Models
+@model Book
 @{
-    ViewBag.Title = "Chi tiết sách";
+    ViewBag.Title = Model.Title;
 }
 @section css{
     <link href="~/assets/css/glyphiconCustom.css" rel="stylesheet" />
@@ -39,11 +40,12 @@
                 <p class="text-muted mb-0">&nbsp;</p>
                 <div class="row">
                     <div class="col-md-8">
-                        <form id="frmAddBook" action="@Url.Action("AddBook","Book")" method="post">
+                        <form id="frmUpdateBook" action="@Url.Action("UpdateBook","Book")" method="post">
                             <div class="form-group row">
                                 <label class="col-md-2 col-form-label pr-0">Tiêu đề sách</label>
                                 <div class="col-md-10">
-                                    <input class="form-control" placeholder="Tiêu đề sách" type="text" autofocus tabindex="0" name="Title">
+                                    <input class="form-control" value="@Model.Title" placeholder="Tiêu đề sách" type="text" autofocus tabindex="0" name="Title">
+                                    <input type="hidden" name="ID" value="@Model.ID"/>
                                 </div>
                                 @*<label class="col-md-1 col-form-label pr-0">SKU</label>
                                     <div class="col-md-3">
@@ -63,7 +65,7 @@
                                     <div class="form-input-icon">
                                         <i class="material-icons list-icon">date_range</i>
                                         <input class="form-control datepicker" tabindex="2" placeholder="Ngày xuất bản"
-                                               type="text" value="@DateTime.Now.ToString("dd/MM/yyyy")" name="publishDate">
+                                               type="text" value="@Model.PublishDate.Value.ToString("dd/MM/yyyy")" name="publishDate">
                                     </div>
 
                                 </div>
@@ -77,7 +79,7 @@
                                 </div>
                                 <label class="col-md-2 col-form-label pr-0">Giá sách</label>
                                 <div class="col-md-4">
-                                    <input class="form-control" name="Price" tabindex="4">
+                                    <input class="form-control" name="Price" tabindex="4" value="@Model.Price">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -89,23 +91,23 @@
                                 </div>
                                 <label class="col-md-2 col-form-label pr-0">Số trang</label>
                                 <div class="col-md-4">
-                                    <input class="form-control" name="NumberOfPages" type="text" tabindex="6">
+                                    <input class="form-control" name="NumberOfPages" type="text" tabindex="6" value="@Model.NumberOfPages">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-md-2 col-form-label pr-0">Các tác giả</label>
                                 <div class="col-md-4">
-                                    <input class="form-control" placeholder="Các tác giả" type="text" tabindex="7" name="Author">
+                                    <input class="form-control" placeholder="Các tác giả" type="text" tabindex="7" name="Author" value="@Model.Author">
                                 </div>
                                 <label class="col-md-2 col-form-label pr-0">Số lượng</label>
                                 <div class="col-md-4">
-                                    <input class="form-control" name="Quantity" type="text" tabindex="8">
+                                    <input class="form-control" name="Quantity" type="text" tabindex="8" value="@Model.Quantity">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-md-2 col-form-label text-right">Mô tả</label>
                                 <div class="col-md-10">
-                                    <textarea class="form-control" placeholder="Giới thiệu về sách" rows="4" tabindex="9" name="Description"></textarea>
+                                    <textarea class="form-control" placeholder="Giới thiệu về sách" rows="4" tabindex="9" name="Description">@Html.Raw(Model.Description)</textarea>
                                 </div>
                             </div>
                             <div class="form-actions">
@@ -127,7 +129,7 @@
                     <div class=" col-md-4">
                         <h5 class="box-title mr-b-0">Hình ảnh sách</h5>
                         <input id="imagesBook" type="file" multiple accept="image/*" />
-                        <input type="hidden" id="checkUpload" value="0" />
+                        <input type="hidden" id="checkUpload" value="1" />
                     </div>
                 </div>
             </div>
@@ -151,8 +153,20 @@
     <script src="~/assets/plugins/tinymce/tinymce.min.js"></script>
     <script src="~/assets/plugins/tinymce/themes/silver/theme.min.js"></script>
     <script>
+        function DeleteImageBook(key) {
+            var arrkey = key.split('-');
+            var id = arrkey[0];
+            var image = arrkey[1];
+            $.ajax({
+                url: `/Book/DeleteImage?id=${id}&image=${image}`,
+                type: "post"
+            }).then(function (data) {
+                console.log(data);
+            }).fail(function (x, t, e) {
+                console.log(e);
+            });
+        }
 
-       
         var createElement = {
             init: function () {
                 this.loadPublisher();
@@ -164,37 +178,40 @@
                 this.imagesBook();
                 this.imageBookHandleChange();
                 this.imageBookUploadComplete();
-                this.frmAddBookHandleSubmit();
+                this.frmUpdateBookHandleSubmit();
                 this.publishDate();
                 this.description();
                 this.validate();
+                this.imageBookDeleteHandle();
             },
             loadPublisher: () => {
                 $.get('/Publisher/GetListAllPublisher')
                     .then((result) => {
                         console.log(result);
-                        $('#frmAddBook select[name="publisherID"]').select2({
+                        $('#frmUpdateBook select[name="publisherID"]').select2({
                             placeholder: 'Chọn nhà xuất bản sách',
                             data: result,
 
 
                         });
+                        $('#frmUpdateBook select[name="publisherID"]').select2("val",'@Html.Raw(Model.PublisherID.ToString())');
                     });
             },
             loadCategory: () => {
                 $.get('/Category/GetListCategoryForSelect')
                     .then((result) => {
                         console.log(result);
-                        $('#frmAddBook select[name="CategoryID"]').select2({
+                        $('#frmUpdateBook select[name="CategoryID"]').select2({
                             placeholder: {
                                 id: '', text: 'Chọn danh mục sách'
                             },
                             data: result
                         });
+                        $('#frmUpdateBook select[name="CategoryID"]').select2("val",'@Html.Raw(Model.CategoryID.ToString())');
                     });
             },
             priceBook: () => {
-                $('#frmAddBook input[name="Price"]').TouchSpin({
+                $('#frmUpdateBook input[name="Price"]').TouchSpin({
                     min: 500,
                     max: 999999999,
                     step: 500,
@@ -206,7 +223,7 @@
                 });
             },
             numberOfPages: () => {
-                $('#frmAddBook input[name="NumberOfPages"]').TouchSpin({
+                $('#frmUpdateBook input[name="NumberOfPages"]').TouchSpin({
                     min: 1,
                     max: 999999999,
                     step: 1,
@@ -218,7 +235,7 @@
                 });
             },
             Quantity: () => {
-                $('#frmAddBook input[name="Quantity"]').TouchSpin({
+                $('#frmUpdateBook input[name="Quantity"]').TouchSpin({
                     min: 1,
                     max: 999999999,
                     step: 1,
@@ -230,7 +247,7 @@
                 });
             },
             publishDate: () => {
-                $('#frmAddBook input[name="publishDate"]').daterangepicker({
+                $('#frmUpdateBook input[name="publishDate"]').daterangepicker({
                     singleDatePicker: true,
                     showDropdowns: true,
                     locale: {
@@ -242,18 +259,29 @@
                 $.get('/Location/GetBookCasesForSelect')
                     .then((result) => {
                         console.log(result);
-                        $('#frmAddBook select[name="LocationID"]').select2({
+                        $('#frmUpdateBook select[name="LocationID"]').select2({
                             placeholder: {
                                 id: '', text: 'Chọn vị trí tủ sách'
                             },
                             data: result
                         });
+                        $('#frmUpdateBook select[name="LocationID"]').val('@Html.Raw(Model.LocationID.Value)').trigger('change');
                     });
             },
             imagesBook: () => {
+                var urls = '@Html.Raw(Model.Image)';
+                var links = urls.split(';');
+
+                var files = JSON.parse(@Html.Raw(Json.Encode(ViewBag.lstFile)));
+                //$('#imagesBook').fileinput('clear');
                 $("#imagesBook").fileinput({
+                    initialPreview:links,
+                    initialPreviewAsData:true,
+                    overwriteInitial: false,
+                    initialPreviewConfig: files,
                     theme: "explorer",
                     uploadUrl: "/Book/UploadImage/",
+                    delete:"/Book/DeleteImage/",
                     language: 'vi',
                     minFileSize: '1',
                     maxFileSize: '2000',
@@ -267,11 +295,9 @@
                     accept: 'image/*',
                     maxFileCount: '10',
                     browseOnZoneClick: true,
-                    showBrowse: false,
+                    showBrowse: true,
                     allowedPreviewTypes: ['image'], // allow only preview of image & text files
                     allowedFileExtensions: ['jpg', 'png'],
-                    overwriteInitial: false,
-                    initialPreviewAsData: true,
                     fileActionSettings: {
                         showRemove: true,
                         showUpload: false,
@@ -286,8 +312,7 @@
                     //    'zip':  '<i class="fa fa-file-archive-o text-muted"></i>',
                     //},
                     previewSettings: {
-                        image: { width: "60px", height: "50px" },
-
+                        image: { width: "50px", height: "60px" },
                     },
                     layoutTemplates: {
                         footer: "" +
@@ -316,8 +341,41 @@
                     $("#checkUpload").val(1);
                 });
             },
-            frmAddBookHandleSubmit: () => {
-                $('#frmAddBook').on('submit', function (e) {
+            imageBookDeleteHandle: () => {
+                $('#imagesBook').on('filebeforedelete', function (event, key, data) {
+                    //var abort = !window.confirm("Bạn có chắc muốn xóa hình ảnh này?");
+
+                    //console.log(data, key);
+                    //if (abort) {
+                    //    console.log('OK delete');
+                    //    DeleteImageBook(key);
+                    //}
+                    //return abort;
+                    return swal({
+                        title: 'XÁC NHẬN?',
+                        text: "Bạn có chắc chắn muốn xóa hình ảnh  này!",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonClass: 'btn btn-danger',
+                        confirmButtonText: 'Xác nhận',
+                        cancelButtonText: "Đóng",
+                    }).then((result) => {
+                        if (result.value) {
+                            return false;
+                        }
+                        else {
+                            return true;
+                        }
+                    });
+                });
+            //    .on('filedeleted', function (event, key, jqXHR, data) {
+            //    console.log("OK deleted");
+            //    DeleteImageBook(key);
+
+            //})
+            },
+            frmUpdateBookHandleSubmit: () => {
+                $('#frmUpdateBook').on('submit', function (e) {
                     if ($("#checkUpload").val() == 0) {
                         if ($(this).valid()) {
                             swal(
@@ -330,16 +388,18 @@
                         }
 
                     } else {
-
-                        var publishDate = $('#frmAddBook input[name="publishDate"]').val().split('/');
-                        $('#frmAddBook input[name="publishDate"]').val(publishDate[2] + "/" + publishDate[1] + "/" + publishDate[0])
+                        var publishDate = $('#frmUpdateBook input[name="publishDate"]').val().split('/');
+                        $('#frmUpdateBook input[name="publishDate"]').val(publishDate[2] + "/" + publishDate[1] + "/" + publishDate[0])
 
                     }
+                    console.log($('#checkUpload').val());
+                    e.preventDefault();
+                    return false;
                 });
             },
             description: () => {
                 tinymce.init({
-                    selector: '#frmAddBook textarea[name="Description"]',
+                    selector: '#frmUpdateBook textarea[name="Description"]',
                     //skin_url: '/plugin/tinymce/skins/mytinymceskin',
                     plugins: [
                         'link image  hr',
@@ -357,7 +417,7 @@
                 });
             },
             validate: () => {
-                $('#frmAddBook').validate({
+                $('#frmUpdateBook').validate({
                     errorClass: 'invalid-feedback',
                     rules: {
                         Title: {
@@ -470,7 +530,9 @@
         }
         $(document).ready(function () {
             createElement.init();
-           
+            showMessage()
         });
+
+       
     </script>
 }
