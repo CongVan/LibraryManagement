@@ -17,7 +17,7 @@
           <Property Name="Author" Type="nvarchar" MaxLength="100" />
           <Property Name="Image" Type="varchar" MaxLength="200" />
           <Property Name="NumberOfPages" Type="int" />
-          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="CategoryID" Type="int" />
           <Property Name="PublisherID" Type="int" />
           <Property Name="LocationID" Type="int" />
@@ -138,7 +138,7 @@
           <Property Name="Author" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Image" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="NumberOfPages" Type="Int32" />
-          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CategoryID" Type="Int32" />
           <Property Name="PublisherID" Type="Int32" />
           <Property Name="LocationID" Type="Int32" />
