@@ -78,7 +78,7 @@
                                         <i class="material-icons">edit</i>
                                     </a>
                                     <a href="javascript: void(0); " data-id="@cate["ID"]" data-parentid="-1" class="color-danger del-submit" title="Xóa NXB">
-                                        <i class="material-icons">clear</i>
+                                        <i class="material-icons">delete_forever</i>
                                     </a>
                                 </td>
                             </tr>
@@ -86,7 +86,7 @@
                             {
                                 foreach (var c in cate["Child"])
                                 {
-                                    <tr class="" data-parentid="@cate["ID"]" id="tb-row-@c.ID">
+                                    <tr class="hidden" data-parentid="@cate["ID"]" id="tb-row-@c.ID">
                                         <td>
                                             &nbsp;
                                         </td>
@@ -103,7 +103,7 @@
                                             </a>
                                             <a href="javascript: void(0); " data-id="@c.ID" data-parentid="@cate["ID"]"
                                                class="color-danger del-submit" title="Xóa danh mục">
-                                                <i class="material-icons">clear</i>
+                                                <i class="material-icons">delete_forever</i>
                                             </a>
                                         </td>
                                     </tr>

@@ -8,6 +8,19 @@
         body {
             padding-right: 0 !important;
         }
+
+        td.details-control {
+            background: url('https://cdn.rawgit.com/DataTables/DataTables/6c7ada53ebc228ea9bc28b1b216e793b1825d188/examples/resources/details_open.png') no-repeat center center;
+            cursor: pointer;
+        }
+
+        tr.shown td.details-control {
+            background: url('https://cdn.rawgit.com/DataTables/DataTables/6c7ada53ebc228ea9bc28b1b216e793b1825d188/examples/resources/details_close.png') no-repeat center center;
+        }
+
+        .expand-content {
+            cursor: pointer;
+        }
     </style>
 }
 <div class="row">
@@ -41,7 +54,7 @@
                     <div class="card-header border-bottom-1 pb-2">
                         <h5 class="card-title mt-3 fs-15">Thêm Kệ Sách</h5>  <i class="material-icons list-icon ripple">keyboard_arrow_down</i>
                     </div>
-                    <form id="frm-insert-shelf" method="post" action="@Url.Action("InsertShelf","Location")">
+                    <form id="frm-insert-shelf" method="post" action="@Url.Action("InsertShelf","Location")" onsubmit="javascript: void (0);">
                         <div class="card-body pt-2">
                             <div class="form-group">
                                 <label class="form-control-label">Tên tủ sách</label>
@@ -76,50 +89,51 @@
 
 
     <div class="col-md-8 widget-holder">
-
         <div class="widget-bg">
             <div class="widget-body clearfix">
-                <table class="table table-hover " id="table-data">
+                <button id="btn-show-all-children" class="btn btn-default">Hiện tất cả</button>
+                <button id="btn-hide-all-children" class="btn btn-default">Ẩn tất cả</button>
+                <table class="table table-responsive table-striped table-bordered" id="table-data">
                     <thead>
-                        <tr class="bg-info">
-
+                        <tr class="bg-success text-white ">
+                            <th>&nbsp;</th>
                             <th>ID</th>
                             <th>Tủ sách</th>
                             <th>Trạng thái</th>
                             <th>Thao tác</th>
                         </tr>
                     </thead>
-                    <tbody id="tb-data-bookCase">
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@item.ID</td>
-                                <td>@item.Name</td>
-                                <td>
-                                    <input type="checkbox" data-secondary-color="#e6614f" checked="@item.Flag" class="js-switch" data-color="#38d57a" data-size="small">
-                                </td>
-                                <td>
-                                    <a href="javascript: void(0);" data-id="@item.ID"
-                                       data-toggle="modal" data-target=".bs-modal-sm-color-scheme"
-                                       class="color-info mr-2 btn-edit-click" title="Cập nhật tủ sách">
-                                        <i class="material-icons">edit</i>
-                                    </a>
-                                    <a href="javascript: void(0); " data-id="@item.ID"
-                                       class="color-danger del-submit" title="Xóa tủ sách">
-                                        <i class="material-icons">clear</i>
-                                    </a>
-                                </td>
-                            </tr>
+                    @*<tbody id="tb-data-bookCase">
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.ID</td>
+                                    <td>@item.Name</td>
+                                    <td>
+                                        <input type="checkbox" data-secondary-color="#e6614f" checked="@item.Flag" class="js-switch" data-color="#38d57a" data-size="small">
+                                    </td>
+                                    <td>
+                                        <a href="javascript: void(0);" data-id="@item.ID"
+                                           data-toggle="modal" data-target=".bs-modal-sm-color-scheme"
+                                           class="color-info mr-2 btn-edit-click" title="Cập nhật tủ sách">
+                                            <i class="material-icons">edit</i>
+                                        </a>
+                                        <a href="javascript: void(0); " data-id="@item.ID"
+                                           class="color-danger del-submit" title="Xóa tủ sách">
+                                            <i class="material-icons">delete_forever</i>
+                                        </a>
+                                    </td>
+                                </tr>
 
 
-                        }
-                    </tbody>
+                            }
+                        </tbody>*@
                 </table>
             </div>
         </div>
     </div>
 </div>
-<div id="modal-update" class="modal modal-color-scheme fade bs-modal-sm-color-scheme" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none">
+<div id="modal-update-bookCase" class="modal modal-color-scheme fade bs-modal-sm-color-scheme" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header text-inverse">
@@ -166,247 +180,572 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
-@section js{
-    <script>
-        var loadBookCases = () => {
-            $.ajax({
-                url: "/Location/GetBookCases",
-                type: "get",
-                success: function (data) {
+<div id="modal-update-shelf" class="modal modal-color-scheme fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header text-inverse">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h5 class="modal-title" id="mySmallModalLabel">Cập Nhật Kệ Sách</h5>
+            </div>
+            <div class="modal-body">
+                <form id="frm-update-shelf" action="@Url.Action("UpdateBookCase","Location")" method="post" onsubmit="javascript: void (0);">
+                    <input type="hidden" name="ID" value="" />
+                    <div class="form-group">
+                        <label for="sample1UserName" class="form-control-label">Tủ sách</label>
+                        <select type="text" class="form-control " name="ParentID" id="parentID">
+                            @foreach (var item in Model)
+                            {
+                                <option value="@item.ID">@item.Name</option>
+                            }
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sample1UserName" class="form-control-label">Tên kệ sách</label>
+                        <input type="text" class="form-control " name="Name" id="nameBookShelf" placeholder="Nhập tên kệ sách...">
+                        <div class="invalid-feedback"></div>
+                    </div>
 
-                },
-                error: function (x, e) {
+                    <div class="form-group">
+                        <label class="form-control-label">Trạng thái &nbsp;</label>
+                        <input type="checkbox" name="status" data-secondary-color="#e6614f" class="col-md-9 js-switch" data-color="#38d57a" data-size="small">
+                        <input type="hidden" name="Flag" />
+                    </div>
+                    <div class="form-actions">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12 error-area">
 
-                }
-            })
-        }
-        $(document).ready(function () {
-            $('form').each(function () {
-                $(this).validate({
-                    errorClass: 'invalid-feedback',
-                    rules: {
-                        Name: {
-                            required: true,
-                            minlength: 5
-                        }
-                    },
-                    messages: {
-                        Name: {
-                            required: "Vui lòng nhập tên!",
-                            minlength: "Tên tối thiểu 5 ký tự!"
-                        },
-                    },
-                    //errorElement: 'div',
-                    //errorLabelContainer: '.invalid-feedback',
-                    errorPlacement: function (error, element) {
-                        $(element).next('div').html(error);
-                    },
-                    highlight: function (element, errorClass, validClass) {
-                        if (element.type == "radio") {
-                            this.findByName(element.name).addClass(errorClass).removeClass(validClass);
-                        } else {
-                            $(element).closest('.form-group').find('input').removeClass('is-valid').addClass('is-invalid');
-                        }
-                    },
-                    unhighlight: function (element, errorClass, validClass) {
-                        if (element.type == "radio") {
-                            this.findByName(element.name).removeClass(errorClass).addClass(validClass);
-                        } else {
-                            $(element).closest('.form-group').find('input').removeClass('is-invalid').addClass('is-valid');
-                        }
-                    },
-                    submitHandler: function (form) {
-                        if ($(form).attr('id') == "frm-insert-bookCase") {
-                            submitInsert();
-                        }
-                        if ($(form).attr('id') == "frm-update-bookCase") {
-                            submitUpdate();
-                        }
+                                </div>
+                                <div class="col-sm-12 btn-list d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="material-icons list-icon">check</i>&nbsp; Hoàn tất
+                                    </button>
+                                    <button type="button" class="btn btn-default" id="btnTest" data-dismiss="modal">
+                                        <i class="material-icons list-icon">close</i>&nbsp;Đóng
+                                    </button>
+                                </div>
 
-                        return false;
-                    }
-                });
-            });
+                            </div>
 
-            $('#frm-insert-bookCase').on('submit', function (e) {
-                e.preventDefault();
-                return false;
-            });
-            $('#frm-update-bookCase').on('submit', function (e) {
-                e.preventDefault();
-                return false;
-            });
-            var submitInsert = () => {
-                const data = $('#frm-insert-bookCase').serialize();
-                //var formData = new URLSearchParams(new FormData())
-                var url = $('#frm-insert-bookCase').attr('action');
-                $.ajax({
-                    url: url,
-                    type: 'post',
-                    data: data
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 
-                }).done((data) => {
-                    if (data === 1) {
-                        swal(
-                            'Thành công!',
-                            '',
-                            'success'
-                        );
-                        refreshTableData();
-                    }
-
-                }).catch((e) => {
-                    swal(
-                        'Thất bại!',
-                        e,
-                        'error'
-                    )
-                });
-            }
-            var submitUpdate = () => {
-                const data = $('#frm-update-bookCase').serialize();
-                //var formData = new URLSearchParams(new FormData())
-                var url = $('#frm-update-bookCase').attr('action');
-                $.ajax({
-                    url: url,
-                    type: 'post',
-                    data: data
-
-                }).done((data) => {
-                    $('#modal-update').modal('hide');
-                    if (data === 1) {
-                        swal(
-                            'Thành công!',
-                            '',
-                            'success'
-                        );
-                        $('body').css('padding-right:0px');
-                        refreshTableData();
-                    }
-
-                }).catch((e) => {
-                    $('body').css('padding-right:0px');
-                    swal(
-                        'Thất bại!',
-                        e,
-                        'error'
-                    )
-                });
-            }
-
-            var refreshTableData = () => {
-                $.getJSON('/Location/GetBookCases', (data) => {
-                    let html = "";
-                    //$('#tb-data-bookCase').empty();
-                    $.each(data, (i, item) => {
-                        html +=
-                            `<tr><td>${item.ID}</td>
-                                                         <td>${item.Name}</td>`;
-                        if (item.Flag == true) {
-                            html += `<td><input type="checkbox" data-secondary-color="#e6614f" checked="${item.Flag}" class="js-switch" data-color="#38d57a" data-size="small"></td>`
-                        } else {
-                            html += `<td><input type="checkbox" data-secondary-color="#e6614f"  class="js-switch" data-color="#38d57a" data-size="small"></td>`
-                        }
-                        html += `<td>
-                                                            <a href="javascript: void(0);" data-id="${item.ID}"
-                                                               data-toggle="modal" data-target=".bs-modal-sm-color-scheme"
-                                                               class="color-info mr-2 btn-edit-click" title="Cập nhật tủ sách">
-                                                                <i class="material-icons">edit</i>
-                                                            </a>
-                                                            <a href="javascript: void(0); " data-id="${item.ID}"
-                                                               class="color-danger del-submit" title="Xóa tủ sách">
-                                                                <i class="material-icons">clear</i>
-                                                            </a>
-                                                        </td></tr>`
-                    });
-
-                    $('#tb-data-bookCase').html(html);
-                    var elems = Array.prototype.slice.call($('#tb-data-bookCase').find('.js-switch'));
-
-                    elems.forEach(function (el) {
-                        var switchery = new Switchery(el, { size: 'small', color: '#38d57a', secondaryColor: '#e6614f', });
-                        if ($(el).is(':checked') == false) {
-                            $(html).trigger('click');
-                        }
-                    });
-
-                    //var elem = $('#tb-data-bookCase').find('.js-switch');
-                    //var init = new Switchery(elem);
-                });
-
-            }
-
-
-            $('#frm-update-bookCase input[name="status"]').on('change', function (event) {
-                $('#frm-update-bookCase input[name="Flag"]').val($(this).is(':checked') ? "true" : "false");
-            });
-
-
-            $('#tb-data-bookCase').on('click', '.btn-edit-click', function () {
-                var id = $(this).data('id');
-                $.getJSON('/Location/getBookCaseWithID?id=' + id, (data) => {
-                    $('#frm-update-bookCase input[name="Name"]').val(data.Name);
-                    $('#frm-update-bookCase input[name="ID"]').val(data.ID);
-                    $('#frm-update-bookCase input[name="Flag"]').val(data.Flag);
-                    var check = $('#frm-update-bookCase input[name="status"]').is(':checked');
-                    if (data.Flag == true && check == false || (data.Flag == false && check == true)) {
-                        $('#frm-update-bookCase input[name="status"]').trigger('click');
-                    }
-                });
-                //var bookCase = getBookCaseWithID();
-
-
-            });
-            $('#tb-data-bookCase').on('click', '.del-submit', function () {
-                var id = $(this).data('id');
-
-                swal({
-                    title: 'XÁC NHẬN?',
-                    text: "Bạn có chắc chắn muốn xóa tủ sách này!",
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonClass: 'btn btn-danger',
-                    confirmButtonText: 'Xác nhận',
-                    cancelButtonText: "Đóng",
-                }).then((result) => {
-                    if (result.value) {
-                        var url = "/Location/DeleteBookCase"
-                        fetch(url, {
-                            method: 'post',
-                            headers: {
-                                'Accept': 'application/json, text/plain, */*',
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ id: id })
-                        }).then(res => res.json())
-                            .then(data => {
-                                if (data.result == 1) {
-                                    refreshTableData();
-                                    swal(
-                                        'Thành công!',
-                                        '',
-                                        'success'
-                                    )
-                                } else {
-                                    swal(
-                                        'Thất bại!',
-                                        data.msg,
-                                        'error'
-                                    )
-                                }
-
-                            }).catch((error) => {
-                                console.log(`Error:${error.messages}`);
-                            });
-
-                    } else if (result.dismiss === "cancel") {
-
-                    }
-                });
-            });
-
-
-        });
+    <script id="template-action-table" type="text/x-handlebars-template">
+        <a href="javascript: void(0);" data-id="{{id}}"
+           data-toggle="modal" data-target=".bs-modal-sm-color-scheme"
+           class="color-info mr-2 btn-edit-click" title="Cập nhật tủ sách">
+            <i class="material-icons">edit</i>
+        </a>
+        <a href="javascript: void(0); " data-id="{{id}}"
+           class="color-danger del-submit" title="Xóa tủ sách">
+            <i class="material-icons">delete_forever</i>
+        </a>
+    </script>
+    <script id="template-status-table" type="text/x-handlebars-template">
+        <input type="checkbox" data-secondary-color="#e6614f" checked="{{flag}}" class="js-switch" data-color="#38d57a" data-size="small">
 
     </script>
-}
+    <script id="template-expand-detail" type="text/x-handlebars-template">
+        <div class="container " id="container-expand-{{ID}}" style="max-height:255px">
+            <div class="row">
+                {{#each shelfs}}
+                <div class="col-md-3 mr-2 mb-1 bg-white p-3 rounded">
+                    <div class="form-group row mb-1">
+                        <label class="col-md-4  pr-0">Tên</label>
+                        <div class="col-md-5">
+                            <label><strong>{{Name}}</strong></label>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-1">
+                        <label class="col-md-4  pr-0">Trạng thái</label>
+                        <div class="col-md-5">
+                            {{#if Flag}}
+                            <span class="badge text-uppercase badge-success align-middle py-2">Hoạt động</span>
+                            {{else}}
+                            <span class="badge text-uppercase badge-danger align-middle py-2">Đã hủy</span>
+                            {{/if}}
+                        </div>
+                    </div>
+                    <div class="form-group row mb-0">
+                        <label class="col-md-4 pr-0">Thao tác</label>
+                        <div class="col-md-5">
+                            <a href="javascript: void(0);" data-id="{{ID}}"
+                               data-toggle="modal" data-target="#modal-update-shelf"
+                               class="color-info mr-2 btn-edit-shelf-click" title="Cập nhật kệ sách">
+                                <i class="material-icons">edit</i>
+                            </a>
+                            <a href="javascript: void(0); " data-id="{{ID}}"
+                               class="color-danger del-submit" title="Xóa kệ sách">
+                                <i class="material-icons">delete_forever</i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+
+            </div>
+        </div>
+
+
+       
+
+    </script>
+    @section js{
+        <script>
+            var loadBookCases = () => {
+                $.ajax({
+                    url: "/Location/GetBookCases",
+                    type: "get",
+                    success: function (data) {
+
+                    },
+                    error: function (x, e) {
+
+                    }
+                })
+            }
+            function format(d) {
+                // `d` is the original data object for the row
+                var url = `/Location/GetShelf?id=${d.ID}`;
+                return $.getJSON(url, function (data) {
+                    var source = document.getElementById("template-expand-detail").innerHTML;
+                    var template = Handlebars.compile(source);
+                    var context = { shelfs: data };
+                    var html = template(context);
+                    return html;
+                });
+
+            }
+            var loadTableData = () => {
+                $('#table-data').DataTable({
+                    //data: lst,
+                    searching: false,
+                    ordering: false,
+                    ajax: {
+                        url: "/Location/GetBookCases",
+                        "dataSrc": function (data) {
+                            // manipulate your data (json)
+                            //console.log(JSON.parse(data.result));
+
+                            // return the data that DataTables is to use to draw the table
+                            return data;
+                        }
+                    },
+                    columns: [
+                        {
+                            'className': 'details-control',
+                            'orderable': false,
+                            'data': 'HasChild',
+                            'defaultContent': '',
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                if (!cellData) {
+                                    $(td).removeClass('details-control');
+                                } else {
+                                    return '';
+                                }
+                            },
+                            render: function (data, type, row) {
+
+                                return '';
+                            }
+                        },
+                        {
+                            "data": "ID",
+                            "visible": false,
+                        },
+                        { "data": "Name" },
+                        {
+                            "data": "Flag",
+                            render: function (data, type, row) {
+                                return data ? `<span class="badge text-uppercase badge-success align-middle py-2">Hoạt động</span>` :
+                                    `<span class="badge text-uppercase badge-danger align-middle py-2">Đã hủy</span>`;
+                            }
+                        },
+                        {
+                            "data": "ID",
+                            render: function (data, type, row) {
+                                var source = document.getElementById("template-action-table").innerHTML;
+                                var template = Handlebars.compile(source);
+                                var context = { id: data };
+                                var html = template(context);
+                                return html;
+                            }
+                        }
+                    ]
+                });
+            }
+            var refreshTableData = () => {
+                $('#table-data').DataTable().ajax.reload().draw();
+                //$.getJSON('/Location/GetBookCases', (data) => {
+                //    let html = "";
+                //    //$('#tb-data-bookCase').empty();
+                //    $.each(data, (i, item) => {
+                //        html +=
+                //            `<tr><td>${item.ID}</td>
+                //                                             <td>${item.Name}</td>`;
+                //        if (item.Flag == true) {
+                //            html += `<td><input type="checkbox" data-secondary-color="#e6614f" checked="${item.Flag}" class="js-switch" data-color="#38d57a" data-size="small"></td>`
+                //        } else {
+                //            html += `<td><input type="checkbox" data-secondary-color="#e6614f"  class="js-switch" data-color="#38d57a" data-size="small"></td>`
+                //        }
+                //        html += `<td>
+                //                                                <a href="javascript: void(0);" data-id="${item.ID}"
+                //                                                   data-toggle="modal" data-target=".bs-modal-sm-color-scheme"
+                //                                                   class="color-info mr-2 btn-edit-click" title="Cập nhật tủ sách">
+                //                                                    <i class="material-icons">edit</i>
+                //                                                </a>
+                //                                                <a href="javascript: void(0); " data-id="${item.ID}"
+                //                                                   class="color-danger del-submit" title="Xóa tủ sách">
+                //                                                    <i class="material-icons">delete_forever</i>
+                //                                                </a>
+                //                                            </td></tr>`
+                //    });
+
+                //    $('#tb-data-bookCase').html(html);
+                //    var elems = Array.prototype.slice.call($('#tb-data-bookCase').find('.js-switch'));
+
+                //    elems.forEach(function (el) {
+                //        var switchery = new Switchery(el, { size: 'small', color: '#38d57a', secondaryColor: '#e6614f', });
+                //        if ($(el).is(':checked') == false) {
+                //            $(html).trigger('click');
+                //        }
+                //    });
+
+                //    //var elem = $('#tb-data-bookCase').find('.js-switch');
+                //    //var init = new Switchery(elem);
+                //});
+
+            }
+            $(document).ready(function () {
+
+                $('form').each(function () {
+                    $(this).validate({
+                        errorClass: 'invalid-feedback',
+                        rules: {
+                            Name: {
+                                required: true,
+                                minlength: 3
+                            }
+                        },
+                        messages: {
+                            Name: {
+                                required: "Vui lòng nhập tên!",
+                                minlength: "Tên tối thiểu 3 ký tự!"
+                            },
+                        },
+                        //errorElement: 'div',
+                        //errorLabelContainer: '.invalid-feedback',
+                        errorPlacement: function (error, element) {
+                            $(element).next('div').html(error);
+                        },
+                        highlight: function (element, errorClass, validClass) {
+                            if (element.type == "radio") {
+                                this.findByName(element.name).addClass(errorClass).removeClass(validClass);
+                            } else {
+                                $(element).closest('.form-group').find('input').removeClass('is-valid').addClass('is-invalid');
+                            }
+                        },
+                        unhighlight: function (element, errorClass, validClass) {
+                            if (element.type == "radio") {
+                                this.findByName(element.name).removeClass(errorClass).addClass(validClass);
+                            } else {
+                                $(element).closest('.form-group').find('input').removeClass('is-invalid').addClass('is-valid');
+                            }
+                        },
+                        submitHandler: function (form) {
+                            switch ($(form).attr('id')) {
+                                case "frm-insert-bookCase": submitInsert(); break;
+                                case "frm-update-bookCase": submitUpdate('bookCase'); break;
+                                case "frm-insert-shelf": submitInsertShelf(); break;
+                                case "frm-update-shelf": submitUpdate('shelf'); break;
+                                default:
+                            }
+
+
+                            return false;
+                        }
+                    });
+                });
+
+                $('#frm-insert-bookCase').on('submit', function (e) {
+                    e.preventDefault();
+                    return false;
+                });
+                $('#frm-update-bookCase').on('submit', function (e) {
+                    e.preventDefault();
+                    return false;
+                });
+                var submitInsert = () => {
+                    const data = $('#frm-insert-bookCase').serialize();
+                    //var formData = new URLSearchParams(new FormData())
+                    var url = $('#frm-insert-bookCase').attr('action');
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        data: data
+
+                    }).done((data) => {
+                        if (data === 1) {
+                            swal(
+                                'Thành công!',
+                                '',
+                                'success'
+                            );
+                            refreshTableData();
+                        }
+
+                    }).catch((e) => {
+                        swal(
+                            'Thất bại!',
+                            e,
+                            'error'
+                        )
+                    });
+                }
+                var submitInsertShelf = () => {
+                    const data = $('#frm-insert-shelf').serialize();
+                    //var formData = new URLSearchParams(new FormData())
+                    var url = $('#frm-insert-shelf').attr('action');
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        data: data
+
+                    }).done((data) => {
+                        if (data === 1) {
+                            swal(
+                                'Thành công!',
+                                '',
+                                'success'
+                            );
+                            refreshTableData();
+                        }
+
+                    }).catch((e) => {
+                        swal(
+                            'Thất bại!',
+                            e,
+                            'error'
+                        )
+                    });
+                }
+                var submitUpdate = (form) => {
+                    const data = $('#frm-update-' + form).serialize();
+                    //var formData = new URLSearchParams(new FormData())
+                    var url = $('#frm-update-' + form).attr('action');
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        data: data
+
+                    }).done((data) => {
+                        $('#modal-update-' + form).modal('hide');
+                        if (data === 1) {
+                            swal(
+                                'Thành công!',
+                                '',
+                                'success'
+                            );
+                            $('body').css('padding-right:0px');
+                            refreshTableData();
+                        }
+
+                    }).catch((e) => {
+                        $('body').css('padding-right:0px');
+                        swal(
+                            'Thất bại!',
+                            e,
+                            'error'
+                        )
+                    });
+                }
+
+
+                loadTableData();
+
+
+                $('#frm-update-bookCase input[name="status"]').on('change', function (event) {
+                    $('#frm-update-bookCase input[name="Flag"]').val($(this).is(':checked') ? "true" : "false");
+                });
+                $('#frm-update-shelf input[name="status"]').on('change', function (event) {
+                    $('#frm-update-shelf input[name="Flag"]').val($(this).is(':checked') ? "true" : "false");
+                });
+                $('#table-data').on('click', '.btn-edit-shelf-click', function () {
+                    var id = $(this).data('id');
+                    $.getJSON('/Location/getBookCaseWithID?id=' + id, (data) => {
+                        $('#frm-update-shelf select[name="ParentID"]').val(data.ParentID);
+                        $('#frm-update-shelf input[name="Name"]').val(data.Name);
+                        $('#frm-update-shelf input[name="ID"]').val(data.ID);
+                        $('#frm-update-shelf input[name="Flag"]').val(data.Flag);
+                        var check = $('#frm-update-shelf input[name="status"]').is(':checked');
+                        if (data.Flag == true && check == false || (data.Flag == false && check == true)) {
+                            $('#frm-update-shelf input[name="status"]').trigger('click');
+                        } else if (check) {
+                            $('#frm-update-shelf input[name="Flag"]').val("true");
+                        } else if (!check) {
+                            $('#frm-update-shelf input[name="Flag"]').val("false");
+                        }
+                    });
+                    //var bookCase = getBookCaseWithID();
+
+
+                });
+                $('#table-data').on('click', '.btn-edit-click', function () {
+                    var id = $(this).data('id');
+                    $.getJSON('/Location/getBookCaseWithID?id=' + id, (data) => {
+                        $('#frm-update-bookCase input[name="Name"]').val(data.Name);
+                        $('#frm-update-bookCase input[name="ID"]').val(data.ID);
+                        $('#frm-update-bookCase input[name="Flag"]').val(data.Flag);
+                        var check = $('#frm-update-bookCase input[name="status"]').is(':checked');
+                        if (data.Flag == true && check == false || (data.Flag == false && check == true)) {
+                            $('#frm-update-bookCase input[name="status"]').trigger('click');
+                        }
+                    });
+                    //var bookCase = getBookCaseWithID();
+
+
+                });
+                $('#table-data').on('click', '.del-submit', function () {
+                    var id = $(this).data('id');
+
+                    swal({
+                        title: 'XÁC NHẬN?',
+                        text: "Bạn có chắc chắn muốn xóa tủ sách này!",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonClass: 'btn btn-danger',
+                        confirmButtonText: 'Xác nhận',
+                        cancelButtonText: "Đóng",
+                    }).then((result) => {
+                        if (result.value) {
+                            var url = "/Location/DeleteBookCase"
+                            fetch(url, {
+                                method: 'post',
+                                headers: {
+                                    'Accept': 'application/json, text/plain, */*',
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ id: id })
+                            }).then(res => res.json())
+                                .then(data => {
+                                    if (data.result == 1) {
+                                        refreshTableData();
+                                        swal(
+                                            'Thành công!',
+                                            '',
+                                            'success'
+                                        )
+                                    } else {
+                                        swal(
+                                            'Thất bại!',
+                                            data.msg,
+                                            'error'
+                                        )
+                                    }
+
+                                }).catch((error) => {
+                                    console.log(`Error:${error.messages}`);
+                                });
+
+                        } else if (result.dismiss === "cancel") {
+
+                        }
+                    });
+                });
+                $('#table-data tbody').on('click', 'td.details-control', function () {
+                    var tr = $(this).closest('tr');
+                    var row = $('#table-data').DataTable().row(tr);
+
+                    if (row.child.isShown()) {
+                        // This row is already open - close it
+                        row.child.hide();
+                        tr.removeClass('shown');
+                    } else {
+                        // Open this row
+                        var d = row.data();
+                        var url = `/Location/GetShelf?id=${d.ID}`;
+                        $.getJSON(url, function (data) {
+                            var source = document.getElementById("template-expand-detail").innerHTML;
+                            var template = Handlebars.compile(source);
+                            var context = { shelfs: data, ID: d.ID };
+                            var html = template(context);
+                            row.child(html).show();
+                            tr.addClass('shown');
+                            $(`#container-expand-${d.ID}`).closest('td').css('background-color', '#eee').css('overflow', 'auto');
+                        });
+
+                        //format(row.data()).then((html) => {
+
+                        //});
+
+
+                    }
+                });
+                // Handle click on "Expand All" button
+                $('#btn-show-all-children').on('click', function () {
+                    // Enumerate all rows
+                    $('#table-data').DataTable().rows().every(function () {
+                        // If row has details collapsed
+                        var row = this;
+                        if (!row.child.isShown()) {
+                            // Open this row
+                            //this.child(format(this.data())).show();
+                            //$(this.node()).addClass('shown');
+                            
+                            var d = this.data();
+                            if (d.HasChild) {
+                                var url = `/Location/GetShelf?id=${d.ID}`;
+                                $.getJSON(url, function (data) {
+                                    var source = document.getElementById("template-expand-detail").innerHTML;
+                                    var template = Handlebars.compile(source);
+                                    var context = { shelfs: data, ID: d.ID };
+                                    var html = template(context);
+                                    row.child(html).show();
+                                    $(row.node()).addClass('shown');
+                                    $(`#container-expand-${d.ID}`).closest('td').css('background-color', '#eee').css('overflow', 'auto');
+                                });
+                            }
+                            
+                        }
+                    });
+                });
+
+                // Handle click on "Collapse All" button
+                $('#btn-hide-all-children').on('click', function () {
+                    // Enumerate all rows
+                    $('#table-data').DataTable().rows().every(function () {
+                        var row = this;
+                        // If row has details expanded
+                        if (row.child.isShown()) {
+                            // Collapse row details
+                            //this.child.hide();
+                            //$(this.node()).removeClass('shown');
+
+                            var d = this.data();
+                            if (d.HasChild) {
+                                var url = `/Location/GetShelf?id=${d.ID}`;
+                                $.getJSON(url, function (data) {
+                                    var source = document.getElementById("template-expand-detail").innerHTML;
+                                    var template = Handlebars.compile(source);
+                                    var context = { shelfs: data, ID: d.ID };
+                                    var html = template(context);
+                                    row.child(html).hide();
+                                    $(row.node()).removeClass('shown');
+                                    $(`#container-expand-${d.ID}`).closest('td').css('background-color', '#eee').css('overflow', 'auto');
+                                });
+                            }
+                        }
+                    });
+                });
+            });
+
+        </script>
+    }

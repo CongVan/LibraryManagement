@@ -15,7 +15,7 @@ namespace LibraryManagement.Controllers
 
             using (var ctx = new LibraryManagementEntities())
             {
-                var lcs = ctx.Locations.Where(c=>!c.ParentID.HasValue).ToList();
+                var lcs = ctx.Locations.Where(c => !c.ParentID.HasValue).ToList();
                 return View(lcs);
             }
 
@@ -40,11 +40,39 @@ namespace LibraryManagement.Controllers
                 }
             }
         }
+
+        [HttpPost]
+        public ActionResult InsertShelf(Location lc)
+        {
+            using (var ctx = new LibraryManagementEntities())
+            {
+                try
+                {
+                    lc.Type = 2;
+                    lc.Flag = true;
+                    lc.ParentID = lc.ParentID;
+                    ctx.Locations.Add(lc);
+                    ctx.SaveChanges();
+                    return Json(1, JsonRequestBehavior.AllowGet);
+                }
+                catch (Exception ex)
+                {
+                    return Json(-1, JsonRequestBehavior.AllowGet);
+                }
+            }
+        }
         public ActionResult GetBookCases()
         {
             using (var ctx = new LibraryManagementEntities())
             {
-                var lcs = ctx.Locations.Where(c=>!c.ParentID.HasValue).ToList();
+                var lcs = ctx.Locations.Where(c => !c.ParentID.HasValue).Select(c => new
+                {
+                    ID = c.ID,
+                    Name = c.Name,
+                    Flag = c.Flag,
+                    HasChild = ctx.Locations.Where(a => a.ParentID == c.ID).FirstOrDefault() != null
+                }).ToList();
+
                 return Json(lcs, JsonRequestBehavior.AllowGet);
             }
         }
@@ -56,9 +84,9 @@ namespace LibraryManagement.Controllers
                 var lstRet = new List<Dictionary<object, object>>();
                 foreach (var lc in lcs)
                 {
-                    var bs = ctx.Locations.Where(c => c.ParentID == lc.ID).Select(c=>new {id=c.ID,text=c.Name }).ToList();
+                    var bs = ctx.Locations.Where(c => c.ParentID == lc.ID).Select(c => new { id = c.ID, text = c.Name }).ToList();
                     var item = new Dictionary<object, object>();
-                    if (bs == null || bs.Count==0)
+                    if (bs == null || bs.Count == 0)
                     {
                         item.Add("id", lc.ID);
                         item.Add("text", lc.Name);
@@ -78,7 +106,13 @@ namespace LibraryManagement.Controllers
         {
             using (var ctx = new LibraryManagementEntities())
             {
-                var lcs = ctx.Locations.Where(c=>c.ID==id).FirstOrDefault();
+                var lcs = ctx.Locations.Where(c => c.ID == id).Select(c=>new {
+                    ID=c.ID,
+                    Name=c.Name,
+                    ParentID=c.ParentID,
+                    Flag=c.Flag??false
+                }).FirstOrDefault();
+
                 return Json(lcs, JsonRequestBehavior.AllowGet);
             }
         }
@@ -89,7 +123,8 @@ namespace LibraryManagement.Controllers
             {
                 var lcUpdate = ctx.Locations.Where(c => c.ID == lc.ID).FirstOrDefault();
                 if (lcUpdate != null)
-                { 
+                {
+                    lcUpdate.ParentID = lc.ParentID;
                     lcUpdate.Name = lc.Name;
                     lcUpdate.Flag = lc.Flag;
                     ctx.Entry(lcUpdate).State = System.Data.Entity.EntityState.Modified;
@@ -105,7 +140,7 @@ namespace LibraryManagement.Controllers
         [HttpPost]
         public ActionResult DeleteBookCase(int id)
         {
-            using (var ctx=new LibraryManagementEntities())
+            using (var ctx = new LibraryManagementEntities())
             {
                 var lc = ctx.Locations.Where(c => c.ID == id).FirstOrDefault();
                 if (lc != null)
@@ -119,6 +154,16 @@ namespace LibraryManagement.Controllers
                     return Json(new { result = -1, msg = "Có lỗi xảy ra" }, JsonRequestBehavior.AllowGet);
                 }
             }
+        }
+        public ActionResult GetShelf(int id)
+        {
+            using (var ctx = new LibraryManagementEntities())
+            {
+                return Json(
+                    ctx.Locations.Where(c => c.ParentID == id).ToList(),
+                    JsonRequestBehavior.AllowGet);
+            }
+
         }
     }
 }

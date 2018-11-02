@@ -39,6 +39,9 @@
 
     <!-- Head Libs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+    <style>
+        
+    </style>
     @RenderSection("css", false)
 </head>
 
@@ -71,113 +74,113 @@
             <!-- /.navbar-search -->
             <div class="spacer"></div>
             <!-- Right Menu -->
-            <ul class="nav navbar-nav hidden-sm-down">
-                <li class="dropdown">
-                    <a href="javascript:void(0);" class="dropdown-toggle ripple" data-toggle="dropdown"><i class="material-icons list-icon">mail_outline</i> <span class="badge badge-pill bg-primary">3</span></a>
-                    <div class="dropdown-menu dropdown-left dropdown-card animated flipInY">
-                        <div class="card">
-                            <header class="card-header">
-                                New messages <span class="mr-l-10 badge badge-border bg-primary">3</span>
-                            </header>
-                            <ul class="list-unstyled dropdown-list-group">
-                                <li>
-                                    <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user3.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Steve Smith</span> <small>10.14.2016  2:30pm</small> <span class="media-content">I slowly updated my Behance with some recent projects ...</span></span></a>
-                                </li>
-                                <li>
-                                    <a href="#" class="media"><span class="d-flex user--offline thumb-xs"><img src="assets/demo/users/user6.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Emily Lee</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Hi John!</span></span></a>
-                                </li>
-                                <li>
-                                    <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user2.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Christopher Palmer</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Like the illustration and the indicator style. Best of luck ...</span></span></a>
-                                </li>
-                                <li>
-                                    <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user3.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Steve Smith</span> <small>10.14.2016  2:30pm</small> <span class="media-content">I slowly updated my Behance with some recent projects ...</span></span></a>
-                                </li>
-                                <li>
-                                    <a href="#" class="media"><span class="d-flex user--offline thumb-xs"><img src="assets/demo/users/user6.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Emily Lee</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Hi John!</span></span></a>
-                                </li>
-                                <li>
-                                    <a href="#" class="media"><span class="d-flex user--offline thumb-xs"><img src="assets/demo/users/user2.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Christopher Palmer</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Like the illustration and the indicator style. Best of luck ...</span></span></a>
-                                </li>
-                            </ul>
-                            <!-- /.dropdown-list-group -->
+            @*<ul class="nav navbar-nav hidden-md-down">
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle ripple" data-toggle="dropdown"><i class="material-icons list-icon">mail_outline</i> <span class="badge badge-pill bg-primary">3</span></a>
+                        <div class="dropdown-menu dropdown-left dropdown-card animated flipInY">
+                            <div class="card">
+                                <header class="card-header">
+                                    New messages <span class="mr-l-10 badge badge-border bg-primary">3</span>
+                                </header>
+                                <ul class="list-unstyled dropdown-list-group">
+                                    <li>
+                                        <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user3.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Steve Smith</span> <small>10.14.2016  2:30pm</small> <span class="media-content">I slowly updated my Behance with some recent projects ...</span></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="media"><span class="d-flex user--offline thumb-xs"><img src="assets/demo/users/user6.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Emily Lee</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Hi John!</span></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user2.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Christopher Palmer</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Like the illustration and the indicator style. Best of luck ...</span></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user3.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Steve Smith</span> <small>10.14.2016  2:30pm</small> <span class="media-content">I slowly updated my Behance with some recent projects ...</span></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="media"><span class="d-flex user--offline thumb-xs"><img src="assets/demo/users/user6.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Emily Lee</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Hi John!</span></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="media"><span class="d-flex user--offline thumb-xs"><img src="assets/demo/users/user2.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Christopher Palmer</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Like the illustration and the indicator style. Best of luck ...</span></span></a>
+                                    </li>
+                                </ul>
+                                <!-- /.dropdown-list-group -->
+                            </div>
+                            <!-- /.card-->
                         </div>
-                        <!-- /.card-->
-                    </div>
-                    <!-- /.dropdown-menu -->
-                </li>
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle ripple" data-toggle="dropdown"><i class="material-icons list-icon">event_available</i> <span class="badge badge-pill bg-primary">9</span></a>
-                    <div class="dropdown-menu dropdown-left dropdown-card animated flipInY">
-                        <div class="card">
-                            <header class="card-header">
-                                New notifications <span class="mr-l-10 badge badge-border bg-primary">4</span>
-                            </header>
-                            <ul class="list-unstyled dropdown-list-group">
-                                <li>
-                                    <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">check</i> </span><span class="media-body"><span class="media-heading">Invitation accepted</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Your invitation for Mars has been accepted ...</span></span></a>
-                                </li>
-                                <li>
-                                    <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user3.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Steve Smith</span> <small>10.14.2016  2:30pm</small> <span class="media-content">I slowly updated my Behance with some recent projects ...</span></span></a>
-                                </li>
-                                <li>
-                                    <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">event_available</i> </span><span class="media-body"><span class="media-heading">To Do</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Meeting with Nathan McCullum on Friday 8 AM ...</span></span></a>
-                                </li>
-                                <li>
-                                    <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">check</i> </span><span class="media-body"><span class="media-heading">Invitation accepted</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Your invitation for Mars has been accepted ...</span></span></a>
-                                </li>
-                            </ul>
-                            <!-- /.dropdown-list-group -->
+                        <!-- /.dropdown-menu -->
+                    </li>
+                    <!-- /.dropdown -->
+                    <li class="dropdown hidden-md-down">
+                        <a href="#" class="dropdown-toggle ripple" data-toggle="dropdown"><i class="material-icons list-icon">event_available</i> <span class="badge badge-pill bg-primary">9</span></a>
+                        <div class="dropdown-menu dropdown-left dropdown-card animated flipInY">
+                            <div class="card">
+                                <header class="card-header">
+                                    New notifications <span class="mr-l-10 badge badge-border bg-primary">4</span>
+                                </header>
+                                <ul class="list-unstyled dropdown-list-group">
+                                    <li>
+                                        <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">check</i> </span><span class="media-body"><span class="media-heading">Invitation accepted</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Your invitation for Mars has been accepted ...</span></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user3.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Steve Smith</span> <small>10.14.2016  2:30pm</small> <span class="media-content">I slowly updated my Behance with some recent projects ...</span></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">event_available</i> </span><span class="media-body"><span class="media-heading">To Do</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Meeting with Nathan McCullum on Friday 8 AM ...</span></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">check</i> </span><span class="media-body"><span class="media-heading">Invitation accepted</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Your invitation for Mars has been accepted ...</span></span></a>
+                                    </li>
+                                </ul>
+                                <!-- /.dropdown-list-group -->
+                            </div>
+                            <!-- /.card -->
                         </div>
-                        <!-- /.card -->
-                    </div>
-                    <!-- /.dropdown-menu -->
-                </li>
-                <!-- /.dropdown -->
-                <li>
-                    <a href="javascript:void(0);" class="right-sidebar-toggle ripple"><i class="material-icons list-icon">comment</i></a>
-                </li>
-            </ul>
+                        <!-- /.dropdown-menu -->
+                    </li>
+                    <!-- /.dropdown -->
+                    <li>
+                        <a href="javascript:void(0);" class="right-sidebar-toggle ripple"><i class="material-icons list-icon">comment</i></a>
+                    </li>
+                </ul>*@
             <!-- /.navbar-right -->
             <!-- User Image with Dropdown -->
-            <ul class="nav navbar-nav">
-                <li class="dropdown">
-                    <a href="javascript:void(0);" class="dropdown-toggle ripple" data-toggle="dropdown"><span class="avatar thumb-sm"><img src="assets/demo/users/user-image.png" class="rounded-circle" alt=""> <i class="material-icons list-icon">expand_more</i></span></a>
-                    <div class="dropdown-menu dropdown-left dropdown-card dropdown-card-wide">
-                        <div class="card">
-                            <header class="card-heading-extra">
-                                <div class="row">
-                                    <div class="col-8">
-                                        <h3 class="mr-b-10 sub-heading-font-family fw-300">Scott Adams</h3><span class="user--online">Available <i class="material-icons list-icon">expand_more</i></span>
+            @*<ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle ripple" data-toggle="dropdown"><span class="avatar thumb-sm"><img src="assets/demo/users/user-image.png" class="rounded-circle" alt=""> <i class="material-icons list-icon">expand_more</i></span></a>
+                        <div class="dropdown-menu dropdown-left dropdown-card dropdown-card-wide">
+                            <div class="card">
+                                <header class="card-heading-extra">
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <h3 class="mr-b-10 sub-heading-font-family fw-300">Scott Adams</h3><span class="user--online">Available <i class="material-icons list-icon">expand_more</i></span>
+                                        </div>
+                                        <div class="col-4 d-flex justify-content-end">
+                                            <a href="http://dharansh.in/oscarhtml/horizontal-nav-icons/logout.html" class="mr-t-10"><i class="material-icons list-icon">power_settings_new</i> Logout</a>
+                                        </div>
+                                        <!-- /.col-4 -->
                                     </div>
-                                    <div class="col-4 d-flex justify-content-end">
-                                        <a href="http://dharansh.in/oscarhtml/horizontal-nav-icons/logout.html" class="mr-t-10"><i class="material-icons list-icon">power_settings_new</i> Logout</a>
-                                    </div>
-                                    <!-- /.col-4 -->
-                                </div>
-                                <!-- /.row -->
-                            </header>
-                            <section class="card-header">
-                                New notifications <span class="badge badge-border bg-danger mr-l-10">4</span>
-                            </section>
-                            <ul class="list-unstyled dropdown-list-group">
-                                <li>
-                                    <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">check</i> </span><span class="media-body"><span class="media-heading">Invitation accepted</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Your invitation for Mars has been accepted ...</span></span></a>
-                                </li>
-                                <li>
-                                    <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user3.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Steve Smith</span> <small>10.14.2016  2:30pm</small> <span class="media-content">I slowly updated my Behance with some recent projects and finally added a case study for thus great project ...</span></span></a>
-                                </li>
-                                <li>
-                                    <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">event_available</i> </span><span class="media-body"><span class="media-heading">To Do</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Meeting with Nathan McCullum on Friday 8 AM to discuss about an ongoing project ...</span></span></a>
-                                </li>
-                                <li>
-                                    <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">check</i> </span><span class="media-body"><span class="media-heading">Invitation accepted</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Your invitation for Mars has been accepted ...</span></span></a>
-                                </li>
-                            </ul>
+                                    <!-- /.row -->
+                                </header>
+                                <section class="card-header">
+                                    New notifications <span class="badge badge-border bg-danger mr-l-10">4</span>
+                                </section>
+                                <ul class="list-unstyled dropdown-list-group">
+                                    <li>
+                                        <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">check</i> </span><span class="media-body"><span class="media-heading">Invitation accepted</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Your invitation for Mars has been accepted ...</span></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user3.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Steve Smith</span> <small>10.14.2016  2:30pm</small> <span class="media-content">I slowly updated my Behance with some recent projects and finally added a case study for thus great project ...</span></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">event_available</i> </span><span class="media-body"><span class="media-heading">To Do</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Meeting with Nathan McCullum on Friday 8 AM to discuss about an ongoing project ...</span></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">check</i> </span><span class="media-body"><span class="media-heading">Invitation accepted</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Your invitation for Mars has been accepted ...</span></span></a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                </li>
-            </ul>
+                    </li>
+                </ul>*@
             <!-- /.navbar-right -->
         </nav>
         <!-- /.navbar -->
@@ -294,31 +297,31 @@
             <main class="main-wrapper clearfix">
                 <!-- Page Title Area -->
                 @*<div class="row page-title clearfix">
-                    <div class="page-title-left">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="">Dashboard</a>
-                            </li>
-                            <li class="breadcrumb-item active">Horizontal Navigation</li>
-                        </ol>
-                        <div class="d-inline-flex justify-center align-items-center hidden-sm-down">
-                            <a href="javascript: void(0);" class="btn btn-outline-primary mr-l-20 btn-sm btn-rounded hidden-xs hidden-sm ripple" target="_blank">Buy Now</a>
+                        <div class="page-title-left">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="">Dashboard</a>
+                                </li>
+                                <li class="breadcrumb-item active">Horizontal Navigation</li>
+                            </ol>
+                            <div class="d-inline-flex justify-center align-items-center hidden-sm-down">
+                                <a href="javascript: void(0);" class="btn btn-outline-primary mr-l-20 btn-sm btn-rounded hidden-xs hidden-sm ripple" target="_blank">Buy Now</a>
+                            </div>
                         </div>
-                    </div>
-                    <!-- /.page-title-left -->
-                    @*<div class="page-title-right d-inline-flex">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="">Dashboard</a>
-                            </li>
-                            <li class="breadcrumb-item active">Horizontal Navigation</li>
-                        </ol>
-                        <div class="d-inline-flex justify-center align-items-center hidden-sm-down">
-                            <a href="javascript: void(0);" class="btn btn-outline-primary mr-l-20 btn-sm btn-rounded hidden-xs hidden-sm ripple" target="_blank">Buy Now</a>
+                        <!-- /.page-title-left -->
+                        @*<div class="page-title-right d-inline-flex">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="">Dashboard</a>
+                                </li>
+                                <li class="breadcrumb-item active">Horizontal Navigation</li>
+                            </ol>
+                            <div class="d-inline-flex justify-center align-items-center hidden-sm-down">
+                                <a href="javascript: void(0);" class="btn btn-outline-primary mr-l-20 btn-sm btn-rounded hidden-xs hidden-sm ripple" target="_blank">Buy Now</a>
+                            </div>
                         </div>
-                    </div>
-                    <!-- /.page-title-right -->
-                </div>*@
+                        <!-- /.page-title-right -->
+                    </div>*@
                 <!-- /.page-title -->
                 <div class="container-fluid mt-2">
                     @RenderBody()
@@ -370,6 +373,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
     @RenderSection("js", false)
     <script src="~/assets/js/theme.js"></script>
     @*<script src="~/assets/js/custom.js"></script>*@
