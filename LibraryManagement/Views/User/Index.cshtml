@@ -1,7 +1,74 @@
 ﻿
 @{
-    ViewBag.Title = "User Page";
+    ViewBag.Title = "Quản lý đọc giả";
 }
+<div class="row">
 
-<h2>User Page</h2>
 
+    <div class="col-md-6 widget-holder">
+        <div class="widget-bg">
+            <div class="widget-body clearfix">
+                <h5 class="box-title mr-b-0 text-success text-uppercase"><i class="material-icons ">people</i> DANH SÁCH ĐỌC GIẢ</h5>
+                <table class="table table-responsive table-striped table-bordered mt-2" id="table-data">
+                    <thead>
+                        <tr class="bg-success text-white ">
+                            <th>ID</th>
+                            <th>Tài khoản</th>
+                            <th>Họ tên</th>
+                            <th>Email</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 widget-holder">
+        <div class="widget-bg">
+            <div class="widget-body clearfix">
+                <h5 class="box-title mr-b-0 text-success text-uppercase"><i class="material-icons ">person_add</i> THÊM MỚI ĐỌC GIẢ</h5>
+                <form>
+                    <div class="form-group row mb-1">
+                        <label class="col-md-3 col-form-label pr-0">Tên đăng nhập</label>
+                        <div class="col-md-9">
+                            <input class="form-control" placeholder="Tên đăng nhập" type="text" name="UserName">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-1">
+                        <label class="col-md-3 col-form-label pr-0">Mật khẩu</label>
+                        <div class="col-md-9 d-flex">
+                            <label class="mt-auto">(Sẽ được tạo mặc định)</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group row mb-1">
+                        <label class="col-md-3 col-form-label pr-0">Email</label>
+                        <div class="col-md-9">
+                            <input class="form-control" placeholder="Email" type="email" name="Email">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-1">
+                        <label class="col-md-3 col-form-label pr-0">Số điện thoại</label>
+                        <div class="col-md-9">
+                            <input class="form-control" placeholder="Số diện thoại" type="text" name="PhoneNumber">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-1">
+                        <label class="col-md-3 col-form-label pr-0"></label>
+                        <div class="col-md-9">
+                            <button class="btn btn-success" type="submit"><i class="material-icons list-icon">done</i> Hoàn tất</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section js{
+    
+<script>
+
+</script>    
+}
