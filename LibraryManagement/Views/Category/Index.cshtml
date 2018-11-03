@@ -1,10 +1,27 @@
 ﻿
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Category Page";
 }
 @section css{
+    <style>
+        body {
+            padding-right: 0 !important;
+        }
 
+        td.details-control {
+            background: url('https://cdn.rawgit.com/DataTables/DataTables/6c7ada53ebc228ea9bc28b1b216e793b1825d188/examples/resources/details_open.png') no-repeat center center;
+            cursor: pointer;
+        }
+
+        tr.shown td.details-control {
+            background: url('https://cdn.rawgit.com/DataTables/DataTables/6c7ada53ebc228ea9bc28b1b216e793b1825d188/examples/resources/details_close.png') no-repeat center center;
+        }
+
+        .expand-content {
+            cursor: pointer;
+        }
+    </style>
 
 }
 <div class="row">
@@ -48,7 +65,7 @@
             <div class="widget-body clearfix">
                 <table class="table table-hover " id="table-data">
                     <thead>
-                        <tr class="bg-info">
+                        <tr class="bg-success">
                             <th>&nbsp;</th>
                             <th>ID</th>
                             <th>Tên danh mục</th>
@@ -56,61 +73,61 @@
                             <th>Thao tác</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach (var cate in ViewBag.LstCategory)
-                        {
-                            <tr id="tb-row-@cate["ID"]" class="font-weight-bold">
-                                <td class="@(cate["Child"].Count > 0? "expand-table":"")">
-                                    @if (cate["Child"].Count > 0)
-                                    {
-                                        <a href="javascript: void(0);" class="expand-table d-flex justify-content-center text-primary" data-id="@cate["ID"]">
-                                            <i class="material-icons">add</i>
-                                        </a>
-                                    }
-                                </td>
-                                <td class="@(cate["Child"].Count > 0? "expand-table":"")" data-id="@cate["ID"]">@cate["ID"]</td>
-                                <td class="@(cate["Child"].Count > 0? "expand-table":"")" data-id="@cate["ID"]">@cate["Name"]</td>
-                                <td>
-                                    <input type="checkbox" data-secondary-color="#e6614f" checked="@cate["Flag"]" class="js-switch" data-color="#38d57a" data-size="small">
-                                </td>
-                                <td>
-                                    <a href="javascript: void(0);" data-id="@cate["ID"]" data-parentid="-1" data-toggle="modal" data-target=".bs-modal-sm-color-scheme" class="color-info mr-2 btn-edit-click" title="Cập nhật NXB">
-                                        <i class="material-icons">edit</i>
-                                    </a>
-                                    <a href="javascript: void(0); " data-id="@cate["ID"]" data-parentid="-1" class="color-danger del-submit" title="Xóa NXB">
-                                        <i class="material-icons">delete_forever</i>
-                                    </a>
-                                </td>
-                            </tr>
-                            if (cate["Child"].Count > 0)
+                    @*<tbody>
+                            @foreach (var cate in ViewBag.LstCategory)
                             {
-                                foreach (var c in cate["Child"])
+                                <tr id="tb-row-@cate["ID"]" class="font-weight-bold">
+                                    <td class="@(cate["Child"].Count > 0? "expand-table":"")">
+                                        @if (cate["Child"].Count > 0)
+                                        {
+                                            <a href="javascript: void(0);" class="expand-table d-flex justify-content-center text-primary" data-id="@cate["ID"]">
+                                                <i class="material-icons">add</i>
+                                            </a>
+                                        }
+                                    </td>
+                                    <td class="@(cate["Child"].Count > 0? "expand-table":"")" data-id="@cate["ID"]">@cate["ID"]</td>
+                                    <td class="@(cate["Child"].Count > 0? "expand-table":"")" data-id="@cate["ID"]">@cate["Name"]</td>
+                                    <td>
+                                        <input type="checkbox" data-secondary-color="#e6614f" checked="@cate["Flag"]" class="js-switch" data-color="#38d57a" data-size="small">
+                                    </td>
+                                    <td>
+                                        <a href="javascript: void(0);" data-id="@cate["ID"]" data-parentid="-1" data-toggle="modal" data-target=".bs-modal-sm-color-scheme" class="color-info mr-2 btn-edit-click" title="Cập nhật NXB">
+                                            <i class="material-icons">edit</i>
+                                        </a>
+                                        <a href="javascript: void(0); " data-id="@cate["ID"]" data-parentid="-1" class="color-danger del-submit" title="Xóa NXB">
+                                            <i class="material-icons">delete_forever</i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                if (cate["Child"].Count > 0)
                                 {
-                                    <tr class="hidden" data-parentid="@cate["ID"]" id="tb-row-@c.ID">
-                                        <td>
-                                            &nbsp;
-                                        </td>
-                                        <td class=""><span class="pl-3">@c.ID</span></td>
-                                        <td class=""><span class="pl-3">@c.Name</span></td>
-                                        <td>
-                                            <input type="checkbox" data-secondary-color="#e6614f" checked="@c.Flag" class="js-switch" data-color="#38d57a" data-size="small">
-                                        </td>
-                                        <td>
-                                            <a href="javascript: void(0);" data-id="@c.ID" data-parentid="@cate["ID"]"
-                                               data-toggle="modal" data-target=".bs-modal-sm-color-scheme"
-                                               class="color-info mr-2 btn-edit-click" title="Cập nhật danh mục">
-                                                <i class="material-icons">edit</i>
-                                            </a>
-                                            <a href="javascript: void(0); " data-id="@c.ID" data-parentid="@cate["ID"]"
-                                               class="color-danger del-submit" title="Xóa danh mục">
-                                                <i class="material-icons">delete_forever</i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                    foreach (var c in cate["Child"])
+                                    {
+                                        <tr class="hidden" data-parentid="@cate["ID"]" id="tb-row-@c.ID">
+                                            <td>
+                                                &nbsp;
+                                            </td>
+                                            <td class=""><span class="pl-3">@c.ID</span></td>
+                                            <td class=""><span class="pl-3">@c.Name</span></td>
+                                            <td>
+                                                <input type="checkbox" data-secondary-color="#e6614f" checked="@c.Flag" class="js-switch" data-color="#38d57a" data-size="small">
+                                            </td>
+                                            <td>
+                                                <a href="javascript: void(0);" data-id="@c.ID" data-parentid="@cate["ID"]"
+                                                   data-toggle="modal" data-target=".bs-modal-sm-color-scheme"
+                                                   class="color-info mr-2 btn-edit-click" title="Cập nhật danh mục">
+                                                    <i class="material-icons">edit</i>
+                                                </a>
+                                                <a href="javascript: void(0); " data-id="@c.ID" data-parentid="@cate["ID"]"
+                                                   class="color-danger del-submit" title="Xóa danh mục">
+                                                    <i class="material-icons">delete_forever</i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
                                 }
                             }
-                        }
-                    </tbody>
+                        </tbody>*@
                 </table>
             </div>
         </div>
@@ -168,23 +185,80 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
-@section js{
 
+@section js{
+    <script id="template-action-table" type="text/x-handlebars-template">
+        <a href="javascript: void(0);" data-id="{{id}}"
+           data-toggle="modal" data-target=".bs-modal-sm-color-scheme"
+           class="color-info mr-2 btn-edit-click" title="Cập nhật tủ sách">
+            <i class="material-icons">edit</i>
+        </a>
+        <a href="javascript: void(0); " data-id="{{id}}"
+           class="color-danger del-submit" title="Xóa tủ sách">
+            <i class="material-icons">delete_forever</i>
+        </a>
+    </script>
+    <script id="template-expand-detail" type="text/x-handlebars-template">
+        <div class="container " id="container-expand-{{pID}}" style="max-height:255px">
+            <div class="row">
+                {{#each categories}}
+                <div class="col-md-3 mr-2 mb-1 bg-white p-3 rounded">
+                    <div class="form-group row mb-1">
+                        <label class="col-md-4  pr-0">Tên</label>
+                        <div class="col-md-5">
+                            <label><strong>{{Name}}</strong></label>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-1">
+                        <label class="col-md-4  pr-0">Trạng thái</label>
+                        <div class="col-md-5">
+                            {{#if Flag}}
+                            <span class="badge text-uppercase badge-success align-middle py-2">Hoạt động</span>
+                            {{else}}
+                            <span class="badge text-uppercase badge-danger align-middle py-2">Đã hủy</span>
+                            {{/if}}
+                        </div>
+                    </div>
+                    <div class="form-group row mb-0">
+                        <label class="col-md-4 pr-0">Thao tác</label>
+                        <div class="col-md-5">
+                            <a href="javascript: void(0);" data-id="{{ID}}"
+                               data-toggle="modal" data-target=".bs-modal-sm-color-scheme" data-parentid="{{ParentID}}"
+                               class="color-info mr-2 btn-edit-click" title="Cập nhật danh mục">
+                                <i class="material-icons">edit</i>
+                            </a>
+                            <a href="javascript: void(0); " data-id="{{ID}}" data-parentid="{{ParentID}}"
+                               class="color-danger del-submit" title="Xóa danh mục">
+                                <i class="material-icons">delete_forever</i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+
+            </div>
+        </div>
+
+
+
+
+    </script>
     <script>
         $(document).ready(function () {
+            loadTable();
             $('form').each(function () {
                 $(this).validate({
                     errorClass: 'invalid-feedback',
                     rules: {
                         Name: {
                             required: true,
-                            minlength: 20
+                            minlength: 15
                         }
                     },
                     messages: {
                         Name: {
                             required: "Vui lòng nhập tên danh mục!",
-                            minlength: "Tên danh mục tối thiểu 20 ký tự"
+                            minlength: "Tên danh mục tối thiểu 15 ký tự"
                         },
                     },
                     //errorElement: 'div',
@@ -221,26 +295,9 @@
                     el.addClass('hidden');
                 }
             });
-            fetch("/Category/GetListCategory")
-                //.then(res => {
-                //    if (res.ok) {
-                //        return Promise.resolve(res);
-                //    } else {
-                //        return Promise.reject(new Error('Failed to load'));
-                //    }
-                //})
-                .then(res => res.json())
-                .then(data => {
-                    //console.log(data);
-                    //var output = '';
-                    //$.each(data, (index, item) => {
-                    //    output += buildList(item);
-                    //});
-                    //$('#content-lst-node').html(output);
-                    //$('#lst-node').nestable();
-                });
-            fetch("/Category/GetListCategoryParent")
-                .then(res => res.json())
+
+            $.getJSON("/Category/GetListCategoryParent")
+                //.then(res => res.json())
                 .then(data => {
                     var html = "";
                     $.each(data, (i, e) => {
@@ -252,24 +309,34 @@
 
 
             if('@Html.Raw(Json.Encode(ViewBag.msgSuccess))'!= 'null') {
-                $.toast({
+                @*$.toast({
                     heading: 'THÔNG BÁO: ',
                     text: @Html.Raw(Json.Encode(ViewBag.msgSuccess)),
                     position: 'top-right',
                     icon: 'success',
                     stack: false
-                });
+                });*@
+                swal(
+                    'Thành công!',
+                    '',
+                    'success'
+                );
             }
-            if('@Html.Raw(Json.Encode(ViewBag.msgError))'!= 'null') {
-                $.toast({
+            if ('@Html.Raw(Json.Encode(ViewBag.msgError))' != 'null') {
+                swal(
+                    'Thất bại!',
+                    '@Html.Raw(Json.Encode(ViewBag.msgError))',
+                    'error'
+                );
+                @*$.toast({
                     heading: 'THÔNG BÁO: ',
                     text: @Html.Raw(Json.Encode(ViewBag.msgError)),
                     position: 'top-right',
                     icon: 'error',
                     stack: false
-                });
+                });*@
             }
-            $('.del-submit').on('click', function () {
+            $('#table-data').on('click','.del-submit' ,function () {
                 var id = $(this).data('id');
                 var parentId = $(this).data('parentid');
                 swal({
@@ -317,7 +384,7 @@
                 });
             });
 
-            $('.btn-edit-click').on('click', function () {
+            $('#table-data').on('click', '.btn-edit-click',function () {
                 $('#frm-update-category').find('input').removeClass('is-invalid').removeClass('is-valid');
                 $('#frm-update-category').find('div .invalid-feedback').empty();
                 var id = $(this).data('id');
@@ -345,7 +412,7 @@
                         if (data.Flag == true && check == false || (data.Flag == false && check == true)) {
                             //$('#frmUpdatePublisher input[name="status"]').prop('checked', true);
                             $('#frm-update-category input[name="status"]').trigger('click');
-                        } 
+                        }
                     }).catch((error) => {
                         console.log(`Error:${error.messages}`);
 
@@ -355,9 +422,95 @@
                 $('#frm-update-category input[name="Flag"]').val($(this).is(':checked') ? "true" : "false");
                 //console.log($(this));
             });
+            $('#table-data tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = $('#table-data').DataTable().row(tr);
 
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                } else {
+                    // Open this row
+                    var d = row.data();
+                    var url = `/Category/GetCategoryChildren?id=${d.ID}`;
+                    $.getJSON(url, function (data) {
+                        var source = document.getElementById("template-expand-detail").innerHTML;
+                        var template = Handlebars.compile(source);
+                        var context = { categories: data, pID: d.ID };
+                        console.log(context);
+                        var html = template(context);
+                        row.child(html).show();
+                        tr.addClass('shown');
+                        $(`#container-expand-${d.ID}`).closest('td').css('background-color', '#eee').css('overflow', 'auto');
+                    });
+
+                    //format(row.data()).then((html) => {
+
+                    //});
+
+
+                }
+            });
         });
+        function loadTable() {
+            $('#table-data').DataTable({
+                //data: lst,
+                searching: false,
+                ordering: false,
+                ajax: {
+                    url: "/Category/GetAllCategory",
+                    "dataSrc": function (data) {
+                        // manipulate your data (json)
+                        //console.log(JSON.parse(data.result));
 
+                        // return the data that DataTables is to use to draw the table
+                        return data;
+                    }
+                },
+                columns: [
+                    {
+                        'className': 'details-control',
+                        'orderable': false,
+                        'data': 'HasChild',
+                        'defaultContent': '',
+                        createdCell: function (td, cellData, rowData, row, col) {
+                            if (!cellData) {
+                                $(td).removeClass('details-control');
+                            } else {
+                                return '';
+                            }
+                        },
+                        render: function (data, type, row) {
+
+                            return '';
+                        }
+                    },
+                    {
+                        "data": "ID",
+                        "visible": false,
+                    },
+                    { "data": "Name" },
+                    {
+                        "data": "Flag",
+                        render: function (data, type, row) {
+                            return data ? `<span class="badge text-uppercase badge-success align-middle py-2">Hoạt động</span>` :
+                                `<span class="badge text-uppercase badge-danger align-middle py-2">Đã hủy</span>`;
+                        }
+                    },
+                    {
+                        "data": "ID",
+                        render: function (data, type, row) {
+                            var source = document.getElementById("template-action-table").innerHTML;
+                            var template = Handlebars.compile(source);
+                            var context = { id: data };
+                            var html = template(context);
+                            return html;
+                        }
+                    }
+                ]
+            });
+        }
 
     </script>
 

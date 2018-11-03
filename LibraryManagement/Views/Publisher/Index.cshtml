@@ -105,8 +105,8 @@
                 @*<p>Add <code>.table-hover</code> to enable a hover state on table rows within a <code>&lt;tbody&gt;</code>.</p>*@
                 <table class="table table-hover " data-toggle="datatables" id="table-data">
                     <thead>
-                        <tr>
-                            <th>ID</th>
+                        <tr class="bg-success text-white ">
+                            <th hidden>ID</th>
                             <th>Tên NXB</th>
                             <th>Trạng thái</th>
                             <th>Thao tác</th>
@@ -116,7 +116,7 @@
                         @for (int i = 0; i < Model.Count; i++)
                         {
                             <tr id="tb-row-@Model[i].ID">
-                                <td>@(i + 1)</td>
+                                <td hidden>@(i + 1)</td>
                                 <td>@Model[i].Name</td>
                                 <td id="status-area">
                                     <input type="checkbox" data-secondary-color="#e6614f" checked="@Model[i].Flag.Value" class="js-switch" data-color="#38d57a" data-size="small">

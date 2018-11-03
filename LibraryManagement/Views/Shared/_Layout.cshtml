@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/demo/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/demo/favicon.png">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>@ViewBag.Title</title>
     <!-- CSS -->
@@ -48,13 +48,13 @@
 <body class="header-centered sidebar-horizontal">
     <div id="wrapper" class="wrapper">
         <!-- HEADER & TOP NAVIGATION -->
-        <nav class="navbar">
+        <nav class="navbar bg-success">
             <!-- Logo Area -->
             <div class="navbar-header">
                 <a href="" class="navbar-brand text-center">
                     @*<h3 class="logo-expand text-white">QUẢN LÝ THƯ VIỆN</h3>*@
-                    <img class="logo-expand" alt="" src="assets/demo/logo-expand.png">
-                    <img class="logo-collapse" alt="" src="assets/demo/logo-collapse.png">
+                    <img class="logo-expand bg-success" alt="" src="/assets/demo/logo-expand.png">
+                    <img class="logo-collapse bg-success" alt="" src="/assets/demo/logo-collapse.png">
                     <!-- <p>OSCAR</p> -->
                 </a>
             </div>
@@ -374,7 +374,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
-    @RenderSection("js", false)
+
     <script src="~/assets/js/theme.js"></script>
     @*<script src="~/assets/js/custom.js"></script>*@
     <script>
@@ -393,7 +393,7 @@
         });
 
     </script>
-
+    @RenderSection("js", false)
 
 </body>
 

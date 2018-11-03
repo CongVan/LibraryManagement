@@ -140,6 +140,33 @@ namespace LibraryManagement.Controllers
             }
 
         }
+        [HttpPost]
+        public ActionResult DeleteBookForever(int id)
+        {
+            try
+            {
+                using (var ctx = new LibraryManagementEntities())
+                {
+                    var b = ctx.Books.Where(c => c.ID == id).FirstOrDefault();
+                    if (b != null)
+                    {
+                       
+                        ctx.Entry(b).State = System.Data.Entity.EntityState.Deleted;
+                        ctx.SaveChanges();
+                        return Json(new { result = 1, msg = "OK" }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(new { result = -1, msg = "Không tìm thấy sách!" }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { result = -1, msg = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+
+        }
         public ActionResult ParitalBookDetail()
         {
             return View();

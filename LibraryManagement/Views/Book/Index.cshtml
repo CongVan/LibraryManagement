@@ -89,24 +89,28 @@
         <a href="javascript:void(0);" data-toggle="dropdown"
            class="dropdown-toggle"><i class="material-icons list-icon text-color-scheme-dark">menu</i></a>
         <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item text-info showInfoBook"
+            <a class="dropdown-item text-success showInfoBook"
                href="/Book/BookDetail/{{id}}" data-id="{{id}}">
                 @*data-toggle="modal" data-target=".bs-modal-lg-color-scheme"  *@
                 <i class="material-icons list-icon float-left mr-r-10">info_outline</i>Xem chi tiết
             </a>
-            <a class="dropdown-item text-danger delBook" href="javascript:void(0);" data-id="{{id}}">
+            <a class="dropdown-item text-gray delBook" href="javascript:void(0);" data-id="{{id}}">
+                <i class="material-icons list-icon float-left mr-r-10">delete</i>
+                Hủy
+            </a>
+            <a class="dropdown-item text-danger delBookForever" href="javascript:void(0);" data-id="{{id}}">
                 <i class="material-icons list-icon float-left mr-r-10">delete_forever</i>
-                Xóa
+                Xóa vĩnh viễn
             </a>
             @*<a class="dropdown-item" href="javascript:void(0);">
-                    <i class="material-icons list-icon float-left mr-r-10">pie_chart_outlined</i>
-                    Statistics
-                </a>
-                <div role="separator" class="dropdown-divider"></div><a class="dropdown-item"
-                                                                        href="javascript:void(0);">
-                    <i class="material-icons list-icon float-left mr-r-10">close</i>
-                    <strong>Clear list</strong>
-                </a>*@
+            <i class="material-icons list-icon float-left mr-r-10">pie_chart_outlined</i>
+            Statistics
+        </a>
+        <div role="separator" class="dropdown-divider"></div><a class="dropdown-item"
+                                                                href="javascript:void(0);">
+            <i class="material-icons list-icon float-left mr-r-10">close</i>
+            <strong>Clear list</strong>
+        </a>*@
         </div>
     </div>
 </script>
@@ -220,7 +224,7 @@
                 $('#tbBook').on('click', '.delBook', function (event) {
                     swal({
                         title: 'XÁC NHẬN?',
-                        text: "Bạn có chắc chắn muốn sách này!",
+                        text: "Bạn có chắc chắn muốn hủy sách này!",
                         type: 'warning',
                         showCancelButton: true,
                         confirmButtonClass: 'btn btn-danger',
@@ -229,6 +233,25 @@
                     }).then((result) => {
                         if (result.value) {
                             deleteBook($(this).data('id'));
+                        }
+                        else {
+
+                        }
+                    });
+
+                });
+                $('#tbBook').on('click', '.delBookForever', function (event) {
+                    swal({
+                        title: 'XÁC NHẬN?',
+                        text: "Bạn có chắc chắn muốn xóa vĩnh viễn sách này!",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonClass: 'btn btn-danger',
+                        confirmButtonText: 'Xác nhận',
+                        cancelButtonText: "Đóng",
+                    }).then((result) => {
+                        if (result.value) {
+                            deleteBookForever($(this).data('id'));
                         }
                         else {
 
@@ -257,6 +280,31 @@
             $.ajax({
                 type: "post",
                 url: "/Book/DeleteBook",
+                data: { id: id }
+            }).done(function (data) {
+                if (data.result == 1) {
+                    swal(
+                        'Thành công!',
+                        '',
+                        'success'
+                    );
+                    $('#tbBook').DataTable().ajax.reload().draw();
+                } else {
+                    swal(
+                        'Thất bại!',
+                        data.msg,
+                        'error'
+                    );
+                }
+            }).fail(function (x, t, e) {
+                console.log(e);
+            });
+        }
+        function deleteBookForever(id) {
+            console.log(id);
+            $.ajax({
+                type: "post",
+                url: "/Book/DeleteBookForever",
                 data: { id: id }
             }).done(function (data) {
                 if (data.result == 1) {

@@ -73,7 +73,7 @@ namespace LibraryManagement.Controllers
                 {
                     var item = new Dictionary<object, object>();
                     var lstChild = ctx.Categories.Where(c => c.ParentID == parent.ID && c.Flag == true).Select(c => new { id = c.ID, text = c.Name }).ToList();
-                    if (lstChild == null || lstChild.Count==0)
+                    if (lstChild == null || lstChild.Count == 0)
                     {
                         item.Add("id", parent.ID);
                         item.Add("text", parent.Name);
@@ -84,7 +84,7 @@ namespace LibraryManagement.Controllers
                         item.Add("text", parent.Name);
                         item.Add("children", lstChild);
                     }
-                    
+
                     lstRet.Add(item);
                 }
                 return Json(lstRet, JsonRequestBehavior.AllowGet);
@@ -97,6 +97,23 @@ namespace LibraryManagement.Controllers
             using (var ctx = new LibraryManagementEntities())
             {
                 var lstParent = ctx.Categories.Where(c => !c.ParentID.HasValue).ToList();
+
+                return Json(lstParent, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public ActionResult GetAllCategory()
+        {
+            using (var ctx = new LibraryManagementEntities())
+            {
+                var lstParent = ctx.Categories.Where(c => !c.ParentID.HasValue)
+                    .Select(c => new
+                    {
+                        ID = c.ID,
+                        Name = c.Name,
+                        Flag = c.Flag,
+                        ParentID = c.ParentID,
+                        HasChild = ctx.Categories.Where(a => a.ParentID == c.ID).FirstOrDefault() != null,
+                    }).ToList();
 
                 return Json(lstParent, JsonRequestBehavior.AllowGet);
             }
@@ -156,6 +173,17 @@ namespace LibraryManagement.Controllers
             {
                 return Json(
                     ctx.Categories.Where(c => c.ID == id).FirstOrDefault(),
+                    JsonRequestBehavior.AllowGet
+                );
+            }
+
+        }
+        public ActionResult GetCategoryChildren(int id)
+        {
+            using (var ctx = new LibraryManagementEntities())
+            {
+                return Json(
+                    ctx.Categories.Where(c => c.ParentID == id).ToList(),
                     JsonRequestBehavior.AllowGet
                 );
             }
