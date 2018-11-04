@@ -22,5 +22,7 @@ namespace LibraryManagement.Models
         public Nullable<bool> ConfirmEmail { get; set; }
         public Nullable<int> RoleID { get; set; }
         public Nullable<bool> Flag { get; set; }
+        public string PhoneNumber { get; set; }
+        public Nullable<byte> Status { get; set; }
     }
 }

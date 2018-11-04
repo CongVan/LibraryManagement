@@ -5,17 +5,18 @@
 <div class="row">
 
 
-    <div class="col-md-6 widget-holder">
+    <div class="col-md-7 widget-holder ">
         <div class="widget-bg">
-            <div class="widget-body clearfix">
+            <div class="widget-body clearfix ">
                 <h5 class="box-title mr-b-0 text-success text-uppercase"><i class="material-icons ">people</i> DANH SÁCH ĐỌC GIẢ</h5>
-                <table class="table table-responsive table-striped table-bordered mt-2" id="table-data">
+                <table class="table table-responsive table-striped table-bordered mt-2  " id="table-data">
                     <thead>
                         <tr class="bg-success text-white ">
                             <th>ID</th>
                             <th>Tài khoản</th>
                             <th>Họ tên</th>
                             <th>Email</th>
+                            <th>Trạng thái</th>
                             <th>Thao tác</th>
                         </tr>
                     </thead>
@@ -24,11 +25,11 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 widget-holder">
+    <div class="col-md-5 widget-holder">
         <div class="widget-bg">
             <div class="widget-body clearfix">
                 <h5 class="box-title mr-b-0 text-success text-uppercase"><i class="material-icons ">person_add</i> THÊM MỚI ĐỌC GIẢ</h5>
-                <form>
+                <form id="frmAddUser" method="post" action="@Url.Action("InsertUser","User")" onsubmit="javascript: void (0);">
                     <div class="form-group row mb-1">
                         <label class="col-md-3 col-form-label pr-0">Tên đăng nhập</label>
                         <div class="col-md-9">
@@ -38,10 +39,15 @@
                     <div class="form-group row mb-1">
                         <label class="col-md-3 col-form-label pr-0">Mật khẩu</label>
                         <div class="col-md-9 d-flex">
-                            <label class="mt-auto">(Sẽ được tạo mặc định)</label>
+                            <label class="mt-auto">( Sẽ được tạo mặc định ) </label>
                         </div>
                     </div>
-                    
+                    <div class="form-group row mb-1">
+                        <label class="col-md-3 col-form-label pr-0">Họ tên</label>
+                        <div class="col-md-9">
+                            <input class="form-control" placeholder="Họ tên" type="text" name="FullName">
+                        </div>
+                    </div>
                     <div class="form-group row mb-1">
                         <label class="col-md-3 col-form-label pr-0">Email</label>
                         <div class="col-md-9">
@@ -67,8 +73,189 @@
 </div>
 
 @section js{
-    
-<script>
+    <script id="template-action-table" type="text/x-handlebars-template">
+        <a href="javascript: void(0);" data-id="{{id}}"
+           data-toggle="modal" data-target=".bs-modal-sm-color-scheme"
+           class="color-info mr-2 btn-edit-click" title="Cập nhật tủ sách">
+            <i class="material-icons">edit</i>
+        </a>
+        <a href="javascript: void(0); " data-id="{{id}}"
+           class="color-danger del-submit" title="Xóa tủ sách">
+            <i class="material-icons">delete_forever</i>
+        </a>
+    </script>
+    <script>
+        var createElement = {
+            init: function () {
+                this.validate();
+                this.loadDataTable();
+            },
+            validate: () => {
+                jQuery.validator.addMethod("noSpace", function (value, element) {
+                    return value.indexOf(" ") < 0 && value != "";
+                }, "Giá trị không hợp lệ (có khoảng trắng)");
+                $('form').each(function () {
+                    $(this).validate({
+                        errorClass: 'invalid-feedback',
+                        rules: {
+                            UserName: {
+                                required: true,
+                                minlength: 10,
+                                noSpace: true,
+                            },
+                            FullName: {
+                                required: true,
+                                minlength: 10
+                            },
+                            Email: {
+                                email: true,
+                                required: true
+                            },
+                            PhoneNumber: {
+                                required: true,
+                            },
+                        },
+                        messages: {
 
-</script>    
+                            UserName: {
+                                required: "Vui lòng nhập tài khoản!",
+                                minlength: "Tài khoản tối thiểu 10 ký tự!"
+                            },
+                            FullName: {
+                                required: "Vui lòng nhập họ tên!",
+                                minlength: "Họ tên tối thiểu 10 ký tự!",
+                            },
+                            Email: {
+                                required: "Vui lòng nhập Email!",
+                                email: "Email không đúng định dạng!",
+                            },
+                            PhoneNumber: {
+                                required: "Vui lòng nhập số điện thoại!",
+                            },
+
+                        },
+                        //errorElement: 'label',
+                        errorLabelContainer: '.invalid-feedback',
+
+                        highlight: function (element, errorClass, validClass) {
+                            if (element.type == "select") {
+                                this.findByName(element.name).addClass(errorClass).removeClass(validClass);
+                            } else {
+                                $(element).closest('.form-group').find('input').removeClass('is-valid').addClass('is-invalid');
+                            }
+                        },
+                        unhighlight: function (element, errorClass, validClass) {
+                            if (element.type == "select") {
+                                this.findByName(element.name).removeClass(errorClass).addClass(validClass);
+                            } else {
+                                $(element).closest('.form-group').find('input').removeClass('is-invalid').addClass('is-valid');
+                            }
+                        },
+                        submitHandler: function (form) {
+                            var id = $(form).attr('id');
+                            if (id == "frmAddUser") {
+                                createElement.frmInsertHandleSubmit();
+                            }
+                            return false;
+                        }
+                    });
+                });
+            },
+            frmInsertHandleSubmit: function () {
+                const data = $('#frmAddUser').serialize();
+                //var formData = new URLSearchParams(new FormData())
+                var url = $('#frmAddUser').attr('action');
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: data
+
+                }).done((data) => {
+                    if (data === 1) {
+                        swal(
+                            'Thành công!',
+                            '',
+                            'success'
+                        );
+                        createElement.resetFormInsert()
+                    }
+
+                }).catch((e) => {
+                    swal(
+                        'Thất bại!',
+                        e,
+                        'error'
+                    )
+                });
+            },
+            resetFormInsert: function () {
+                $('#frmAddUser').find('input').removeClass('is-invalid').removeClass('is-valid').val('');
+                $('#frmAddUser').find('div .invalid-feedback').empty();
+
+            },
+            loadDataTable: function () {
+                $('#table-data').DataTable({
+                    scrollY: '50vh',
+                    dom: 'rt<"bottom"flpi><"clear">',
+                    scrollCollapse: true,
+                    searching: false,
+                    ordering: false,
+                    ajax: {
+                        url: "/User/LoadAllUser",
+                        "dataSrc": function (data) {
+                            // manipulate your data (json)
+                            //console.log(JSON.parse(data.result));
+
+                            // return the data that DataTables is to use to draw the table
+                            return data;
+                        }
+                    },
+                    columns: [
+
+                        {
+                            "data": "ID",
+                            "visible": false,
+                        },
+                        { "data": "UserName" },
+                        { "data": "FullName" },
+                        { "data": "Email" },
+                        //{
+                        //    "data": "Flag",
+                        //    render: function (data, type, row) {
+                        //        return data ? `<span class="badge text-uppercase badge-success align-middle py-2">Hoạt động</span>` :
+                        //            `<span class="badge text-uppercase badge-danger align-middle py-2">Đã hủy</span>`;
+                        //    }
+                        //},
+                        {
+                            "data": "Status",
+                            render: function (data, type, row) {
+                                var html = "";
+                                switch (data) {
+                                    case 1: html = '<span class="badge text-uppercase badge-info align-middle py-2">Bình thường</span>'; break;
+                                    case 2: html = '<span class="badge text-uppercase badge-success align-middle py-2">Cảnh cáo</span>'; break;
+                                    case 3: html = '<span class="badge text-uppercase badge-danger align-middle py-2">Hủy</span>'; break;
+                                }
+                                return html;
+                            }
+                        },
+                        {
+                            "data": "ID",
+                            render: function (data, type, row) {
+                                var source = document.getElementById("template-action-table").innerHTML;
+                                var template = Handlebars.compile(source);
+                                var context = { id: data };
+                                var html = template(context);
+                                return html;
+                            }
+                        }
+                    ]
+                });
+            }
+        }
+
+        $(document).ready(function () {
+            createElement.init();
+           
+        });
+    </script>
 }

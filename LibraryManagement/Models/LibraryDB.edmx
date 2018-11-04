@@ -109,6 +109,8 @@
           <Property Name="ConfirmEmail" Type="bit" />
           <Property Name="RoleID" Type="int" />
           <Property Name="Flag" Type="bit" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="15" />
+          <Property Name="Status" Type="tinyint" />
         </EntityType>
         <EntityContainer Name="LibraryManagementModelStoreContainer">
           <EntitySet Name="Book" EntityType="Self.Book" Schema="dbo" store:Type="Tables" />
@@ -220,6 +222,8 @@
           <Property Name="ConfirmEmail" Type="Boolean" />
           <Property Name="RoleID" Type="Int32" />
           <Property Name="Flag" Type="Boolean" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Byte" />
         </EntityType>
         <EntityContainer Name="LibraryManagementEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Books" EntityType="Self.Book" />
@@ -342,6 +346,8 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="LibraryManagementModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />

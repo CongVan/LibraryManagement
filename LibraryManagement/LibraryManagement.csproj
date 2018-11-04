@@ -211,6 +211,7 @@
       <DependentUpon>LibraryDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringUtility\StringUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\glyphiconCustom.css" />
