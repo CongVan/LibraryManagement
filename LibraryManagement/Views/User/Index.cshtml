@@ -5,13 +5,14 @@
 <div class="row">
 
 
-    <div class="col-md-7 widget-holder ">
+    <div class="col-md-8 widget-holder ">
         <div class="widget-bg">
             <div class="widget-body clearfix ">
                 <h5 class="box-title mr-b-0 text-success text-uppercase"><i class="material-icons ">people</i> DANH SÁCH ĐỌC GIẢ</h5>
                 <table class="table table-responsive table-striped table-bordered mt-2  " id="table-data">
                     <thead>
                         <tr class="bg-success text-white ">
+                            <th>STT</th>
                             <th>ID</th>
                             <th>Tài khoản</th>
                             <th>Họ tên</th>
@@ -25,13 +26,13 @@
             </div>
         </div>
     </div>
-    <div class="col-md-5 widget-holder">
+    <div class="col-md-4 widget-holder">
         <div class="widget-bg">
             <div class="widget-body clearfix">
                 <h5 class="box-title mr-b-0 text-success text-uppercase"><i class="material-icons ">person_add</i> THÊM MỚI ĐỌC GIẢ</h5>
                 <form id="frmAddUser" method="post" action="@Url.Action("InsertUser","User")" onsubmit="javascript: void (0);">
                     <div class="form-group row mb-1">
-                        <label class="col-md-3 col-form-label pr-0">Tên đăng nhập</label>
+                        <label class="col-md-3 col-form-label pr-0">Tài khoản</label>
                         <div class="col-md-9">
                             <input class="form-control" placeholder="Tên đăng nhập" type="text" name="UserName">
                         </div>
@@ -89,6 +90,10 @@
             init: function () {
                 this.validate();
                 this.loadDataTable();
+                this.deleteHandle();
+            },
+            refreshTableData: () => {
+                $('#table-data').DataTable().ajax.reload().draw();
             },
             validate: () => {
                 jQuery.validator.addMethod("noSpace", function (value, element) {
@@ -193,6 +198,52 @@
                 $('#frmAddUser').find('div .invalid-feedback').empty();
 
             },
+            deleteHandle: function () {
+                $('#table-data').on('click', '.del-submit', function () {
+                    var id = $(this).data('id');
+
+                    swal({
+                        title: 'XÁC NHẬN?',
+                        text: "Bạn có chắc chắn muốn xóa tài khoản này!",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonClass: 'btn btn-danger',
+                        confirmButtonText: 'Xác nhận',
+                        cancelButtonText: "Đóng",
+                    }).then((result) => {
+                        if (result.value) {
+                            $.ajax(
+                                {
+                                    url:"/User/DeleteUser",
+                                    type: 'post',
+                                    data: { id: id }
+                                })
+                                .done(data => {
+                                    if (data == 1) {
+                                        createElement.refreshTableData();
+                                        swal(
+                                            'Thành công!',
+                                            '',
+                                            'success'
+                                        )
+                                    } else {
+                                        swal(
+                                            'Thất bại!',
+                                            data,
+                                            'error'
+                                        )
+                                    }
+
+                                }).fail((error) => {
+                                    console.log(`Error:${error.messages}`);
+                                });
+
+                        } else if (result.dismiss === "cancel") {
+
+                        }
+                    });
+                });
+            },
             loadDataTable: function () {
                 $('#table-data').DataTable({
                     scrollY: '50vh',
@@ -211,7 +262,13 @@
                         }
                     },
                     columns: [
-
+                        {
+                            "data": null,
+                            'defaultContent': '',
+                            render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
                         {
                             "data": "ID",
                             "visible": false,
@@ -250,7 +307,7 @@
                         }
                     ]
                 });
-            }
+            },
         }
 
         $(document).ready(function () {

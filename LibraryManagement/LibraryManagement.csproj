@@ -514,6 +514,7 @@
     <Content Include="Views\Book\AddBook.cshtml" />
     <Content Include="Views\Book\ParitalBookDetail.cshtml" />
     <Content Include="Views\Book\BookDetail.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

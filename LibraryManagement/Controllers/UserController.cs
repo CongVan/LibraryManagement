@@ -49,5 +49,29 @@ namespace LibraryManagement.Controllers
             
            
         }
+        [HttpPost]
+        public ActionResult DeleteUser(int id)
+        {
+            try
+            {
+                using (var ctx = new LibraryManagementEntities())
+                {
+                    var user = ctx.Users.Where(c => c.ID == id).FirstOrDefault();
+                    ctx.Entry(user).State = System.Data.Entity.EntityState.Deleted;
+                    ctx.SaveChanges();
+                    return Json(1, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+        
     }
 }
