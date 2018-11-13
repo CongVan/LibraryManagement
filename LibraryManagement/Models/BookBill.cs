@@ -19,5 +19,7 @@ namespace LibraryManagement.Models
         public Nullable<System.DateTime> Date { get; set; }
         public Nullable<int> Quantity { get; set; }
         public Nullable<int> Type { get; set; }
+        public Nullable<int> Status { get; set; }
+        public string Code { get; set; }
     }
 }

@@ -1,0 +1,637 @@
+﻿
+@{
+    ViewBag.Title = "Trả sách";
+}
+@section css{
+
+    <link href="~/assets/css/easy-autocomplete.css" rel="stylesheet" />
+    <link href="~/assets/css/easy-autocomplete.themes.css" rel="stylesheet" />
+    <style>
+        .card-user-info-widget .followers-details-list li:first-child {
+            border: 0.0625rem solid #ddd;
+        }
+
+        .card-user-info-widget .followers-details-list li:last-child {
+            border: 0.0625rem solid #ddd;
+        }
+
+        .title-hide {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            /*max-width: 50ch;*/
+        }
+        /*table.dataTable tbody td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }*/
+        .dataTables_filter {
+            display: none;
+        }
+    </style>
+}
+<div class="row">
+    <div class="col-md-12 widget-holder ">
+        <div class="widget-bg">
+            <div class="widget-body clearfix ">
+                <h5 class="box-title mr-b-0 text-success text-uppercase"><i class="material-icons ">replay</i>LẬP PHIẾU TRẢ SÁCH</h5>
+                <div class="row mt-2">
+
+                    <div class="col-md-3">
+                        <h5 class="box-title mr-b-0 text-gray-dark text-uppercase"><i class="material-icons ">search</i> Tìm kiếm đọc giả</h5>
+                        <div id="search-user">
+                            <input class="typeahead form-control" type="text" placeholder="Nhập tài khoản đọc giả..." />
+                        </div>
+                        <div class="card-user-info-widget mt-3" id="viewProfileUser">
+
+
+                        </div>
+                    </div>
+                    <div class="col-md-9 text-left">
+                        <h5 class="box-title mr-b-0 text-gray-dark text-uppercase"><i class="material-icons ">person</i> Thông tin đọc giả</h5>
+                        <div class="row mt-0" id="viewProfileUser2">
+                            <div class="col-7">
+                                <div class="form-group row  mb-0">
+                                    <label class="col-md-2 pr-0  col-form-label pb-0">Tài khoản: </label>
+                                    <label class="col-md-4 col-form-label pb-0">...</label>
+                                    <label class="col-md-2 pr-0  col-form-label pb-0">Tình trạng: </label>
+                                    <label class="col-md-4 col-form-label pb-0">
+                                        ...
+                                        @*<span class="badge badge-info badge-pill fs-12 align-middle">Bình thường</span>*@
+                                    </label>
+
+                                </div>
+                                <div class="form-group row  mb-0">
+                                    <label class="col-md-2 pr-0 col-form-label pb-0">Họ tên</label>
+                                    <label class="col-md-4 col-form-label fw-700 pb-0">...</label>
+                                    <label class="col-md-2 pr-0 col-form-label pb-0">SĐT</label>
+                                    <label class="col-md-3 col-form-label fw-700 pb-0">...</label>
+                                </div>
+                                <div class="form-group row  mb-0">
+                                    <label class="col-md-2 pr-0 col-form-label pb-0">Email</label>
+                                    <label class="col-md-4 col-form-label fw-700 pb-0">...</label>
+
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="form-group row  mb-0">
+                                    <label class="col-md-4 pr-0 col-form-label pb-0">SL sách đã mượn</label>
+                                    <label class="col-md-8 col-form-label fw-700 pb-0">...</label>
+                                </div>
+                                <div class="form-group row  mb-0">
+
+                                    <label class="col-md-4 pr-0 col-form-label pb-0">SL đã trả</label>
+                                    <label class="col-md-8 col-form-label fw-700 pb-0">...</label>
+                                </div>
+                                <div class="form-group row  mb-0">
+                                    <label class="col-md-4 pr-0 col-form-label pb-0">SL chưa trả</label>
+                                    <label class="col-md-8 col-form-label fw-700 pb-0">...</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="box-title mr-b-0 text-gray-dark text-uppercase"><i class="material-icons ">collections_bookmark</i> Danh sách phiếu mượn</h5>
+                        <div class="form-group row d-flex justify-content-between pr-3 mb-0">
+                            <div class="col-md-6">
+                                <input class="form-control" placeholder="Tìm kiếm theo mã hóa đơn..." id="txtSearchBook" />
+                            </div>
+                            @*<button class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal-book-pay">Xem phiếu mượn <span id="countBookPay"></span></button>*@
+                        </div>
+                        <table id="tbBook" class="cell-border row-border display  stripe nowrap mt-0">
+                            <thead>
+                                <tr class="bg-success text-white border">
+                                    <th>Mã phiếu mượn</th>
+                                    <th>Ngày mượn</th>
+                                    <th>Số lượng sách</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="box-title mr-b-0 text-gray-dark text-uppercase"><i class="material-icons ">info_outline</i> Thông tin phiếu mượn</h5>
+                        <div class="form-group row d-flex justify-content-between pr-3 mb-0">
+                            <div class="col-md-6">
+                                <input class="form-control" placeholder="Tìm sách trong phiếu mượn..." />
+                            </div>
+
+                            <button class="btn btn-outline-secondary" id="submitBookReturn">Xuất phiếu trả </button>
+                        </div>
+                        <table class="table table-responsive table-bordered" id="table-data" style="width: 100%;">
+                            @*table table-responsive table-bordered mt-0*@
+                            <thead>
+                                <tr>
+                                    <th>Ảnh bìa</th>
+                                    <th>Tiêu đề sách</th>
+                                    <th>Trạng thái</th>
+                                    @*<th>SL</th>*@
+                                    <th>
+                                        <div class="checkbox checkbox-success py-0">
+                                            <label>
+                                                <input type="checkbox" id="checkAllBookReturn"> <span class="label-text"> Trả sách</span>
+                                            </label>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal-book-pay" class="modal modal-color-scheme fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header text-inverse">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h5 class="modal-title" id="mySmallModalLabel"> <i class="material-icons ">library_add</i> Thông tin phiếu mượn</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                    <div class="col-12 mb-3">
+                        <h5 class="box-title mr-b-0 text-gray-dark text-uppercase"><i class="material-icons ">person</i> Thông tin đọc giả</h5>
+                        <div class="row" id="viewProfileUserBookPay">
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-12">
+                        <h5 class="box-title mr-b-0 text-gray-dark text-uppercase"><i class="material-icons ">library_books</i> Thông tin sách mượn</h5>
+
+                        <table class="*table table-responsive table-bordered mt-0" id="table-data" style="width: 100%;">
+                            @*table table-responsive table-bordered mt-0*@
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Ảnh bìa</th>
+                                    <th>Tiêu đề sách</th>
+                                    <th>SL</th>
+                                    <th>Hủy</th>
+                                </tr>
+                            </thead>
+
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="submitBookPay">Xuất phiếu mượn</button>
+            </div>
+        </div>
+
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+
+@section js{
+
+    <script src="~/assets/js/typeahead.bundle.js"></script>
+    <script src="~/assets/js/jquery.easy-autocomplete.min.js"></script>
+
+    <script id="template-profile-user" type="text/x-handlebars-template">
+        <div class="animated  zoomIn">
+            <div class="img-caption text-center ">
+                <h4 class="fw-700 mb-1">
+                    {{FullName}}
+                </h4>
+                {{#ifvalue  Status  equals = 1 }}
+                <span class="badge badge-info badge-pill fs-12 align-middle">Bình thường</span>
+                {{/ifvalue}}
+                {{#ifvalue  Status  equals = 2  }}
+                <span class="badge badge-danger badge-pill fs-12 align-middle">Cảnh cáo</span>
+                {{/ifvalue}}
+                @*<h4 class="fw-100">{{UserName}}</h4>*@
+                <p class="text-muted mb-0">Số điện thoại: {{PhoneNumber}}</p>
+                <p class="text-muted">Email: {{Email}}</p>
+            </div>
+
+            <section class="mt-30 px-3">
+                <ul class="list-unstyled row padded-reverse text-center followers-details-list">
+                    <li class="col-12">
+                        <h4 class="mb-0 mt-1">200</h4>
+                        <p class="text-muted mb-1">Tổng sách đã mượn</p>
+                    </li>
+                    <li class="col-6 px-1">
+                        <h4 class="mb-0 mt-1">200</h4>
+                        <p class="text-muted  mb-1">Sách đã trả</p>
+                    </li>
+                    <li class="col-6 px-1">
+                        <h4 class="mb-0 mt-1">1.9M</h4>
+                        <p class="text-muted  mb-1">Sách chưa trả</p>
+                    </li>
+                </ul>
+
+            </section>
+        </div>
+
+    </script>
+    <script id="template-profile-user-2" type="text/x-handlebars-template">
+        <div class="col-7">
+            <div class="form-group row  mb-0">
+                <label class="col-md-2 pr-0 pb-0  col-form-label">Tài khoản : </label>
+                <label class="col-md-4 col-form-label pb-0 ">{{UserName}}</label>
+                <label class="col-md-2 pr-0 pb-0  col-form-label">Tình trạng : </label>
+                <label class="col-md-4 col-form-label  pb-0">
+                    {{#ifvalue  Status  equals = 1 }}
+                    <span class="badge badge-info badge-pill fs-12 align-middle">Bình thường</span>
+                    {{/ifvalue}}
+                    {{#ifvalue  Status  equals = 2  }}
+                    <span class="badge badge-danger badge-pill fs-12 align-middle">Cảnh cáo</span>
+                    {{/ifvalue}}
+                </label>
+
+            </div>
+            <div class="form-group row  mb-0">
+                <label class="col-md-2 pb-0 pr-0 col-form-label">Họ tên : </label>
+                <label class="col-md-4 pb-0 col-form-label fw-700">{{FullName}}</label>
+                <label class="col-md-2 pb-0 pr-0 col-form-label">SĐT : </label>
+                <label class="col-md-3 pb-0 col-form-label fw-700">{{PhoneNumber}}</label>
+            </div>
+            <div class="form-group row  mb-0">
+                <label class="col-md-2 pb-0 pr-0 col-form-label">Email : </label>
+                <label class="col-md-3 pb-0 col-form-label fw-700">{{Email}}</label>
+            </div>
+        </div>
+        <div class="col-5">
+            <div class="form-group row  mb-0">
+                <label class="col-md-4 pr-0 pb-0 col-form-label">SL sách đã mượn: </label>
+                <label class="col-md-8 col-form-label fw-700 pb-0">{{CountPay}}</label>
+            </div>
+            <div class="form-group row  mb-0">
+
+                <label class="col-md-4 pr-0 col-form-label pb-0">SL đã trả: </label>
+                <label class="col-md-8 col-form-label fw-700 pb-0">{{CountReturn}}</label>
+            </div>
+            <div class="form-group row  mb-0">
+                <label class="col-md-4 pr-0 col-form-label pb-0">SL chưa trả: </label>
+                <label class="col-md-8 col-form-label fw-700 pb-0">{{CountNoReturn}}</label>
+            </div>
+        </div>
+    </script>
+    <script id="template-profile-user-bookpay" type="text/x-handlebars-template">
+        <div class="col-12">
+            <div class="form-group row  mb-0">
+                <label class="col-md-2 pr-0 pb-0  col-form-label">Tài khoản : </label>
+                <label class="col-md-4 col-form-label pb-0 ">{{UserName}}</label>
+                <label class="col-md-2 pr-0 pb-0  col-form-label">Tình trạng : </label>
+                <label class="col-md-4 col-form-label  pb-0">
+                    {{#ifvalue  Status  equals = 1 }}
+                    <span class="badge badge-info badge-pill fs-12 align-middle">Bình thường</span>
+                    {{/ifvalue}}
+                    {{#ifvalue  Status  equals = 2  }}
+                    <span class="badge badge-danger badge-pill fs-12 align-middle">Cảnh cáo</span>
+                    {{/ifvalue}}
+                </label>
+
+            </div>
+            <div class="form-group row  mb-0">
+                <label class="col-md-2 pb-0 pr-0 col-form-label">Họ tên : </label>
+                <label class="col-md-4 pb-0 col-form-label fw-700">{{FullName}}</label>
+                <label class="col-md-2 pb-0 pr-0 col-form-label">SĐT : </label>
+                <label class="col-md-3 pb-0 col-form-label fw-700">{{PhoneNumber}}</label>
+            </div>
+            <div class="form-group row  mb-0">
+                <label class="col-md-2 pb-0 pr-0 col-form-label">Email : </label>
+                <label class="col-md-3 pb-0 col-form-label fw-700">{{Email}}</label>
+
+            </div>
+        </div>
+
+
+    </script>
+    <script id="template-book" type="text/x-handlebars-template">
+        <div class=" animated  zoomIn">
+            <div class="img-caption text-center">
+
+                <img src="{{Image}}" class="card-img-top img-fluid" style="width:40%" alt="{{Title}}" title="{{Title}}" />
+                <h5 class="fw-600 mb-1 title-hide" title="{{Title}}">
+                    {{Title}}
+                </h5>
+                @*{{#ifvalue  Status  equals = 1 }}
+                    <span class="badge badge-info badge-pill fs-12 align-middle">Bình thường</span>
+                    {{/ifvalue}}
+                    {{#ifvalue  Status  equals = 2  }}
+                    <span class="badge badge-danger badge-pill fs-12 align-middle">Cảnh cáo</span>
+                    {{/ifvalue}}*@
+                @*<h4 class="fw-100">{{UserName}}</h4>*@
+                <p class="text-muted mb-0">Nhà xuất bản: {{PublisherName}}</p>
+                <p class="text-muted mb-0">Tác giả: {{Author}}</p>
+            </div>
+            @*<div class="caption-btn pd-lr-50">
+                    <a href="javascript:void(0);" class="btn btn-block btn-rounded btn-info">Follow</a>
+                    <div class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle btn btn-block btn-rounded btn-outline-info" data-toggle="dropdown" aria-expanded="false">Connect <i class="fa fa-caret-down list-icon"></i></a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="javascript:void(0);"><i class="material-icons list-icon float-left mr-r-10">date_range</i> History </a><a class="dropdown-item" href="javascript:void(0);"><i class="material-icons list-icon float-left mr-r-10">format_list_bulleted</i> Detailed logs </a>
+                            <a class="dropdown-item" href="javascript:void(0);"><i class="material-icons list-icon float-left mr-r-10">pie_chart_outlined</i> Statistics</a>
+                            <div role="separator" class="dropdown-divider"></div><a class="dropdown-item" href="javascript:void(0);"><i class="material-icons list-icon float-left mr-r-10">close</i> <strong>Clear list</strong></a>
+                        </div>
+                    </div>
+                </div>*@
+            <section class="mt-3 px-3">
+                <ul class="list-unstyled row padded-reverse text-center followers-details-list">
+
+                    <li class="col-6 px-1">
+                        <h4 class="mb-0  mt-1">1</h4>
+                        <p class="text-muted  mb-1">Số lượng mượn</p>
+                    </li>
+                    <li class="col-6 px-1">
+                        <h4 class="mb-0  mt-1">{{Quantity}}</h4>
+                        <p class="text-muted  mb-1">Còn trong thư viện</p>
+                    </li>
+                    <li class="col-12 px-0">
+                        <button class="btn-block btn btn-success btnChoseBook" data-id="{{ID}}">CHỌN SÁCH</button>
+                    </li>
+                </ul>
+
+            </section>
+        </div>
+
+    </script>
+    <script id="template-action-table" type="text/x-handlebars-template">
+        <button class="btn btn-success btn-sm btnDetailBill" id="btnDetailBill-{{id}}" data-id="{{id}}"><i class="material-icons list-icon">add</i> Xem chi tiêt</button>
+
+        @*<a href="javascript: void(0); " data-id="{{id}}"
+               class="color-danger del-submit" title="Hủy">
+                <i class="material-icons">delete_forever</i>
+            </a>*@
+    </script>
+    <script id="template-action-check-table" type="text/x-handlebars-template">
+        {{#ifvalue status  equals = false}}
+        <div class="checkbox checkbox-success py-0">
+            <label>
+                <input type="checkbox" data-id="{{id}}" class="checkBookReturn"> <span class="label-text"></span>
+            </label>
+        </div>
+        {{/ifvalue}}
+        @*<input type="checkbox" class="chkBookDetail" data-id="{{id}}">*@
+        @*<button class="btn btn-danger btn-sm btn-circle chkBookDetail" data-id="{{id}}"><i class="material-icons list-icon">delete_forever</i></button>*@
+
+        @*<a href="javascript: void(0); " data-id="{{id}}"
+           class="color-danger del-submit" title="Hủy">
+            <i class="material-icons">delete_forever</i>
+        </a>*@
+    </script>
+    <script>
+        $(document).ready(function () {
+            var idUserPay = null,idBillPay=null;
+            $(".typeahead").on("click", function () {
+                $(this).select();
+            });
+
+            Handlebars.registerHelper('ifvalue', function (conditional, options) {
+                if (conditional == options.hash.equals) {
+                    return options.fn(this);
+                } else {
+                    return options.inverse(this);
+                }
+            });
+
+
+            $("#search-user .typeahead").easyAutocomplete({
+                url: "/BookBill/SearchUser",
+                getValue: function (element) {
+                    return element.UserName;
+                },
+                highlightPhrase: false,
+                list: {
+                    maxNumberOfElements: 5,
+                    match: {
+                        enabled: true
+                    },
+                    sort: {
+                        enabled: true
+                    },
+
+                    onChooseEvent: function () {
+                        var data = $("#search-user .typeahead").getSelectedItemData();
+                        $.ajax({
+                            url: "/BookBill/GetInfoUser?userId=" + data.ID
+                        }).done(function (result) {
+                            var source = document.getElementById("template-profile-user-2").innerHTML;
+                            var template = Handlebars.compile(source);
+                            //var context = data;
+                            var html = template(result);
+                            $('#viewProfileUser2').html(html);
+
+                            var source2 = document.getElementById("template-profile-user-bookpay").innerHTML;
+                            var template2 = Handlebars.compile(source2);
+                            var html2 = template2(result);
+                            $('#viewProfileUserBookPay').html(html2);
+
+                            //$('#viewBooks').html(html);
+                            console.log(result);
+                            idUserPay = data.ID;
+                            $('#tbBook').DataTable().ajax.url('/BookBill/GetBookBill?userId=' + idUserPay).load().draw();
+                        }).fail(function (x, t, e) {
+                            console.log(e);
+                        });
+
+                    }
+                },
+                template: {
+                    type: "description",
+                    fields: {
+                        description: "Email"
+                    }
+                }
+            });
+             
+            $('#tbBook').DataTable({
+                ajax: {
+                    url: "/BookBill/GetBookBill?userId=",
+                    "dataSrc": function (data) {
+                        // manipulate your data (json)
+                        //console.log(data);
+
+                        // return the data that DataTables is to use to draw the table
+                        return data;
+                    }
+                },
+                scrollY: 600,
+
+                scroller: {
+                    rowHeight: 30
+                },
+                dom: 'rt<"bottom"flpi><"clear">',
+                scrollCollapse: true,
+                ordering: false,
+                columns: [
+                    {
+                        "data": "Code",
+
+                    },
+                    {
+                        "data": "Date",
+
+                    },
+                    {
+                        "data": "Quantity",
+                    },
+                    {
+                        "data": "ID",
+                        render: function (data, type, row) {
+                            var source = document.getElementById("template-action-table").innerHTML;
+                            var template = Handlebars.compile(source);
+                            var context = { id: data };
+                            var html = template(context);
+                            return html;
+                        }
+                    },
+
+                ]
+            });
+            $('#txtSearchBook').on('keyup change', function () {
+                var table = $('#tbBook').DataTable();
+                table.columns(0).search($(this).val()).draw();
+            });
+            $('#checkAllBookReturn').on('change', function () {
+                var check = $(this).is(':checked');
+                $('#table-data').find('.checkBookReturn').prop('checked', check).trigger('change');
+            });
+            $('#table-data').DataTable({
+                ajax: {
+                    url: "/BookBill/GetBillDetail?id=",
+                    "dataSrc": function (data) {
+                        // manipulate your data (json)
+                        //console.log(data);
+
+                        // return the data that DataTables is to use to draw the table
+                        return data;
+                    }
+                },
+                searching: false,
+                ordering: false,
+                paging: false,
+                info: false,
+                columns: [
+                    {
+                        "data": "Image",
+                        render: function (data, type, row) {
+                            return `<img  src='${data}' style="max-width: 80%;" title='${data}'/>`;
+                        }
+                    },
+                    {
+                        "data": "Title",
+                        render: function (data, type, row) {
+                            //var title = data.substr(0, 30) + '...';
+                            return `<span title='${data}'>${data}</span>`;
+                        }
+                    },
+                    {
+                        "data": "Status",
+                        render: function (data, type, row) {
+                            if (data==true) {
+                                return `<span class="badge badge-info badge-pill fs-12 align-middle">Đã trả</span>`;
+                            } else {
+                                return `<span class="badge badge-danger badge-pill fs-12 align-middle">Chưa trả</span>`;
+                            }
+                            
+                        }
+                    },
+                    {
+                        "data": "ID",
+                        render: function (data, type, row) {
+                            var source = document.getElementById("template-action-check-table").innerHTML;
+                            var template = Handlebars.compile(source);
+                            var status = row["Status"] == undefined ? false : row["Status"];
+                            var context = { id: data, status: status };
+                            var html = template(context);
+                            return html;
+                        }
+                    }
+                ]
+            });
+
+            $('#tbBook').on('click', '.btnDetailBill', function () {
+                var id = $(this).data('id');
+                idBillPay = id;
+                console.log(id);
+                $('#checkAllBookReturn').prop('checked', false);
+                $('#table-data').DataTable().ajax.url('/BookBill/GetBillDetail?id=' + id).load().draw();
+                
+            });
+
+            $('#table-data').on('click', '.chkBookDetail', function () {
+                var id = $(this).data('id');
+                console.log(id);
+                //var btn = $('#tbBook').find(`#btnDetailBill-${id}`);
+                //btn.removeClass('btn-gey').removeClass('disabled').addBack('btn-success');
+                $('#table-data').DataTable().row($(this).parents('tr'))
+                    .remove()
+                    .draw();
+
+            });
+            $('#submitBookReturn').on('click', function () {
+                var ids = [];
+                $('#table-data .checkBookReturn').each(function (i, checkbox) {
+                    if ($(checkbox).is(':checked')) {
+                        var id = $(checkbox).data('id');
+                        ids.push(id);
+                    }
+                });
+                if (ids.length == 0) {
+                    swal("Thông báo", "Danh sách trả rỗng", "info");
+                    return;
+                }
+                $.ajax({
+                    url: "/BookBill/ReturnBook",
+                    data: { idUser: idUserPay, idBooks: ids.join(',') }
+                }).done(function (result) {
+                    if (result == 1) {
+                        swal("Thông báo", "Trả sách thành công", "success");
+                        
+                        $.ajax({
+                            url: "/BookBill/GetInfoUser?userId=" + idUserPay
+                        }).done(function (result) {
+                            var source = document.getElementById("template-profile-user-2").innerHTML;
+                            var template = Handlebars.compile(source);
+                            //var context = data;
+                            var html = template(result);
+                            $('#viewProfileUser2').html(html);
+
+                            var source2 = document.getElementById("template-profile-user-bookpay").innerHTML;
+                            var template2 = Handlebars.compile(source2);
+                            var html2 = template2(result);
+                            $('#viewProfileUserBookPay').html(html2);
+
+                            //$('#viewBooks').html(html);
+                            //console.log(result);
+                            //idUserPay = data.ID;
+                            $('#tbBook').DataTable().ajax.url('/BookBill/GetBookBill?userId=' + idUserPay).load().draw();
+                            $('#checkAllBookReturn').prop('checked', false);
+                            $('#table-data').DataTable().ajax.url('/BookBill/GetBillDetail?id=' + idBillPay).load().draw();
+                        }).fail(function (x, t, e) {
+                            console.log(e);
+                        });
+
+
+
+
+
+                    } else {
+                        swal("Thất bại", data, "error");
+                    }
+                }).fail(function (x, t, e) {
+                    swal("Thất bại", e, "error");
+                });
+                console.log(ids);
+            });
+        });
+
+    </script>
+
+}
+

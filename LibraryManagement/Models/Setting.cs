@@ -17,5 +17,6 @@ namespace LibraryManagement.Models
         public int ID { get; set; }
         public string Content { get; set; }
         public Nullable<int> Value { get; set; }
+        public string Description { get; set; }
     }
 }

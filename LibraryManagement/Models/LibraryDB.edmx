@@ -34,6 +34,8 @@
           <Property Name="Date" Type="datetime" />
           <Property Name="Quantity" Type="int" />
           <Property Name="Type" Type="int" />
+          <Property Name="Status" Type="int" />
+          <Property Name="Code" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="BookBillDetails">
           <Key>
@@ -44,6 +46,9 @@
           <Property Name="BookID" Type="int" />
           <Property Name="Price" Type="money" />
           <Property Name="Quantity" Type="int" />
+          <Property Name="DateReturn" Type="datetime" />
+          <Property Name="Returned" Type="bit" />
+          <Property Name="BookBillReturnID" Type="int" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -96,6 +101,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Content" Type="nvarchar" MaxLength="100" />
           <Property Name="Value" Type="int" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -157,6 +163,8 @@
           <Property Name="Date" Type="DateTime" Precision="3" />
           <Property Name="Quantity" Type="Int32" />
           <Property Name="Type" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="BookBillDetail">
           <Key>
@@ -167,6 +175,9 @@
           <Property Name="BookID" Type="Int32" />
           <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="Quantity" Type="Int32" />
+          <Property Name="DateReturn" Type="DateTime" Precision="3" />
+          <Property Name="Returned" Type="Boolean" />
+          <Property Name="BookBillReturnID" Type="Int32" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -209,6 +220,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Content" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Value" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -277,6 +289,8 @@
           <EntitySetMapping Name="BookBills">
             <EntityTypeMapping TypeName="LibraryManagementModel.BookBill">
               <MappingFragment StoreEntitySet="BookBill">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
@@ -288,6 +302,9 @@
           <EntitySetMapping Name="BookBillDetails">
             <EntityTypeMapping TypeName="LibraryManagementModel.BookBillDetail">
               <MappingFragment StoreEntitySet="BookBillDetails">
+                <ScalarProperty Name="BookBillReturnID" ColumnName="BookBillReturnID" />
+                <ScalarProperty Name="Returned" ColumnName="Returned" />
+                <ScalarProperty Name="DateReturn" ColumnName="DateReturn" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="BookBillID" ColumnName="BookBillID" />
                 <ScalarProperty Name="BookID" ColumnName="BookID" />
@@ -337,6 +354,7 @@
           <EntitySetMapping Name="Settings">
             <EntityTypeMapping TypeName="LibraryManagementModel.Setting">
               <MappingFragment StoreEntitySet="Settings">
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Content" ColumnName="Content" />
                 <ScalarProperty Name="Value" ColumnName="Value" />

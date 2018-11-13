@@ -214,6 +214,9 @@
     <Compile Include="StringUtility\StringUtility.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\css\dataTables.bootstrap4.min.css" />
+    <Content Include="assets\css\easy-autocomplete.css" />
+    <Content Include="assets\css\easy-autocomplete.themes.css" />
     <Content Include="assets\css\glyphiconCustom.css" />
     <Content Include="assets\css\jquery.bootstrap-touchspin.css" />
     <Content Include="assets\css\fonts\glyphicons-halflings-regular.svg" />
@@ -296,8 +299,10 @@
     <Content Include="assets\img\flat-icons\stopwatch-3.png" />
     <Content Include="assets\js\bootstrap.min.js" />
     <Content Include="assets\js\custom.js" />
+    <Content Include="assets\js\jquery.easy-autocomplete.min.js" />
     <Content Include="assets\js\material-design.js" />
     <Content Include="assets\js\theme.js" />
+    <Content Include="assets\js\typeahead.bundle.js" />
     <Content Include="assets\plugins\file-input\css\fileinput-rtl.css" />
     <Content Include="assets\plugins\file-input\css\fileinput-rtl.min.css" />
     <Content Include="assets\plugins\file-input\css\fileinput.css" />
@@ -515,6 +520,8 @@
     <Content Include="Views\Book\ParitalBookDetail.cshtml" />
     <Content Include="Views\Book\BookDetail.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\BookBill\BorrowBook.cshtml" />
+    <Content Include="Views\BookBill\PayBook.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
