@@ -49,6 +49,7 @@
           <Property Name="DateReturn" Type="datetime" />
           <Property Name="Returned" Type="bit" />
           <Property Name="BookBillReturnID" Type="int" />
+          <Property Name="DateReturned" Type="datetime" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -178,6 +179,7 @@
           <Property Name="DateReturn" Type="DateTime" Precision="3" />
           <Property Name="Returned" Type="Boolean" />
           <Property Name="BookBillReturnID" Type="Int32" />
+          <Property Name="DateReturned" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -302,6 +304,7 @@
           <EntitySetMapping Name="BookBillDetails">
             <EntityTypeMapping TypeName="LibraryManagementModel.BookBillDetail">
               <MappingFragment StoreEntitySet="BookBillDetails">
+                <ScalarProperty Name="DateReturned" ColumnName="DateReturned" />
                 <ScalarProperty Name="BookBillReturnID" ColumnName="BookBillReturnID" />
                 <ScalarProperty Name="Returned" ColumnName="Returned" />
                 <ScalarProperty Name="DateReturn" ColumnName="DateReturn" />

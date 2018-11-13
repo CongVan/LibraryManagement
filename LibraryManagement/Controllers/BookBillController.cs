@@ -254,6 +254,7 @@ namespace LibraryManagement.Controllers
                         var billDetail = ctx.BookBillDetails.Where(c => c.ID == id).FirstOrDefault();
                         billDetail.Returned = true;
                         billDetail.BookBillReturnID = billReturn.ID;
+                        billDetail.DateReturned = DateTime.Now;
                         ctx.Entry(billDetail).State = System.Data.Entity.EntityState.Modified;
                         ctx.SaveChanges();
                     });

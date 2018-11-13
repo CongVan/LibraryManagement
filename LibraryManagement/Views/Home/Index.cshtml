@@ -1,4 +1,222 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-<h1>HOME PAGE</h1>
+@section css{
+    <style>
+        .title-hide{
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            max-width:10rem;
+            min-width:8rem;
+        }
+    </style>    
+}
+<div class="widget-list">
+    <div class="row">
+        <div class="col-md-3 col-sm-6 widget-holder">
+            <div class="widget-bg bg-primary text-inverse">
+                <div class="widget-body clearfix">
+                    <div class="widget-counter">
+                        <h6>ĐẦU SÁCH<small class="text-inverse">Tổng số lượng đầu sách trong thư viện</small></h6>
+                        <h3 class="h1"><span class="counter">@ViewBag.countBook</span></h3><i class="material-icons list-icon">library_books</i>
+                    </div>
+                    <!-- /.widget-counter -->
+                </div>
+                <!-- /.widget-body -->
+            </div>
+            <!-- /.widget-bg -->
+        </div>
+        <!-- /.widget-holder -->
+        <!-- Counter: Subscriptions -->
+        <div class="col-md-3 col-sm-6 widget-holder">
+            <div class="widget-bg bg-color-scheme text-inverse">
+                <div class="widget-body clearfix">
+                    <div class="widget-counter">
+                        <h6>ĐỘC GIẢ <small class="text-inverse">Tổng số lượng độc giả</small></h6>
+                        <h3 class="counter h1">@ViewBag.countUser</h3><i class="material-icons list-icon">people_outline</i>
+                    </div>
+                    <!-- /.widget-counter -->
+                </div>
+                <!-- /.widget-body -->
+            </div>
+            <!-- /.widget-bg -->
+        </div>
+        <!-- /.widget-holder -->
+        <!-- Counter: Users -->
+        <div class="col-md-3 col-sm-6 widget-holder">
+            <div class="widget-bg">
+                <div class="widget-body clearfix">
+                    <div class="widget-counter">
+                        <h6>SÁCH MƯỢN<small>Tổng số lượng sách đang mượn</small></h6>
+                        <h3 class="counter h1">@ViewBag.countBill</h3><i class="material-icons list-icon">public</i>
+                    </div>
+                    <!-- /.widget-counter -->
+                </div>
+                <!-- /.widget-body -->
+            </div>
+            <!-- /.widget-bg -->
+        </div>
+        <!-- /.widget-holder -->
+        <!-- Counter: Pageviews -->
+        <div class="col-md-3 col-sm-6 widget-holder">
+            <div class="widget-bg">
+                <div class="widget-body clearfix">
+                    <div class="widget-counter">
+                        <h6>TRUY CẬP<small>Tổng lượt truy cập vào thư viện</small></h6>
+                        <h3 class="counter h1">@ViewBag.countView</h3><i class="material-icons list-icon">show_chart</i>
+                    </div>
+                    <!-- /.widget-counter -->
+                </div>
+                <!-- /.widget-body -->
+            </div>
+            <!-- /.widget-bg -->
+        </div>
+        <!-- /.widget-holder -->
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-md-8 widget-holder">
+            <div class="widget-bg">
+                <div class="widget-body clearfix">
+                    <h5 class="box-title">SÁCH TRỄ HẠN TRẢ</h5>
+                    <div class="padded-reverse">
+                        <table class="table table-striped widget-status-table mr-b-0">
+                            <thead>
+                                <tr>
+                                    <th class="pd-l-20">Tài khoản</th>
+                                    <th class="pd-l-20">Họ tên</th>
+                                    <th>Sách mượn</th>
+                                    <th class="hidden-xs">Hạn trả</th>
+                                    <th class="text-right pd-r-20">Số ngày trễ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bodyBillOutDate">
+                                <tr>
+                                    <th class="pd-l-20">
+                                        <a href="index.html#">Tarcho Tee</a>
+                                    </th>
+                                    <td>
+                                        <span class="badge badge-info text-inverse">Complete</span>
+                                    </td>
+                                    <td class="text-muted hidden-xs">July 31,2017</td>
+                                    <td class="text-right">
+                                        <a href="index.html#"><i class="material-icons list-icon md-18 text-muted">edit</i></a>  <a href="index.html#"><i class="material-icons list-icon md-18 text-muted">delete</i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="pd-l-20">
+                                        <a href="index.html#">Athlete Tee</a>
+                                    </th>
+                                    <td>
+                                        <span class="badge badge-danger text-inverse">Pending</span>
+                                    </td>
+                                    <td class="text-muted hidden-xs">April 12, 2017</td>
+                                    <td class="text-right">
+                                        <a href="index.html#"><i class="material-icons list-icon md-18 text-muted">edit</i></a>  <a href="index.html#"><i class="material-icons list-icon md-18 text-muted">delete</i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="pd-l-20">
+                                        <a href="index.html#">Namche Zip Tee</a>
+                                    </th>
+                                    <td>
+                                        <span class="badge badge-warning text-inverse">Delivered</span>
+                                    </td>
+                                    <td class="text-muted hidden-xs">August 3, 2017</td>
+                                    <td class="text-right">
+                                        <a href="index.html#"><i class="material-icons list-icon md-18 text-muted">edit</i></a>  <a href="index.html#"><i class="material-icons list-icon md-18 text-muted">delete</i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="pd-l-20">
+                                        <a href="index.html#">Asaar Jacket</a>
+                                    </th>
+                                    <td>
+                                        <span class="badge badge-info text-inverse">Complete</span>
+                                    </td>
+                                    <td class="text-muted hidden-xs">August 12, 2017</td>
+                                    <td class="text-right">
+                                        <a href="index.html#"><i class="material-icons list-icon md-18 text-muted">edit</i></a>  <a href="index.html#"><i class="material-icons list-icon md-18 text-muted">delete</i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="pd-l-20">
+                                        <a href="index.html#">Everest Zip Jacket</a>
+                                    </th>
+                                    <td>
+                                        <span class="badge badge-danger text-inverse">Pending</span>
+                                    </td>
+                                    <td class="text-muted hidden-xs">March 1, 2017</td>
+                                    <td class="text-right">
+                                        <a href="index.html#"><i class="material-icons list-icon md-18 text-muted">edit</i></a>  <a href="index.html#"><i class="material-icons list-icon md-18 text-muted">delete</i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="pd-l-20">
+                                        <a href="index.html#">Namche Zip Tee</a>
+                                    </th>
+                                    <td>
+                                        <span class="badge badge-warning text-inverse">Delivered</span>
+                                    </td>
+                                    <td class="text-muted hidden-xs">August 3, 2017</td>
+                                    <td class="text-right">
+                                        <a href="index.html#"><i class="material-icons list-icon md-18 text-muted">edit</i></a>  <a href="index.html#"><i class="material-icons list-icon md-18 text-muted">delete</i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="pd-l-20">
+                                        <a href="index.html#">Tarcho Tee</a>
+                                    </th>
+                                    <td>
+                                        <span class="badge badge-info text-inverse">Complete</span>
+                                    </td>
+                                    <td class="text-muted hidden-xs">July 31,2017</td>
+                                    <td class="text-right">
+                                        <a href="index.html#"><i class="material-icons list-icon md-18 text-muted">edit</i></a>  <a href="index.html#"><i class="material-icons list-icon md-18 text-muted">delete</i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- /.widget-status-table -->
+                    </div>
+                    <!-- /.padded-reverse -->
+                </div>
+                <!-- /.widget-body badge -->
+            </div>
+            <!-- /.widget-bg -->
+        </div>
+        
+    </div>
+</div>
+@section js{
+<script id="template-tb-outdate" type="text/x-handlebars-template">
+    {{#each bills}}
+    <tr>
+        <td class="pd-l-20">
+            <a href="#">{{UserName}}</a>
+        </td>
+        <td class="text-muted hidden-xs">{{FullName}}</td>
+        <td class="text-muted hidden-xs title-hide" title="{{BookName}}">{{BookName}}</td>
+        <td class="text-muted hidden-xs">{{DateReturn}}</td>
+        <td class="text-center"><span class="badge badge-danger text-inverse">{{CountDate}}</span></td>
+    </tr>
+    {{/each}}
+</script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: "/Home/GetBillOutDate"
+
+            }).done(function (data) {
+                var source = document.getElementById("template-tb-outdate").innerHTML;
+                var template = Handlebars.compile(source);
+                //var context = data;
+                var html = template({ bills: data });
+                $('#bodyBillOutDate').html(html);
+                }).fail(function (x, t, e) {
+                    console.log(e);
+            });
+        });
+    </script>
+
+}

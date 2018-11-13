@@ -22,5 +22,6 @@ namespace LibraryManagement.Models
         public Nullable<System.DateTime> DateReturn { get; set; }
         public Nullable<bool> Returned { get; set; }
         public Nullable<int> BookBillReturnID { get; set; }
+        public Nullable<System.DateTime> DateReturned { get; set; }
     }
 }
