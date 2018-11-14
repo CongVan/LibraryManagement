@@ -1,0 +1,63 @@
+﻿@using LibraryManagement.Models
+@model User
+@{
+    ViewBag.Title = "Thông tin tài khoản";
+}
+<div class="row d-flex justify-content-center">
+    <div class="col-12 col-md-4 widget-holder">
+        <div class="widget-bg">
+            <div class="widget-body clearfix">
+                <div class="contact-info">
+                    <header class="text-center">
+                        <div class="float-right dropdown">
+                            <a href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle"><i class="material-icons list-icon text-color-scheme-dark">menu</i></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="javascript:void(0);"><i class="material-icons list-icon float-left mr-r-10">date_range</i> History </a><a class="dropdown-item" href="javascript:void(0);"><i class="material-icons list-icon float-left mr-r-10">format_list_bulleted</i> Detailed logs </a>
+                                <a class="dropdown-item" href="javascript:void(0);"><i class="material-icons list-icon float-left mr-r-10">pie_chart_outlined</i> Statistics</a>
+                                <div role="separator" class="dropdown-divider"></div><a class="dropdown-item" href="javascript:void(0);"><i class="material-icons list-icon float-left mr-r-10">close</i> <strong>Clear list</strong></a>
+                            </div>
+                        </div>
+                        <!-- /.dropdown -->
+                        <div class="text-center">
+                            <figure class="inline-block user--online thumb-lg">
+                                <img src="~/assets/demo/user-cards/11.jpg" class="rounded-circle img-thumbnail" alt="">
+                            </figure>
+                        </div>
+                        <h4 class="mt-1"><a href="#">@Model.FullName</a> <span class="badge text-uppercase badge-warning align-middle">Pro</span></h4>
+                        <div class="contact-info-address">
+                            <i class="material-icons list-icon">location_on</i>
+                            <p>Việt Nam</p>
+                        </div>
+                    </header>
+                    <section class="padded-reverse">
+                        <h5>User Status <small class="float-right">Quyền: <strong>@Model.RoleID</strong></small></h5>
+                        <div class="row text-center">
+                         
+                            @*<div class="col-4">
+                                    <span>14,563</span>
+                                    <br><small>views</small>
+                                </div>
+                                <div class="col-4">
+                                    <span>762</span>
+                                    <br><small>likes</small>
+                                </div>
+                                <div class="col-4">
+                                    <span>54</span>
+                                    <br><small>comments</small>
+                                </div>*@
+                        </div>
+                    </section>
+                    <!-- /.padded-reverse -->
+                    @*<footer class="clearfix">
+                            <a href="page-profile.html#" class="btn btn-success btn-rounded"><i class="material-icons list-icon">done</i>	Following</a>  <a href="page-profile.html#" class="float-right btn btn-default btn-rounded">Message</a>
+                        </footer>*@
+                </div>
+                <!-- /.contact-info -->
+            </div>
+            <!-- /.widget-body -->
+        </div>
+        <!-- /.widget-bg -->
+    </div>
+</div>
+
+

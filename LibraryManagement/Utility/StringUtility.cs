@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 
-namespace LibraryManagement.StringUtility
+namespace LibraryManagement.Utility
 {
     public class StringUtility
     {

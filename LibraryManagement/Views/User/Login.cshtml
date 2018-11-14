@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{ 
     Layout = null;
 }
 <!DOCTYPE html>
@@ -10,7 +9,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/demo/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/assets/demo/favicon.png">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Login</title>
     <!-- CSS -->
@@ -24,31 +23,38 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet" type="text/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
     <link href="~/assets/css/style.css" rel="stylesheet" type="text/css">
+    <style>
+        .msgCounter {
+            font-weight: bold;
+            font-size: 17px;
+        }
+    </style>
     <!-- Head Libs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
 </head>
 
-<body class="body-bg-full profile-page" style="background-image: url(~/assets/demo/night.jpg)">
+<body class="body-bg-full profile-page">
     <div id="wrapper" class="row wrapper">
         <div class="col-10 ml-sm-auto col-sm-6 col-md-4 ml-md-auto login-center mx-auto">
             <div class="navbar-header text-center">
-                <a href="index.html">
-                    <img alt="" src="~/assets/demo/logo-expand-dark.png">
+                <a href="#">
+                    <img alt="" src="/assets/demo/logo-expand-dark.png">
                 </a>
             </div>
             <!-- /.navbar-header -->
-            <form class="form-material ">
+            <form class="form-material " id="frmLogin" action="/User/Login" method="post">
                 <div class="form-group">
-                    <input type="email" class="form-control form-control-line" name="UserName" id="UserName">
+                    <input type="text" class="form-control form-control-line" name="UserName" id="UserName" required>
                     <label for="UserName">Tài khoản</label>
                 </div>
                 <div class="form-group">
-                    <input type="password" placeholder="Mật khẩu" class="form-control form-control-line">
+                    <input type="password" placeholder="Mật khẩu" class="form-control form-control-line" name="Password" id="password" required>
                     <label>Mật khẩu</label>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-block btn-lg btn-success ripple" type="button">Đăng nhập</button>
+                    <button class="btn btn-block btn-lg btn-success ripple " type="submit" id="btnSubmit">Đăng nhập</button>
                 </div>
                 <div class="form-group no-gutters mb-0">
                     <div class="col-md-12 d-flex">
@@ -65,28 +71,80 @@
             <!-- /.form-material -->
             <hr>
             @*<div class="row btn-list">
-                <div class="col-md-6">
-                    <button type="button" class="btn btn-block btn-facebook ripple" data-toggle="tooltip" data-placement="top" title="Login with Facebook"><i class="social-icons list-icon">facebook</i> Facebook</button>
-                </div>
-                <div class="col-md-6">
-                    <button type="button" class="btn btn-block btn-googleplus ripple" data-toggle="tooltip" data-placement="top" title="Login with Google"><i class="social-icons list-icon">googleplus</i> Google</button>
-                </div>
-            </div>*@
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-block btn-facebook ripple" data-toggle="tooltip" data-placement="top" title="Login with Facebook"><i class="social-icons list-icon">facebook</i> Facebook</button>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-block btn-googleplus ripple" data-toggle="tooltip" data-placement="top" title="Login with Google"><i class="social-icons list-icon">googleplus</i> Google</button>
+                    </div>
+                </div>*@
             <!-- /.btn-list -->
             @*<footer class="col-sm-12 text-center">
-                <hr>
-                <p>
-                    Don't have an account? <a href="page-register.html" class="text-primary m-l-5"><b></b></a>
-                </p>
-            </footer>*@
+                    <hr>
+                    <p>
+                        Don't have an account? <a href="page-register.html" class="text-primary m-l-5"><b></b></a>
+                    </p>
+                </footer>*@
         </div>
         <!-- /.login-center -->
     </div>
     <!-- /.body-container -->
     <!-- Scripts -->
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="~/assets/js/material-design.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.4/sweetalert2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#frmLogin').on('keypress', function (e) {
+                if (e.which == 13) {
+                    $(this).submit();
+                } else {
+                    return true;
+                }
+            });
+            
+            $('#frmLogin').on('submit', function (e) {
+                e.preventDefault();
+                const data = $(this).serialize();
+                //var formData = new URLSearchParams(new FormData())
+                var url = $(this).attr('action');
+                $.ajax({
+                    url: url,
+                    data: data,
+                    type: 'post',
+                    beforeSend: function () {
+                        $('#btnSubmit').addClass('disabled');
+                    },
+                    complete: function () {
+                        $('#btnSubmit').removeClass('disabled');
+                    }
+                }).done(function (data) {
+                    if (data == 1) {
+                        var time = 3, msgTimer = `Chuyển trang trong <b class='msgCounter'>#time</b> giây.`;
+
+                        swal("Đăng nhập thành công", msgTimer.replace(/#time/, time), "success")
+                            .then(function () {
+                                window.location.href = "/";
+                            });
+                        var timer = setInterval(function () {
+                            time--;
+                            if (time <= 0) {
+                                clearInterval(timer);
+                                window.location.href = "/";
+                            }
+                            $('#swal2-content').html(msgTimer.replace(/#time/, time));
+                        }, 1000);
+                    } else {
+                        swal("Đăng nhập thất bại", "Tài khoản hoặc mật khẩu không đúng.");
+                    }
+                }).fail(function (x, t, e) {
+                    swal("Đăng nhập thất bại",e);
+                });
+            });
+        });
+
+    </script>
 </body>
 
 </html>

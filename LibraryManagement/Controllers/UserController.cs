@@ -1,4 +1,6 @@
-﻿using LibraryManagement.Models;
+﻿using LibraryManagement.Filter;
+using LibraryManagement.Models;
+using LibraryManagement.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +34,7 @@ namespace LibraryManagement.Controllers
             {
                 using (var ctx = new LibraryManagementEntities())
                 {
-                    user.Password = StringUtility.StringUtility.HashSHA1(user.UserName);
+                    user.Password = Utility.StringUtility.HashSHA1(user.UserName);
                     user.RoleID = 1;
                     user.Flag = true;
                     user.ConfirmEmail = false;
@@ -72,6 +74,39 @@ namespace LibraryManagement.Controllers
         {
             return View();
         }
-        
+        [CheckLogin]
+        public ActionResult Profile()
+        {
+            var user = CurrentContext.GetCurUser();
+            return View(user);
+        }
+        public ActionResult LogOut()
+        {   
+            CurrentContext.Detroy();
+            
+            return RedirectToAction("Login", "User");
+        }
+        [HttpPost]
+        public ActionResult Login(User user)
+        {
+            using (var ctx=new LibraryManagementEntities())
+            {
+                var pass = Utility.StringUtility.HashSHA1(user.Password);
+                var u = ctx.Users.Where(c => c.UserName == user.UserName && c.Password == pass).FirstOrDefault();
+                if (u != null)
+                {
+                    Session["isLogin"] = 1;
+                    Session["User"] = u;
+
+
+                    return Json(1, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(-1, JsonRequestBehavior.AllowGet);
+                }
+            }
+
+        }
     }
 }

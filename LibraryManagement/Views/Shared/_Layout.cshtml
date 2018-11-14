@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using LibraryManagement.Utility
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -31,8 +32,8 @@
     @*<link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" rel="stylesheet" type="text/css">*@
     @*<link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" rel="stylesheet" type="text/css">*@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
-    
-    <link href="~/assets/css/dataTables.bootstrap4.min.css" rel="stylesheet" /> 
+
+    <link href="~/assets/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.1/jquery.toast.min.css" rel="stylesheet" type="text/css">
     @*<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>*@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.css" rel="stylesheet" type="text/css">
@@ -55,7 +56,7 @@
 <body class="header-centered sidebar-horizontal">
     <div id="wrapper" class="wrapper">
         <!-- HEADER & TOP NAVIGATION -->
-        <nav class="navbar bg-success" hidden>
+        <nav class="navbar bg-success">
             <!-- Logo Area -->
             <div class="navbar-header">
                 <a href="" class="navbar-brand text-center">
@@ -81,113 +82,126 @@
             <!-- /.navbar-search -->
             <div class="spacer"></div>
             <!-- Right Menu -->
-            @*<ul class="nav navbar-nav hidden-md-down">
-            <li class="dropdown">
-                <a href="javascript:void(0);" class="dropdown-toggle ripple" data-toggle="dropdown"><i class="material-icons list-icon">mail_outline</i> <span class="badge badge-pill bg-primary">3</span></a>
-                <div class="dropdown-menu dropdown-left dropdown-card animated flipInY">
-                    <div class="card">
-                        <header class="card-header">
-                            New messages <span class="mr-l-10 badge badge-border bg-primary">3</span>
-                        </header>
-                        <ul class="list-unstyled dropdown-list-group">
-                            <li>
-                                <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user3.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Steve Smith</span> <small>10.14.2016  2:30pm</small> <span class="media-content">I slowly updated my Behance with some recent projects ...</span></span></a>
-                            </li>
-                            <li>
-                                <a href="#" class="media"><span class="d-flex user--offline thumb-xs"><img src="assets/demo/users/user6.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Emily Lee</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Hi John!</span></span></a>
-                            </li>
-                            <li>
-                                <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user2.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Christopher Palmer</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Like the illustration and the indicator style. Best of luck ...</span></span></a>
-                            </li>
-                            <li>
-                                <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user3.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Steve Smith</span> <small>10.14.2016  2:30pm</small> <span class="media-content">I slowly updated my Behance with some recent projects ...</span></span></a>
-                            </li>
-                            <li>
-                                <a href="#" class="media"><span class="d-flex user--offline thumb-xs"><img src="assets/demo/users/user6.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Emily Lee</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Hi John!</span></span></a>
-                            </li>
-                            <li>
-                                <a href="#" class="media"><span class="d-flex user--offline thumb-xs"><img src="assets/demo/users/user2.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Christopher Palmer</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Like the illustration and the indicator style. Best of luck ...</span></span></a>
-                            </li>
-                        </ul>
-                        <!-- /.dropdown-list-group -->
+            <ul class="nav navbar-nav hidden-md-down">
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle ripple" data-toggle="dropdown"><i class="material-icons list-icon">mail_outline</i> <span class="badge badge-pill bg-primary">3</span></a>
+                    <div class="dropdown-menu dropdown-left dropdown-card animated flipInY">
+                        <div class="card">
+                            <header class="card-header">
+                                New messages <span class="mr-l-10 badge badge-border bg-primary">3</span>
+                            </header>
+                            <ul class="list-unstyled dropdown-list-group">
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user3.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Steve Smith</span> <small>10.14.2016  2:30pm</small> <span class="media-content">I slowly updated my Behance with some recent projects ...</span></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex user--offline thumb-xs"><img src="assets/demo/users/user6.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Emily Lee</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Hi John!</span></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user2.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Christopher Palmer</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Like the illustration and the indicator style. Best of luck ...</span></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user3.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Steve Smith</span> <small>10.14.2016  2:30pm</small> <span class="media-content">I slowly updated my Behance with some recent projects ...</span></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex user--offline thumb-xs"><img src="assets/demo/users/user6.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Emily Lee</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Hi John!</span></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex user--offline thumb-xs"><img src="assets/demo/users/user2.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Christopher Palmer</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Like the illustration and the indicator style. Best of luck ...</span></span></a>
+                                </li>
+                            </ul>
+                            <!-- /.dropdown-list-group -->
+                        </div>
+                        <!-- /.card-->
                     </div>
-                    <!-- /.card-->
-                </div>
-                <!-- /.dropdown-menu -->
-            </li>
-            <!-- /.dropdown -->
-            <li class="dropdown hidden-md-down">
-                <a href="#" class="dropdown-toggle ripple" data-toggle="dropdown"><i class="material-icons list-icon">event_available</i> <span class="badge badge-pill bg-primary">9</span></a>
-                <div class="dropdown-menu dropdown-left dropdown-card animated flipInY">
-                    <div class="card">
-                        <header class="card-header">
-                            New notifications <span class="mr-l-10 badge badge-border bg-primary">4</span>
-                        </header>
-                        <ul class="list-unstyled dropdown-list-group">
-                            <li>
-                                <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">check</i> </span><span class="media-body"><span class="media-heading">Invitation accepted</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Your invitation for Mars has been accepted ...</span></span></a>
-                            </li>
-                            <li>
-                                <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user3.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Steve Smith</span> <small>10.14.2016  2:30pm</small> <span class="media-content">I slowly updated my Behance with some recent projects ...</span></span></a>
-                            </li>
-                            <li>
-                                <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">event_available</i> </span><span class="media-body"><span class="media-heading">To Do</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Meeting with Nathan McCullum on Friday 8 AM ...</span></span></a>
-                            </li>
-                            <li>
-                                <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">check</i> </span><span class="media-body"><span class="media-heading">Invitation accepted</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Your invitation for Mars has been accepted ...</span></span></a>
-                            </li>
-                        </ul>
-                        <!-- /.dropdown-list-group -->
+                    <!-- /.dropdown-menu -->
+                </li>
+                <!-- /.dropdown -->
+                <li class="dropdown hidden-md-down">
+                    <a href="#" class="dropdown-toggle ripple" data-toggle="dropdown"><i class="material-icons list-icon">event_available</i> <span class="badge badge-pill bg-primary">9</span></a>
+                    <div class="dropdown-menu dropdown-left dropdown-card animated flipInY">
+                        <div class="card">
+                            <header class="card-header">
+                                New notifications <span class="mr-l-10 badge badge-border bg-primary">4</span>
+                            </header>
+                            <ul class="list-unstyled dropdown-list-group">
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">check</i> </span><span class="media-body"><span class="media-heading">Invitation accepted</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Your invitation for Mars has been accepted ...</span></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user3.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Steve Smith</span> <small>10.14.2016  2:30pm</small> <span class="media-content">I slowly updated my Behance with some recent projects ...</span></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">event_available</i> </span><span class="media-body"><span class="media-heading">To Do</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Meeting with Nathan McCullum on Friday 8 AM ...</span></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">check</i> </span><span class="media-body"><span class="media-heading">Invitation accepted</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Your invitation for Mars has been accepted ...</span></span></a>
+                                </li>
+                            </ul>
+                            <!-- /.dropdown-list-group -->
+                        </div>
+                        <!-- /.card -->
                     </div>
-                    <!-- /.card -->
-                </div>
-                <!-- /.dropdown-menu -->
-            </li>
-            <!-- /.dropdown -->
-            <li>
-                <a href="javascript:void(0);" class="right-sidebar-toggle ripple"><i class="material-icons list-icon">comment</i></a>
-            </li>
-        </ul>*@
+                    <!-- /.dropdown-menu -->
+                </li>
+                <!-- /.dropdown -->
+                <li>
+                    <a href="javascript:void(0);" class="right-sidebar-toggle ripple"><i class="material-icons list-icon">comment</i></a>
+                </li>
+            </ul>
             <!-- /.navbar-right -->
             <!-- User Image with Dropdown -->
-            @*<ul class="nav navbar-nav">
-            <li class="dropdown">
-                <a href="javascript:void(0);" class="dropdown-toggle ripple" data-toggle="dropdown"><span class="avatar thumb-sm"><img src="assets/demo/users/user-image.png" class="rounded-circle" alt=""> <i class="material-icons list-icon">expand_more</i></span></a>
-                <div class="dropdown-menu dropdown-left dropdown-card dropdown-card-wide">
-                    <div class="card">
-                        <header class="card-heading-extra">
-                            <div class="row">
-                                <div class="col-8">
-                                    <h3 class="mr-b-10 sub-heading-font-family fw-300">Scott Adams</h3><span class="user--online">Available <i class="material-icons list-icon">expand_more</i></span>
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle ripple" data-toggle="dropdown"><span class="avatar thumb-sm"><img src="assets/demo/users/user-image.png" class="rounded-circle" alt=""> <i class="material-icons list-icon">expand_more</i></span></a>
+                    <div class="dropdown-menu dropdown-left dropdown-card dropdown-card-wide">
+                        <div class="card">
+                            <header class="card-heading-extra border-bottom-0">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <h3 class="mr-b-10 sub-heading-font-family fw-300"><a href="/User/Profile">@CurrentContext.GetCurUser().FullName</a></h3><span class="user--online">Hoạt động <i class="material-icons list-icon">expand_more</i></span>
+                                    </div>
+                                    <div class="col-4 d-flex justify-content-end">
+                                        <a href="/User/Logout" class="mr-t-10"><i class="material-icons list-icon">power_settings_new</i>Đăng xuất</a>
+                                    </div>
+                                    <!-- /.col-4 -->
                                 </div>
-                                <div class="col-4 d-flex justify-content-end">
-                                    <a href="http://dharansh.in/oscarhtml/horizontal-nav-icons/logout.html" class="mr-t-10"><i class="material-icons list-icon">power_settings_new</i> Logout</a>
-                                </div>
-                                <!-- /.col-4 -->
-                            </div>
-                            <!-- /.row -->
-                        </header>
-                        <section class="card-header">
-                            New notifications <span class="badge badge-border bg-danger mr-l-10">4</span>
-                        </section>
-                        <ul class="list-unstyled dropdown-list-group">
-                            <li>
-                                <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">check</i> </span><span class="media-body"><span class="media-heading">Invitation accepted</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Your invitation for Mars has been accepted ...</span></span></a>
-                            </li>
-                            <li>
-                                <a href="#" class="media"><span class="d-flex user--online thumb-xs"><img src="assets/demo/users/user3.jpg" class="rounded-circle" alt=""> </span><span class="media-body"><span class="media-heading">Steve Smith</span> <small>10.14.2016  2:30pm</small> <span class="media-content">I slowly updated my Behance with some recent projects and finally added a case study for thus great project ...</span></span></a>
-                            </li>
-                            <li>
-                                <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">event_available</i> </span><span class="media-body"><span class="media-heading">To Do</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Meeting with Nathan McCullum on Friday 8 AM to discuss about an ongoing project ...</span></span></a>
-                            </li>
-                            <li>
-                                <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">check</i> </span><span class="media-body"><span class="media-heading">Invitation accepted</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Your invitation for Mars has been accepted ...</span></span></a>
-                            </li>
-                        </ul>
+                                <!-- /.row -->
+                            </header>
+                            @*<section class="card-header">
+                                    New notifications <span class="badge badge-border bg-danger mr-l-10">4</span>
+                                </section>*@
+                            @*<ul class="list-unstyled dropdown-list-group">
+                                <li>
+                                    <a href="#" class="media">
+                                        <span class="d-flex">
+                                            Thông tin tài khoản
+                                        </span>
+                                    </a>
+                                     <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">check</i> </span><span class="media-body"><span class="media-heading">Invitation accepted</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Your invitation for Mars has been accepted ...</span></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media">
+                                        <span class="d-flex user--online thumb-xs">
+                                            <img src="~/assets/demo/users/user3.jpg" class="rounded-circle" alt="">
+                                        </span><span class="media-body">
+                                            <span class="media-heading"></span>
+                                            <small>10.14.2016  2:30pm</small>
+                                            <span class="media-content">I slowly updated my Behance with some recent projects and finally added a case study for thus great project ...</span>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">event_available</i> </span><span class="media-body"><span class="media-heading">To Do</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Meeting with Nathan McCullum on Friday 8 AM to discuss about an ongoing project ...</span></span></a>
+                                </li>
+                                <li>
+                                    <a href="#" class="media"><span class="d-flex"><i class="material-icons list-icon">check</i> </span><span class="media-body"><span class="media-heading">Invitation accepted</span> <small>10.14.2016  2:30pm</small> <span class="media-content">Your invitation for Mars has been accepted ...</span></span></a>
+                                </li>
+                            </ul>*@
+                        </div>
                     </div>
-                </div>
-            </li>
-        </ul>*@
+                </li>
+            </ul>
             <!-- /.navbar-right -->
         </nav>
         <!-- /.navbar -->
@@ -217,9 +231,9 @@
                                 <li>
                                     <a href="@Url.Action("PayBook","BookBill")">Phiếu trả</a>
                                 </li>
-                                <li>
-                                    <a href="@Url.Action("LostBook","BookBill")">Mất sách</a>
-                                </li>
+                                @*<li>
+                    <a href="@Url.Action("LostBook","BookBill")">Mất sách</a>
+                </li>*@
 
                             </ul>
                         </li>
@@ -229,11 +243,11 @@
                                 <span class="hide-menu">Quản Lý Độc Giả</span>
                             </a>
                             @*<ul class="list-unstyled sub-menu">
-                                    <li>
-                                        <a href="form-elements.html">Danh sách</a>
-                                    </li>
+                <li>
+                    <a href="form-elements.html">Danh sách</a>
+                </li>
 
-                                </ul>*@
+            </ul>*@
                         </li>
                         <li class="menu-item-has-children" data-page-name="@Url.Action("Index","Book")">
                             <a href="@Url.Action("Index","Book")">
@@ -279,7 +293,7 @@
                                 </li>
                                 <li>
                                     <a href="page-lightbox.html">Báo Cáo Sách</a>
-                                </li>
+                                </li> 
                                 <li>
                                     <a href="page-sitemap.html">Thống Kê Người Dùng</a>
                                 </li>
@@ -288,12 +302,16 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="menu-item-has-children">
-                            <a href="@Url.Action("Index","System")">
-                                <i class="list-icon material-icons">settings</i>
-                                <span class="hide-menu">Hệ Thống</span>
-                            </a>
-                        </li>
+                        @if (CurrentContext.GetCurUser().RoleID == 3)
+                        {
+                            <li class="menu-item-has-children">
+                                <a href="@Url.Action("Index","System")">
+                                    <i class="list-icon material-icons">settings</i>
+                                    <span class="hide-menu">Hệ Thống</span>
+                                </a>
+                            </li>
+                        }
+
 
                     </ul>
                     <!-- /.side-menu -->
@@ -387,7 +405,7 @@
     @*<script src="~/assets/js/custom.js"></script>*@
     <script>
         $(document).ready(function () {
-            
+
 
             var curpage = window.location.pathname;
             $('.menu-item-has-children').each(function (i, item) {
