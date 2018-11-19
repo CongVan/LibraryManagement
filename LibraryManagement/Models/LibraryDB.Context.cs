@@ -35,5 +35,7 @@ namespace LibraryManagement.Models
         public virtual DbSet<Setting> Settings { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
+        public virtual DbSet<Menu> Menus { get; set; }
+        public virtual DbSet<Menu_Role> Menu_Role { get; set; }
     }
 }

@@ -15,6 +15,8 @@
         <EntityTypeShape EntityType="LibraryManagementModel.Setting" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="LibraryManagementModel.User" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="LibraryManagementModel.Location" Width="1.5" PointX="7.375" PointY="6.75" />
+        <EntityTypeShape EntityType="LibraryManagementModel.Menu" Width="1.5" PointX="9.75" PointY="0.75" />
+        <EntityTypeShape EntityType="LibraryManagementModel.Menu_Role" Width="1.5" PointX="0.75" PointY="9.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

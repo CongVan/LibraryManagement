@@ -68,5 +68,16 @@ namespace LibraryManagement.Controllers
 
             return View();
         }
+        public ActionResult Menu()
+        {
+            //using (var ctx=new LibraryManagementEntities())
+            //{
+            //    var menu = from m in ctx.Menus
+            //               join r in ctx.Menu_Role on m.ID equals r.MenuID;
+            //}
+
+
+            return View();
+        }
     }
 }

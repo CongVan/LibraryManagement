@@ -199,6 +199,12 @@
     <Compile Include="Models\LostBook.cs">
       <DependentUpon>LibraryDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Menu.cs">
+      <DependentUpon>LibraryDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Menu_Role.cs">
+      <DependentUpon>LibraryDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Publisher.cs">
       <DependentUpon>LibraryDB.tt</DependentUpon>
     </Compile>
@@ -525,6 +531,7 @@
     <Content Include="Views\BookBill\BorrowBook.cshtml" />
     <Content Include="Views\BookBill\PayBook.cshtml" />
     <Content Include="Views\User\Profile.cshtml" />
+    <Content Include="Views\Home\Menu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
