@@ -68,5 +68,19 @@ namespace LibraryManagement.Utility
 
             }
         }
+        public static List<Menu> getMenus()
+        {
+            using (var ctx=new LibraryManagementEntities())
+            {
+                return ctx.Menus.Where(c => c.Flag == 1 && c.ParentID==-1).ToList();
+            }
+        }
+        public static List<Menu> getMenusChild(int id)
+        {
+            using (var ctx = new LibraryManagementEntities())
+            {
+                return ctx.Menus.Where(c => c.Flag == 1 && c.ParentID==id).ToList();
+            }
+        }
     }
 }

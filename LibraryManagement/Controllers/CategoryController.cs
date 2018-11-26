@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using LibraryManagement.Filter;
 using LibraryManagement.Models;
 namespace LibraryManagement.Controllers
 {
+    [CheckLogin]
     public class CategoryController : Controller
     {
         // GET: Category

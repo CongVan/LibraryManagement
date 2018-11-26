@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Models;
+﻿using LibraryManagement.Filter;
+using LibraryManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Web.Mvc;
 
 namespace LibraryManagement.Controllers
 {
+    [CheckLogin]
     public class LocationController : Controller
     {
         // GET: Location

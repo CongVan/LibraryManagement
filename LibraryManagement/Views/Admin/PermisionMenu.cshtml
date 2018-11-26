@@ -1,0 +1,193 @@
+﻿
+@{
+    ViewBag.Title = "Phân quyền Menu";
+}
+
+<div class="row">
+    <div class="col-md-6 widget-holder">
+        <div class="widget-bg">
+            <div class="widget-body clearfix">
+                <h5 class="box-title mr-b-0 text-success"><i class="material-icons ">verified_user</i> PHÂN QUYỀN MENU</h5>
+                <section class="card">
+                    <header class="card-header">
+                        <div class="input-group">
+                            <select class="form-control" id="lstGroupUser">
+                                <option></option>
+                            </select>
+                        </div>
+                    </header>
+                    <span class="ml-3 mt-2 text-muted">Danh sách menu hệ thống</span>
+                    <!-- /.card-header -->
+                    <ul class="list-unstyled widget-user-list card-body custom-scroll-content scrollbar-enabled" id="viewMenusRole"></ul>
+                </section>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section js{
+    <script id="template-list-menu" type="text/x-handlebars-template">
+        {{#each menus}}
+        <li class="media">
+            <div class="d-flex mr-3">
+                <a href="#" class="user--online thumb-xs">
+                    <i class="material-icons">{{Icon}}</i>
+                </a>
+            </div>
+            <div class="media-body">
+                {{#if IsGranted}}
+                <a href="javacript:;" class="btn btn-outline-danger btn-sm px-2 btnDenied" data-id="{{IDMenu}}" data-title="{{TitleMenu}}"><i class="material-icons list-icon">close</i>Hủy Quyền</a>
+                {{else}}
+                <a href="javacript:;" class="btn btn-success btn-sm px-2 btnApprove" data-id="{{IDMenu}}" data-title="{{TitleMenu}}"><i class="material-icons list-icon">done</i> Cấp quyền</a>
+                {{/if}}
+                <h5 class="media-heading"><a href="javascript:;">{{TitleMenu}}</a></h5>
+            </div>
+        </li>
+        {{/each}}
+    </script>
+    <script>
+        var fn = {
+            init: function () {
+                this.loadListGroupUser();
+                this.registerHanderBar();
+                this.handleChangeListUser();
+                this.handleApprove();
+                this.handleDenied();
+                //this.loadListMenuRole();
+            },
+            loadListGroupUser: function () {
+                $.getJSON('/Admin/GetListGroupUser')
+                    .then(function (result) {
+                        $('#lstGroupUser').select2({
+                            placeholder: 'Chọn nhóm người dùng',
+                            data: result,
+                            minimumResultsForSearch: -1
+
+                        });
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            handleChangeListUser: function () {
+                var self = this;
+                $('#lstGroupUser').on('change', function () {
+                    self.loadListMenuRole();
+                });
+            },
+            handleApprove: function () {
+                var self = this;
+                $('#viewMenusRole').on('click', '.btnApprove', function () {
+                    var idMenu = $(this).data('id');
+                    var idGroup = $('#lstGroupUser').val();
+                    var nameGroup = $('#lstGroupUser').select2('data')[0].text;
+                    var menu = $(this).data('title');
+                    swal({
+                        title: 'XÁC NHẬN?',
+                        text: `Bạn có chắc chắn muốn cấp quyền Menu: ${menu} cho nhóm ${nameGroup}!`,
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonClass: 'btn btn-success',
+                        confirmButtonText: 'Xác nhận',
+                        cancelButtonText: "Đóng",
+                    }).then((result) => {
+                        if (result.value) {
+                            $.ajax({
+                                type: 'post',
+                                url: '/Admin/ApproveMenuRole',
+                                data: {
+                                    idMenu: idMenu,
+                                    idGroup: idGroup
+                                }
+                            }).done(function (result) {
+                                if (result.data == 1) {
+                                    swal('Thành công', '', 'success');
+                                    self.loadListMenuRole();
+                                } else {
+                                    swal('Thất bại', result.msg, 'error');
+                                }
+                            }).fail(function (x, t, e) {
+                                console.log(e);
+                            });
+                        }
+
+                    });
+
+                });
+            },
+            handleDenied: function () {
+                var self = this;
+                $('#viewMenusRole').on('click', '.btnDenied', function () {
+                    var nameGroup = $('#lstGroupUser').select2('data')[0].text;
+                    var menu = $(this).data('title');
+                    var idMenu = $(this).data('id');
+                    var idGroup = $('#lstGroupUser').val();
+                    swal({
+                        title: 'XÁC NHẬN?',
+                        text: `Bạn có chắc chắn muốn hủy quyền Menu: ${menu} của nhóm ${nameGroup}!`,
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonClass: 'btn btn-danger',
+                        confirmButtonText: 'Xác nhận',
+                        cancelButtonText: "Đóng",
+                    }).then((result) => {
+                        if (result.value) {
+
+                            $.ajax({
+                                type: 'post',
+                                url: '/Admin/DenyMenuRole',
+                                data: {
+                                    idMenu: idMenu,
+                                    idGroup: idGroup
+                                }
+                            }).done(function (result) {
+                                if (result.data == 1) {
+                                    swal('Thành công', '', 'success');
+                                    self.loadListMenuRole();
+                                } else {
+                                    swal('Thất bại', result.msg, 'error');
+                                }
+                            }).fail(function (x, t, e) {
+                                console.log(e);
+                            });
+                        }
+
+                    });
+
+
+
+                });
+            },
+            registerHanderBar: function () {
+                Handlebars.registerHelper('ifvalue', function (conditional, options) {
+                    if (conditional == options.hash.equals) {
+                        return options.fn(this);
+                    } else {
+                        return options.inverse(this);
+                    }
+                });
+            },
+            loadListMenuRole: function () {
+                var id = $("#lstGroupUser").val();
+                $.getJSON('/Admin/GetListRoleMenu?idRole=' + id)
+                    .then(function (result) {
+                        var source = document.getElementById("template-list-menu").innerHTML;
+                        var template = Handlebars.compile(source);
+                        var context = { menus: result };
+                        var html = template(context);
+                        $('#viewMenusRole').html(html);
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+            }
+        }
+
+
+        $(document).ready(function () {
+            fn.init();
+
+
+        });
+
+    </script>
+}

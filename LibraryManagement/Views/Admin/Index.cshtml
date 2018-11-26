@@ -1,7 +1,7 @@
 ﻿
 @{
     //Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.Title = "Quản lý danh mục sách";
+    ViewBag.Title = "Trang Admin";
 }
 @section css{
     <style>
@@ -28,19 +28,35 @@
     <div class="col-md-4 mr-b-20">
         <div class="card card-expandable bg-white card-expanded">
             <div class="card-header border-bottom-1 pb-2">
-                <h5 class="card-title mt-3 fs-15">Thêm Danh Mục Sách</h5>  <i class="material-icons list-icon ripple">keyboard_arrow_down</i>
+                <h5 class="card-title mt-3 fs-15">Thêm Menu hệ thống</h5>  <i class="material-icons list-icon ripple">keyboard_arrow_down</i>
             </div>
-            <form id="frm-insert-category" method="post" action="@Url.Action("InsertCategory","Category")">
+            <form id="frm-insert-menu" method="post" action="@Url.Action("InsertMenu","Admin")">
                 <div class="card-body pt-2">
                     <div class="form-group">
-                        <label class="form-control-label">Danh Mục Cha</label>
+                        <label class="form-control-label">Menu Cha</label>
                         <select class="form-control parent-id" name="ParentID">
                             <option value="-1">Không chọn</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="sample1UserName">Tên Danh Mục</label>
-                        <input type="text" class="form-control " name="Name" id="nameCategory" placeholder="Nhập tên danh mục...">
+                        <label for="titleMenu">Tên Menu</label>
+                        <input type="text" class="form-control " name="Title" id="titleMenu" placeholder="Nhập tên Menu...">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="priorityMenu">Thứ tự</label>
+                        <input type="number" class="form-control" min="1" name="Priority" id="priorityMenu" placeholder="Nhập thứ tự Menu...">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="iconMenu">Icon</label>
+                        <select class="form-control lst-icon-m" name="selectIcon" id="iconMenu"></select>
+                        <input class="form-control " name="Icon" id="iconMenu" type="hidden">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pathMenu">Đường dẫn</label>
+                        <input type="text" class="form-control " name="Path" id="pathMenu" placeholder="Nhập đường dẫn Menu...">
                         <div class="invalid-feedback"></div>
                     </div>
                 </div>
@@ -67,67 +83,13 @@
                     <thead>
                         <tr class="bg-success">
                             <th>&nbsp;</th>
-                            <th>ID</th>
-                            <th>Tên danh mục</th>
+                            <th>Tên Menu</th>
+                            <th>Thứ tự</th>
                             <th>Trạng thái</th>
                             <th>Thao tác</th>
                         </tr>
                     </thead>
-                    @*<tbody>
-                            @foreach (var cate in ViewBag.LstCategory)
-                            {
-                                <tr id="tb-row-@cate["ID"]" class="font-weight-bold">
-                                    <td class="@(cate["Child"].Count > 0? "expand-table":"")">
-                                        @if (cate["Child"].Count > 0)
-                                        {
-                                            <a href="javascript: void(0);" class="expand-table d-flex justify-content-center text-primary" data-id="@cate["ID"]">
-                                                <i class="material-icons">add</i>
-                                            </a>
-                                        }
-                                    </td>
-                                    <td class="@(cate["Child"].Count > 0? "expand-table":"")" data-id="@cate["ID"]">@cate["ID"]</td>
-                                    <td class="@(cate["Child"].Count > 0? "expand-table":"")" data-id="@cate["ID"]">@cate["Name"]</td>
-                                    <td>
-                                        <input type="checkbox" data-secondary-color="#e6614f" checked="@cate["Flag"]" class="js-switch" data-color="#38d57a" data-size="small">
-                                    </td>
-                                    <td>
-                                        <a href="javascript: void(0);" data-id="@cate["ID"]" data-parentid="-1" data-toggle="modal" data-target=".bs-modal-sm-color-scheme" class="color-info mr-2 btn-edit-click" title="Cập nhật NXB">
-                                            <i class="material-icons">edit</i>
-                                        </a>
-                                        <a href="javascript: void(0); " data-id="@cate["ID"]" data-parentid="-1" class="color-danger del-submit" title="Xóa NXB">
-                                            <i class="material-icons">delete_forever</i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                if (cate["Child"].Count > 0)
-                                {
-                                    foreach (var c in cate["Child"])
-                                    {
-                                        <tr class="hidden" data-parentid="@cate["ID"]" id="tb-row-@c.ID">
-                                            <td>
-                                                &nbsp;
-                                            </td>
-                                            <td class=""><span class="pl-3">@c.ID</span></td>
-                                            <td class=""><span class="pl-3">@c.Name</span></td>
-                                            <td>
-                                                <input type="checkbox" data-secondary-color="#e6614f" checked="@c.Flag" class="js-switch" data-color="#38d57a" data-size="small">
-                                            </td>
-                                            <td>
-                                                <a href="javascript: void(0);" data-id="@c.ID" data-parentid="@cate["ID"]"
-                                                   data-toggle="modal" data-target=".bs-modal-sm-color-scheme"
-                                                   class="color-info mr-2 btn-edit-click" title="Cập nhật danh mục">
-                                                    <i class="material-icons">edit</i>
-                                                </a>
-                                                <a href="javascript: void(0); " data-id="@c.ID" data-parentid="@cate["ID"]"
-                                                   class="color-danger del-submit" title="Xóa danh mục">
-                                                    <i class="material-icons">delete_forever</i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                            }
-                        </tbody>*@
+                  
                 </table>
             </div>
         </div>
@@ -138,26 +100,45 @@
         <div class="modal-content">
             <div class="modal-header text-inverse">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h5 class="modal-title" id="mySmallModalLabel">Cập Nhật Danh Mục Sách</h5>
+                <h5 class="modal-title" id="mySmallModalLabel">Cập Nhật Menu Sách</h5>
             </div>
             <div class="modal-body">
-                <form id="frm-update-category" action="@Url.Action("UpdateCategory","Category")" method="post">
+                <form id="frm-update-menu" action="@Url.Action("UpdateMenu","Admin")" method="post">
                     <input type="hidden" name="ID" value="" />
                     <div class="form-group">
-                        <label class="form-control-label">Danh Mục Cha</label>
+                        <label class="form-control-label">Menu Cha</label>
                         <select class="form-control parent-id" name="ParentID">
                             <option value="-1">Không chọn</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="sample1UserName" class="form-control-label">Tên Danh Mục</label>
-                        <input type="text" class="form-control " name="Name" id="nameCategory" placeholder="Nhập tên danh mục...">
+                        <label for="titleMenu">Tên Menu</label>
+                        <input type="text" class="form-control " name="Title" id="titleMenu" placeholder="Nhập tên Menu...">
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="form-group">
-                        <label class="form-control-label">Trạng thái &nbsp;</label>
-                        <input type="checkbox" name="status" data-secondary-color="#e6614f" class="col-md-9 js-switch" data-color="#38d57a" data-size="small">
-                        <input type="hidden" name="Flag" />
+                        <label for="priorityMenu">Thứ tự</label>
+                        <input type="number" class="form-control" min="1" name="Priority" id="priorityMenu" placeholder="Nhập thứ tự Menu...">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="iconMenu">Icon</label>
+                        <select class="form-control lst-icon-m " name="selectIcon" id="iconMenu"></select>
+                        <input class="form-control " name="Icon" id="iconMenu" type="hidden">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pathMenu">Đường dẫn</label>
+                        <input type="text" class="form-control " name="Path" id="pathMenu" placeholder="Nhập đường dẫn Menu...">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="visiblesMenu">Ẩn/ Hiện</label>
+                        <select class="form-control " name="Visible" id="visiblesMenu">
+                            <option value="true">Hiện</option>
+                            <option value="false">Ẩn</option>
+                        </select>
+                        <div class="invalid-feedback"></div>
                     </div>
                     <div class="form-actions">
                         <div class="form-group">
@@ -206,16 +187,16 @@
                     <div class="form-group row mb-1">
                         <label class="col-md-4  pr-0">Tên</label>
                         <div class="col-md-5">
-                            <label><strong>{{Name}}</strong></label>
+                            <label><strong>{{Title}}</strong></label>
                         </div>
                     </div>
                     <div class="form-group row mb-1">
                         <label class="col-md-4  pr-0">Trạng thái</label>
                         <div class="col-md-5">
                             {{#if Flag}}
-                            <span class="badge text-uppercase badge-success align-middle py-2">Hoạt động</span>
+                            <span class="badge text-uppercase badge-success align-middle py-2">Hiện</span>
                             {{else}}
-                            <span class="badge text-uppercase badge-danger align-middle py-2">Đã hủy</span>
+                            <span class="badge text-uppercase badge-danger align-middle py-2">Ẩn</span>
                             {{/if}}
                         </div>
                     </div>
@@ -224,11 +205,11 @@
                         <div class="col-md-5">
                             <a href="javascript: void(0);" data-id="{{ID}}"
                                data-toggle="modal" data-target=".bs-modal-sm-color-scheme" data-parentid="{{ParentID}}"
-                               class="color-info mr-2 btn-edit-click" title="Cập nhật danh mục">
+                               class="color-info mr-2 btn-edit-click" title="Cập nhật Menu">
                                 <i class="material-icons">edit</i>
                             </a>
                             <a href="javascript: void(0); " data-id="{{ID}}" data-parentid="{{ParentID}}"
-                               class="color-danger del-submit" title="Xóa danh mục">
+                               class="color-danger del-submit" title="Xóa Menu">
                                 <i class="material-icons">delete_forever</i>
                             </a>
                         </div>
@@ -244,21 +225,80 @@
 
     </script>
     <script>
+        var _dataIcons=[]
+        function formatState(icon) {
+            var originalOption = icon.element;
+            return $('<span><i class=" ' + icon.code + ' mr-2">' + icon.text +'</i>   ' + icon.text + '</span>');
+        }
+        function loadIcon() {
+           
+            $.get('/Admin/GetIcons')
+                .then((result) => {
+                    //console.log(result);
+                    $('.lst-icon-m').select2({
+                        //placeholder: {
+                        //    id: '', text: 'Chọn icon Menu'
+                        //},
+                        data: result,
+                        templateResult: formatState,
+                        allowHtml: true,
+                        templateSelection: formatState,
+                        
+                    });
+                    _dataIcons = result;
+                }).then(function () {
+                    $('#frm-insert-menu select[name="selectIcon"]').on('select2:select', function (e) {
+                        var data = e.params.data;
+                        $('#frm-insert-menu input[name="Icon"]').val(data.text);
+                        //console.log(data);
+                    });
+                    $('#frm-update-menu select[name="selectIcon"]').on('select2:select', function (e) {
+                        var data = e.params.data;
+                        $('#frm-update-menu input[name="Icon"]').val(data.text);
+                        //console.log(data);
+                    });
+                });
+        }
         $(document).ready(function () {
             loadTable();
+            loadIcon();
+           
+            //$('#frm-insert-menu select[name="selectIcon"]').on('change', function () {
+            //    var data = $('#frm-insert-menu select[name="selectIcon"]').select2('data');
+            //    if (data) {
+            //        $('#frm-insert-menu select[name="Icon"]').val(data.text);
+            //    }
+            //});
             $('form').each(function () {
                 $(this).validate({
                     errorClass: 'invalid-feedback',
                     rules: {
-                        Name: {
-                            required: true,
-                            minlength: 15
-                        }
+                        Title: {
+                            required: true
+                        },
+                        Priority: {
+                            required: true
+                        },
+                        Icon: {
+                            required: true
+                        },
+                        Path: {
+                            required: true
+                        },
                     },
                     messages: {
-                        Name: {
-                            required: "Vui lòng nhập tên danh mục!",
-                            minlength: "Tên danh mục tối thiểu 15 ký tự"
+                        Title: {
+                            required: "Vui lòng nhập tên Menu!"
+                        },
+                        Priority: {
+                            required: "Vui lòng thứ tự Menu!"
+                        },
+                        Icon: {
+                            required: "Vui lòng nhập icon Menu!"
+
+                        },
+                        Path: {
+                            required: "Vui lòng nhập đường dẫn Menu!"
                         },
                     },
                     //errorElement: 'div',
@@ -285,7 +325,7 @@
                     }
                 });
             });
-
+            
             $('.expand-table').on('click', function () {
                 var id = $(this).data('id');
                 var el = $('#table-data tbody').find('tr[data-parentid="' + id + '"]')
@@ -296,14 +336,14 @@
                 }
             });
 
-            $.getJSON("/Category/GetListCategoryParent")
+            $.getJSON("/Admin/GetMenusParent")
                 //.then(res => res.json())
                 .then(data => {
-                    var html = "";
+                    var html = "<option value='-1'>Không chọn</option> ";
                     $.each(data, (i, e) => {
-                        html += "<option value='" + e.ID + "'>" + e.Name + "</option>"
+                        html += "<option value='" + e.ID + "'>"+ e.Title + "</option>"
                     });
-                    $('.parent-id').append(html);
+                    $('.parent-id').html(html);
                     //$("#frm-insert-category").find('select[name="ParentID "]').append(html);
                 });
 
@@ -341,7 +381,7 @@
                 var parentId = $(this).data('parentid');
                 swal({
                     title: 'XÁC NHẬN?',
-                    text: "Bạn có chắc chắn muốn xóa danh mục này!",
+                    text: "Bạn có chắc chắn muốn xóa Menu này!",
                     type: 'warning',
                     showCancelButton: true,
                     confirmButtonClass: 'btn btn-danger',
@@ -350,7 +390,7 @@
                 }).then((result) => {
                     if (result.value) {
                         var id = $(this).data('id');
-                        var url = "/Category/DeleteCategory"
+                        var url = "/Admin/DeleteMenu"
                         fetch(url, {
                             method: 'post',
                             headers: {
@@ -367,6 +407,7 @@
                                         '',
                                         'success'
                                     )
+                                    $('#table-data').DataTable().ajax.reload().draw();
                                 } else {
                                     swal(
                                         'Thất bại!',
@@ -385,41 +426,44 @@
             });
 
             $('#table-data').on('click', '.btn-edit-click',function () {
-                $('#frm-update-category').find('input').removeClass('is-invalid').removeClass('is-valid');
-                $('#frm-update-category').find('div .invalid-feedback').empty();
+                $('#frm-update-menu').find('input').removeClass('is-invalid').removeClass('is-valid');
+                $('#frm-update-menu').find('div .invalid-feedback').empty();
                 var id = $(this).data('id');
 
-                var url = '/Category/GetCategory?' + $.param({ "id": id });
-                fetch(url)
-                    .then(res => {
-                        if (res.ok) {
-                            return Promise.resolve(res);
-                        } else {
-                            return Promise.reject(new Error('Failed to load'));
-                        }
-                    })
-                    .then(res => res.json())
+                var url = '/Admin/GetMenu?' + $.param({ "id": id });
+                $.getJSON(url)
                     .then((data) => {
-                        console.log(data);
+                        //console.log(data);
                         if (!data) {
                             return;
                         }
-                        $('#frm-update-category select[name="ParentID"]').val(data.ParentID==null?-1:data.ParentID);
-                        $('#frm-update-category input[name="Name"]').val(data.Name);
-                        $('#frm-update-category input[name="ID"]').val(data.ID);
-                        $('#frm-update-category input[name="Flag"]').val(data.Flag);
-                        var check = $('#frm-update-category input[name="status"]').is(':checked');
-                        if (data.Flag == true && check == false || (data.Flag == false && check == true)) {
-                            //$('#frmUpdatePublisher input[name="status"]').prop('checked', true);
-                            $('#frm-update-category input[name="status"]').trigger('click');
+                        $('#frm-update-menu select[name="ParentID"]').val(data.ParentID==null?-1:data.ParentID);
+                        $('#frm-update-menu input[name="Title"]').val(data.Title);
+                        $('#frm-update-menu input[name="ID"]').val(data.ID);
+                        $('#frm-update-menu input[name="Priority"]').val(data.Priority);
+                        var idIcon = _dataIcons.filter((i, n) => {
+                            return i.text == data.Icon;
+                        });
+                        if (idIcon.length > 0) {
+                            $('#frm-update-menu select[name="selectIcon"]').val(idIcon[0].id).trigger('change');
                         }
+                        
+                        $('#frm-update-menu input[name="Icon"]').val(data.Icon);
+                        $('#frm-update-menu input[name="Path"]').val(data.Path);
+                        $('#frm-update-menu input[name="Flag"]').val(data.Flag);
+                        $('#frm-update-menu select[name="Visible"]').val(data.Visible.toString());
+                        //var check = $('#frm-update-menu input[name="status"]').is(':checked');
+                        //if (data.Flag == true && check == false || (data.Flag == false && check == true)) {
+                        //    //$('#frmUpdatePublisher input[name="status"]').prop('checked', true);
+                        //    $('#frm-update-menu input[name="status"]').trigger('click');
+                        //}
                     }).catch((error) => {
                         console.log(`Error:${error.messages}`);
 
                     });
             });
-            $('#frm-update-category input[name="status"]').on('change', function (event) {
-                $('#frm-update-category input[name="Flag"]').val($(this).is(':checked') ? "true" : "false");
+            $('#frm-update-menu input[name="status"]').on('change', function (event) {
+                $('#frm-update-menu input[name="Flag"]').val($(this).is(':checked') ? "true" : "false");
                 //console.log($(this));
             });
             $('#table-data tbody').on('click', 'td.details-control', function () {
@@ -433,7 +477,7 @@
                 } else {
                     // Open this row
                     var d = row.data();
-                    var url = `/Category/GetCategoryChildren?id=${d.ID}`;
+                    var url = `/Admin/GetMenusChildren?id=${d.ID}`;
                     $.getJSON(url, function (data) {
                         var source = document.getElementById("template-expand-detail").innerHTML;
                         var template = Handlebars.compile(source);
@@ -459,7 +503,7 @@
                 searching: false,
                 ordering: false,
                 ajax: {
-                    url: "/Category/GetAllCategory",
+                    url: "/Admin/GetMenusParent",
                     "dataSrc": function (data) {
                         // manipulate your data (json)
                         //console.log(JSON.parse(data.result));
@@ -486,16 +530,14 @@
                             return '';
                         }
                     },
+                    
+                    { "data": "Title" },
+                    { "data": "Priority" },
                     {
-                        "data": "ID",
-                        "visible": false,
-                    },
-                    { "data": "Name" },
-                    {
-                        "data": "Flag",
+                        "data": "Visible",
                         render: function (data, type, row) {
-                            return data ? `<span class="badge text-uppercase badge-success align-middle py-2">Hoạt động</span>` :
-                                `<span class="badge text-uppercase badge-danger align-middle py-2">Đã hủy</span>`;
+                            return data ? `<span class="badge text-uppercase badge-success align-middle py-2">Hiện</span>` :
+                                `<span class="badge text-uppercase badge-danger align-middle py-2">Ẩn</span>`;
                         }
                     },
                     {

@@ -158,7 +158,7 @@
             loadPublisher: () => {
                 $.get('/Publisher/GetListAllPublisher')
                     .then((result) => {
-                        console.log(result);
+                        //console.log(result);
                         $('#frmAddBook select[name="publisherID"]').select2({
                             placeholder: 'Chọn nhà xuất bản sách',
                             data: result,
@@ -170,7 +170,7 @@
             loadCategory: () => {
                 $.get('/Category/GetListCategoryForSelect')
                     .then((result) => {
-                        console.log(result);
+                        //console.log(result);
                         $('#frmAddBook select[name="CategoryID"]').select2({
                             placeholder: {
                                 id: '', text: 'Chọn danh mục sách'

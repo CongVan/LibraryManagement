@@ -153,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BookController.cs" />
     <Compile Include="Controllers\BookBillController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
@@ -311,6 +312,7 @@
     <Content Include="assets\js\material-design.js" />
     <Content Include="assets\js\theme.js" />
     <Content Include="assets\js\typeahead.bundle.js" />
+    <Content Include="assets\m_icon.txt" />
     <Content Include="assets\plugins\file-input\css\fileinput-rtl.css" />
     <Content Include="assets\plugins\file-input\css\fileinput-rtl.min.css" />
     <Content Include="assets\plugins\file-input\css\fileinput.css" />
@@ -532,6 +534,8 @@
     <Content Include="Views\BookBill\PayBook.cshtml" />
     <Content Include="Views\User\Profile.cshtml" />
     <Content Include="Views\Home\Menu.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\PermisionMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

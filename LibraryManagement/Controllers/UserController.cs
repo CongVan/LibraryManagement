@@ -97,8 +97,11 @@ namespace LibraryManagement.Controllers
                 {
                     Session["isLogin"] = 1;
                     Session["User"] = u;
-
-
+                    if (Response.Cookies["userID"] != null)
+                    {
+                        Response.Cookies["userID"].Value = u.ID.ToString();
+                        Response.Cookies["userID"].Expires = DateTime.Now.AddDays(7);
+                    }
                     return Json(1, JsonRequestBehavior.AllowGet);
                 }
                 else

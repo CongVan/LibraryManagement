@@ -21,5 +21,6 @@ namespace LibraryManagement.Models
         public string Icon { get; set; }
         public string Path { get; set; }
         public Nullable<int> Flag { get; set; }
+        public Nullable<bool> Visible { get; set; }
     }
 }
