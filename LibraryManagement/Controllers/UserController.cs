@@ -17,12 +17,13 @@ namespace LibraryManagement.Controllers
         {
             return View();
         }
-        public ActionResult LoadAllUser()
+        public ActionResult LoadAllUser(int? type)
         {
+            type = type.HasValue ? type : 1;
             using (var ctx=new LibraryManagementEntities())
             {
                 return Json(
-                    ctx.Users.Where(c => c.Flag == true).ToList(),JsonRequestBehavior.AllowGet
+                    ctx.Users.Where(c => c.Flag == true && c.RoleID==type).ToList(),JsonRequestBehavior.AllowGet
                     );
             }
             
@@ -35,7 +36,7 @@ namespace LibraryManagement.Controllers
                 using (var ctx = new LibraryManagementEntities())
                 {
                     user.Password = Utility.StringUtility.HashSHA1(user.UserName);
-                    user.RoleID = 1;
+                    user.RoleID = user.RoleID??1;
                     user.Flag = true;
                     user.ConfirmEmail = false;
                     user.Status = 1;
@@ -110,6 +111,11 @@ namespace LibraryManagement.Controllers
                 }
             }
 
+        }
+        public ActionResult AccessDenied(string next)
+        {
+            ViewBag.Next = next;
+            return View();
         }
     }
 }

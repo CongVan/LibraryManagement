@@ -1,15 +1,17 @@
-﻿using LibraryManagement.Utility;
+﻿using LibraryManagement.Models;
+using LibraryManagement.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace LibraryManagement.Filter
 {
     public class CheckLoginAttribute : ActionFilterAttribute
     {
-        public int isAdmin { get; set; } = 1;
+        public bool isAdmin { get; set; } = false;
         
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -18,11 +20,48 @@ namespace LibraryManagement.Filter
                 filterContext.Result = new RedirectResult("~/User/Login");
                 return;
             }
-            //if (CurrentContext.GetCurUser().RoleID != 1)
-            //{
-            //    filterContext.Result = new HttpUnauthorizedResult();
-            //}
+            var roleUser = CurrentContext.GetRole();
+            if (isAdmin && roleUser.RoleName!="Admin")
+            {
+                filterContext.Result = new RedirectResult("~/User/AccessDenied");
+            }
+            if (roleUser.RoleName == "Admin")
+            {
+                base.OnActionExecuting(filterContext);
+                return;
+            }
+
+            var url = filterContext.HttpContext.Request.RawUrl.Split('/').ElementAt(1);
+            
+            using (var ctx=new LibraryManagementEntities())
+            {
+                var menu = (from mr in ctx.Menu_Role
+                            join m in ctx.Menus on mr.MenuID equals m.ID
+                            join r in ctx.Roles on mr.RoleID equals r.RoleValue
+                            where String.IsNullOrEmpty(url)==false && m.Path.Contains(url) 
+                            && m.Flag == 1 && roleUser.RoleValue == r.RoleValue
+                            orderby m.Priority
+                            select m).FirstOrDefault();
+                if (menu==null)
+                {
+                    var menuApprove = (from mr in ctx.Menu_Role
+                                join m in ctx.Menus on mr.MenuID equals m.ID
+                                join r in ctx.Roles on mr.RoleID equals r.RoleValue
+                                where m.Flag == 1 && roleUser.RoleValue == r.RoleValue
+                                orderby m.Priority
+                                select m).FirstOrDefault();
+                    var router = new RouteValueDictionary(new
+                    {
+                        action = "AccessDenied",
+                        controller = "User",
+                        next = menuApprove.Path
+                    });
+                    filterContext.Result = new RedirectToRouteResult(router);
+                }
+            }
             base.OnActionExecuting(filterContext);
+
+
         }
     }
 }

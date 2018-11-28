@@ -248,35 +248,47 @@
                             }
                         }
 
-                        <li class="menu-item-has-children" data-page-name="@Url.Action("Index","Report")">
-                            <a href="@Url.Action("Index","Report")">
-                                <i class="list-icon material-icons">receipt</i>
-                                <span class="hide-menu">Báo Cáo/ Thống Kê<span class="badge badge-border bg-info pull-right">13</span></span>
-                            </a>
-                            <ul class="list-unstyled sub-menu">
-                                <li>
-                                    <a href="page-blank.html">Báo Cáo Đọc Giả</a>
-                                </li>
-                                <li>
-                                    <a href="page-lightbox.html">Báo Cáo Sách</a>
-                                </li>
-                                <li>
-                                    <a href="page-sitemap.html">Thống Kê Người Dùng</a>
-                                </li>
-                                <li>
-                                    <a href="page-sitemap.html">Thống Kê Mất Sách</a>
-                                </li>
-                            </ul>
-                        </li>
+                        @*<li class="menu-item-has-children" data-page-name="@Url.Action("Index","Report")">
+            <a href="@Url.Action("Index","Report")">
+                <i class="list-icon material-icons">receipt</i>
+                <span class="hide-menu">Báo Cáo/ Thống Kê<span class="badge badge-border bg-info pull-right">13</span></span>
+            </a>
+            <ul class="list-unstyled sub-menu">
+                <li>
+                    <a href="page-blank.html">Báo Cáo Đọc Giả</a>
+                </li>
+                <li>
+                    <a href="page-lightbox.html">Báo Cáo Sách</a>
+                </li>
+                <li>
+                    <a href="page-sitemap.html">Thống Kê Người Dùng</a>
+                </li>
+                <li>
+                    <a href="page-sitemap.html">Thống Kê Mất Sách</a>
+                </li>
+            </ul>
+        </li>*@
+                        @if (CurrentContext.GetRole().RoleName == "Admin")
+                        {
+                            <li class="menu-item-has-children">
+                                <a href="@Url.Action("Index","Admin")">
+                                    <i class="list-icon material-icons">settings</i>
+                                    <span class="hide-menu">Hệ Thống</span>
+                                </a>
+                                <ul class="list-unstyled sub-menu">
+                                    <li>
+                                        <a href="/Admin/Index">Quản Lý Menu</a>
+                                    </li>
+                                    <li>
+                                        <a href="/Admin/PermisionMenu">Phân Quyền Menu</a>
+                                    </li>
+                                    <li>
+                                        <a href="/Setting">Cài Đặt Hệ Thống</a>
+                                    </li>
 
-                        <li class="menu-item-has-children">
-                            <a href="@Url.Action("Index","Admin")">
-                                <i class="list-icon material-icons">settings</i>
-                                <span class="hide-menu">Hệ Thống</span>
-                            </a>
-                        </li>
-
-
+                                </ul>
+                            </li>
+                        }
 
                     </ul>
                     <!-- /.side-menu -->

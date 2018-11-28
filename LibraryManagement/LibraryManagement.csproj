@@ -536,6 +536,7 @@
     <Content Include="Views\Home\Menu.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\PermisionMenu.cshtml" />
+    <Content Include="Views\User\AccessDenied.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

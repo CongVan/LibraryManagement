@@ -116,6 +116,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RoleName" Type="nvarchar" MaxLength="150" />
+          <Property Name="RoleValue" Type="int" />
         </EntityType>
         <EntityType Name="Settings">
           <Key>
@@ -238,6 +239,7 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RoleName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="RoleValue" Type="Int32" />
         </EntityType>
         <EntityType Name="Setting">
           <Key>
@@ -397,6 +399,7 @@
           <EntitySetMapping Name="Roles">
             <EntityTypeMapping TypeName="LibraryManagementModel.Role">
               <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="RoleValue" ColumnName="RoleValue" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="RoleName" ColumnName="RoleName" />
               </MappingFragment>

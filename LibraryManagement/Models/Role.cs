@@ -16,5 +16,6 @@ namespace LibraryManagement.Models
     {
         public int ID { get; set; }
         public string RoleName { get; set; }
+        public Nullable<int> RoleValue { get; set; }
     }
 }

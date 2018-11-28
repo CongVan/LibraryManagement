@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace LibraryManagement.Controllers
 {
-    [CheckLogin]
+    [CheckLogin(isAdmin =true)]
     public class AdminController : Controller
     {
         // GET: Admin
@@ -198,18 +198,20 @@ namespace LibraryManagement.Controllers
                                             where r.RoleID == idRole && r.MenuID == m.ID && r.Flag==1
                                             select r.ID
                                             ).Count()
-                             where m.Flag == 1
+                             //where m.Flag == 1
                              select new
                              {
                                  IDMenu = m.ID,
                                  TitleMenu = m.Title,
                                  IsGranted = granted,
-                                 Icon=m.Icon
+                                 Icon=m.Icon,
+                                 Flag=m.Flag
                              }).ToList().Select(m=>new {
                                  IDMenu = m.IDMenu,
                                  TitleMenu = m.TitleMenu,
                                  IsGranted = m.IsGranted>0?true:false,
-                                 Icon = m.Icon
+                                 Icon = m.Icon,
+                                 Flag = m.Flag==1?true:false,
                              });
                 return Json(menus, JsonRequestBehavior.AllowGet);
             }

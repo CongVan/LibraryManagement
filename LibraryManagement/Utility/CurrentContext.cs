@@ -38,14 +38,19 @@ namespace LibraryManagement.Utility
         {
             return (User)HttpContext.Current.Session["User"];
         }
-        public static List<Role> GetRole()
+        public static Role GetRole()
         {
+            var rol = new Role();
             using (var ctx=new LibraryManagementEntities())
             {
-                var role = ctx.Roles.ToList();
-                return role;
+                if (HttpContext.Current.Request.Cookies["userID"] != null)
+                {
+                    int id = Convert.ToInt32(HttpContext.Current.Request.Cookies["userID"].Value);
+                    var user = ctx.Users.Where(u => u.ID == id).FirstOrDefault();
+                    rol = ctx.Roles.Where(c => c.RoleValue == user.RoleID).FirstOrDefault();
+                }
             }
-            
+            return rol;
         }
 
         public static void Detroy()
@@ -70,17 +75,58 @@ namespace LibraryManagement.Utility
         }
         public static List<Menu> getMenus()
         {
+            var lst = new List<Menu>();
             using (var ctx=new LibraryManagementEntities())
             {
-                return ctx.Menus.Where(c => c.Flag == 1 && c.ParentID==-1).ToList();
+                if (HttpContext.Current.Request.Cookies["userID"] != null)
+                {
+                    int id = Convert.ToInt32(HttpContext.Current.Request.Cookies["userID"].Value);
+                    var user = ctx.Users.Where(u => u.ID == id).FirstOrDefault();
+                    if (user.RoleID != 3)
+                    {
+                        lst = (from m in ctx.Menus
+                               join mr in ctx.Menu_Role on m.ID equals mr.MenuID
+                               join r in ctx.Roles on mr.RoleID equals r.RoleValue
+                               where r.RoleValue == user.RoleID && m.ParentID==-1 && m.Flag==1
+                               orderby m.Priority
+                               select m).ToList();
+                    }
+                    else
+                    {
+                        lst= ctx.Menus.Where(c => c.Flag == 1 && c.ParentID == -1).ToList();
+                    }
+                }
+                    
             }
+            return lst;
         }
         public static List<Menu> getMenusChild(int id)
         {
+            var lst = new List<Menu>();
             using (var ctx = new LibraryManagementEntities())
             {
-                return ctx.Menus.Where(c => c.Flag == 1 && c.ParentID==id).ToList();
+                if (HttpContext.Current.Request.Cookies["userID"] != null)
+                {
+                    int uId = Convert.ToInt32(HttpContext.Current.Request.Cookies["userID"].Value);
+                    var user = ctx.Users.Where(u => u.ID == uId).FirstOrDefault();
+                    if (user.RoleID != 3)
+                    {
+                        lst = (from m in ctx.Menus
+                               join mr in ctx.Menu_Role on m.ID equals mr.MenuID
+                               join r in ctx.Roles on mr.RoleID equals r.RoleValue
+                               where r.RoleValue == user.RoleID && m.ParentID == id && m.Flag == 1
+                               orderby m.Priority
+                               select m).ToList();
+                    }
+                    else
+                    {
+                        lst= ctx.Menus.Where(c => c.Flag == 1 && c.ParentID == -1).ToList();
+                    }
+                }
+
             }
+            return lst;
         }
+        
     }
 }
