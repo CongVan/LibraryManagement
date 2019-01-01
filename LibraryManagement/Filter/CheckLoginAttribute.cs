@@ -39,24 +39,25 @@ namespace LibraryManagement.Filter
                             join m in ctx.Menus on mr.MenuID equals m.ID
                             join r in ctx.Roles on mr.RoleID equals r.RoleValue
                             where String.IsNullOrEmpty(url)==false && m.Path.Contains(url) 
-                            && m.Flag == 1 && roleUser.RoleValue == r.RoleValue
+                            && m.Flag == 1 && mr.Flag == 1 && roleUser.RoleValue == r.RoleValue
                             orderby m.Priority
                             select m).FirstOrDefault();
                 if (menu==null)
                 {
-                    var menuApprove = (from mr in ctx.Menu_Role
-                                join m in ctx.Menus on mr.MenuID equals m.ID
+                    var menuApprove = (from m in ctx.Menus
+                                join mr in ctx.Menu_Role on m.ID equals mr.MenuID
                                 join r in ctx.Roles on mr.RoleID equals r.RoleValue
-                                where m.Flag == 1 && roleUser.RoleValue == r.RoleValue
+                                where mr.Flag == 1 && m.Flag == 1 &&  r.RoleValue== roleUser.RoleValue
                                 orderby m.Priority
                                 select m).FirstOrDefault();
-                    var router = new RouteValueDictionary(new
-                    {
-                        action = "AccessDenied",
-                        controller = "User",
-                        next = menuApprove.Path
-                    });
-                    filterContext.Result = new RedirectToRouteResult(router);
+                    filterContext.Result = new RedirectResult(menuApprove.Path);
+                    //var router = new RouteValueDictionary(new
+                    //{
+                    //    action = "AccessDenied",
+                    //    controller = "User",
+                    //    next = menuApprove==null?"":menuApprove.Path
+                    //});
+                    //filterContext.Result = new RedirectToRouteResult(router);
                 }
             }
             base.OnActionExecuting(filterContext);

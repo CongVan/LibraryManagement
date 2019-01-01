@@ -46,11 +46,11 @@
             <!-- /.navbar-header -->
             <form class="form-material " id="frmLogin" action="/User/Login" method="post">
                 <div class="form-group">
-                    <input type="text" class="form-control form-control-line" name="UserName" id="UserName" required>
+                    <input type="text" class="form-control form-control-line" name="UserName" id="UserName" required placeholder="Tài khoản">
                     <label for="UserName">Tài khoản</label>
                 </div>
                 <div class="form-group">
-                    <input type="password" placeholder="Mật khẩu" class="form-control form-control-line" name="Password" id="password" required>
+                    <input type="password" placeholder="Mật khẩu" class="form-control form-control-line" name="Password" id="password" required >
                     <label>Mật khẩu</label>
                 </div>
                 <div class="form-group">
@@ -85,7 +85,7 @@
                         Don't have an account? <a href="page-register.html" class="text-primary m-l-5"><b></b></a>
                     </p>
                 </footer>*@
-        </div>
+        </div> 
         <!-- /.login-center -->
     </div>
     <!-- /.body-container -->
@@ -96,6 +96,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.4/sweetalert2.min.js"></script>
     <script>
         $(document).ready(function () {
+            $('#UserName').trigger('click');
+            $('#password').trigger('click');
             $('#frmLogin').on('keypress', function (e) {
                 if (e.which == 13) {
                     $(this).submit();

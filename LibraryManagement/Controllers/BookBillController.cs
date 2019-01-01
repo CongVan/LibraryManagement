@@ -38,8 +38,12 @@ namespace LibraryManagement.Controllers
 
 
         }
-        public ActionResult GetInfoUser(int userId)
+        public ActionResult GetInfoUser(int? userId)
         {
+            if (!userId.HasValue)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
             using (var ctx = new LibraryManagementEntities())
             {
                 var users = (from user in ctx.Users
@@ -51,6 +55,7 @@ namespace LibraryManagement.Controllers
                                                     join billDetail in ctx.BookBillDetails on billRe.ID equals billDetail.BookBillReturnID
                                                     where billRe.UserID == user.ID && billRe.Type.Value == 2 && billDetail.Returned == true
                                                     select billDetail).Count()
+                                                    where user.ID==userId.Value
                              select new
                              {
                                  ID = user.ID,

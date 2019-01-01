@@ -1,0 +1,136 @@
+﻿@*@using LibraryManagement.Models
+    @model List<Object>*@
+@{
+    ViewBag.Title = "Sách trong thư viện";
+}
+@section css{
+    <style>
+        .book-title {
+            color: #2E2E2E!important;
+        }
+            .book-title:hover {
+                color: #51d2b7 !important;
+            }
+        .block-with-text {
+            /* hide text if it more than N lines  */
+            overflow: hidden;
+            /* for set '...' in absolute position */
+            position: relative;
+            /* use this value to count block height */
+            line-height: 1.2em;
+            /* max-height = line-height (1.2) * lines max number (3) */
+            max-height: 2.2em;
+            /* fix problem when last visible word doesn't adjoin right side  */
+            text-align: left;
+            /* place for '...' */
+            margin-right: -1em;
+            padding-right: 1em;
+        }
+            /* create the ... */
+            .block-with-text:before {
+                /* points in the end */
+                content: '...';
+                /* absolute position */
+                position: absolute;
+                /* set position to right bottom corner of block */
+                right: 0;
+                bottom: 0;
+            }
+            /* hide ... if we have text, which is less than or equal to max lines */
+            .block-with-text:after {
+                /* points in the end */
+                content: '';
+                /* absolute position */
+                position: absolute;
+                /* set position to right bottom corner of text */
+                right: 0;
+                /* set width and height */
+                width: 1em;
+                height: 1em;
+                margin-top: 0.2em;
+                /* bg color = bg color under block */
+                background: white;
+            }
+    </style>
+}
+<div class="row" id="viewBook">
+
+
+</div>
+
+@section js{
+    <script id="tempalte-book-card" type="text/x-handlebars-template">
+        {{#each lst}}
+        <div class="col-md-2  mr-b-30 d-flex">
+            <div class="blog-post blog-post-card text-center mb-2">
+                <figure>
+                    <a href="#" class="mt-2 pt-4 ">
+                        <img src="{{splitPath book.Image}}" class="pt-2 px-2" style="" title="{{book.Title}}">
+                    </a>
+                </figure>
+                <header class="mt-1 pt-1 px-1">
+
+                    <div class="block text-muted blog-post-tags">
+                        @*Danh mục*@
+                        <ul class="ml-1 inline-block list-unstyled list-inline mb-0">
+                            <li class="list-inline-item">
+                                <a href="#"><strong>{{cate.Name}}</strong></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="">
+                        <p class=" fw-400 m-1 sub-heading-font-family book-title " title="{{book.Title}}">
+                            <a href="/User/BookDetail?id={{book.ID}}" class="book-title">
+                                {{ titleBook book.Title}}
+                            </a>
+                        </p>
+                    </div>
+
+                </header>
+                @*<footer class="mt-2 pb-2">
+                        <a href="#" class="btn btn-outline-primary btn-rounded">Đọc ngay</a>
+                    </footer>*@
+            </div>
+
+        </div>
+        {{/each}}
+    </script>
+    <script>
+        function renderPath(path) {
+            var s = path.split(';');
+            return s.length > 0 ? s[0] : "";
+        }
+        $(document).ready(function () {
+            Handlebars.registerHelper('splitPath', function (path) {
+                if (path) {
+                    var s = path.split(';');
+                    return s.length > 0 ? s[0] : "";
+                } else {
+                    return "";
+                }
+
+            });
+            Handlebars.registerHelper('titleBook', function (title) {
+                if (title) {
+                    var s = title.substring(0, 30) + '...';
+                    return s;
+                } else {
+                    return "";
+                }
+
+            });
+            $.ajax({
+                url: "/User/GetBooks",
+            }).done(function (data) {
+                console.log('books', data);
+                var source = document.getElementById("tempalte-book-card").innerHTML;
+                var template = Handlebars.compile(source);
+                var context = { lst: data };
+                var html = template(context);
+                $('#viewBook').html(html);
+            }).catch(function (err) {
+                console.log(err);
+            });
+        });
+    </script>
+}

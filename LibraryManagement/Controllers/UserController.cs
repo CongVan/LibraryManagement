@@ -1,8 +1,10 @@
 ﻿using LibraryManagement.Filter;
 using LibraryManagement.Models;
 using LibraryManagement.Utility;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -112,10 +114,71 @@ namespace LibraryManagement.Controllers
             }
 
         }
-        public ActionResult AccessDenied(string next)
+        public ActionResult AccessDenied(string next="")
         {
             ViewBag.Next = next;
             return View();
+        }
+        public ActionResult Books()
+        {
+            return View();
+            using (var ctx=new LibraryManagementEntities())
+            {
+                var books =
+                    
+                    ctx.Books.Where(c => c.Flag == true)
+                    .Join(ctx.Categories, b => b.CategoryID, c => c.ID, (b, c) => new
+                    {
+                        book=b,
+                        cate=c
+                    })
+                    .ToList();
+                
+            }
+        }
+        public JsonResult GetBooks()
+        {
+            using (var ctx = new LibraryManagementEntities())
+            {
+                var books =
+
+                    ctx.Books.Where(c => c.Flag == true)
+                    .Join(ctx.Categories, b => b.CategoryID, c => c.ID, (b, c) => new
+                    {
+                        book = b,
+                        cate = c
+                    })
+                    .ToList();
+                return Json(books, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public ActionResult BookDetail(int id)
+        {
+
+            return View();
+
+        }
+        public ActionResult GetBookDetail(int? id)
+        {
+
+            using (var ctx = new LibraryManagementEntities())
+            {
+                var book = (from b in ctx.Books
+                            join c in ctx.Categories on b.CategoryID equals c.ID
+                            join p in ctx.Publishers on b.PublisherID equals p.ID
+                            where b.Flag.Value == true && b.ID==id.Value
+                            select new
+                            {
+                                bo = b,
+                                cateName = c.Name,
+                                publishName = p.Name
+                            }).FirstOrDefault();
+
+
+
+                return Json(book, JsonRequestBehavior.AllowGet);
+            }
+
         }
     }
 }

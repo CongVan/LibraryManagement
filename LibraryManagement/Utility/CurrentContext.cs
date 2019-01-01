@@ -87,7 +87,7 @@ namespace LibraryManagement.Utility
                         lst = (from m in ctx.Menus
                                join mr in ctx.Menu_Role on m.ID equals mr.MenuID
                                join r in ctx.Roles on mr.RoleID equals r.RoleValue
-                               where r.RoleValue == user.RoleID && m.ParentID==-1 && m.Flag==1
+                               where r.RoleValue == user.RoleID && m.ParentID==-1 && m.Flag==1 && mr.Flag==1
                                orderby m.Priority
                                select m).ToList();
                     }
@@ -114,13 +114,13 @@ namespace LibraryManagement.Utility
                         lst = (from m in ctx.Menus
                                join mr in ctx.Menu_Role on m.ID equals mr.MenuID
                                join r in ctx.Roles on mr.RoleID equals r.RoleValue
-                               where r.RoleValue == user.RoleID && m.ParentID == id && m.Flag == 1
+                               where r.RoleValue == user.RoleID && m.ParentID == id && m.Flag == 1 && mr.Flag==1
                                orderby m.Priority
                                select m).ToList();
                     }
                     else
                     {
-                        lst= ctx.Menus.Where(c => c.Flag == 1 && c.ParentID == -1).ToList();
+                        lst= ctx.Menus.Where(c => c.Flag == 1  && c.ParentID == id).ToList();
                     }
                 }
 

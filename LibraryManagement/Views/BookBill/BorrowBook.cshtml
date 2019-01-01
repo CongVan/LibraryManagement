@@ -41,7 +41,7 @@
                     <div class="col-md-3">
                         <h5 class="box-title mr-b-0 text-gray-dark text-uppercase"><i class="material-icons ">search</i> Tìm kiếm đọc giả</h5>
                         <div id="search-user">
-                            <input class="typeahead form-control" type="text" placeholder="Nhập tài khoản đọc giả..." />
+                            <input class="typeahead form-control" id="txtSearchUser" type="text" placeholder="Nhập tài khoản đọc giả..." />
                         </div>
                         <div class="card-user-info-widget mt-3" id="viewProfileUser">
 
@@ -377,7 +377,7 @@
             });
 
 
-            $("#search-user .typeahead").easyAutocomplete({
+            $("#txtSearchUser").easyAutocomplete({
                 url: "/BookBill/SearchUser",
                 getValue: function (element) {
                     return element.UserName;
@@ -388,12 +388,13 @@
                     match: {
                         enabled: true
                     },
-                    sort: {
-                        enabled: true
-                    },
+                    //sort: {
+                    //    enabled: true
+                    //},
 
                     onChooseEvent: function () {
-                        var data = $("#search-user .typeahead").getSelectedItemData();
+                        
+                        var data = $("#txtSearchUser").getSelectedItemData();
                         $.ajax({
                             url: "/BookBill/GetInfoUser?userId=" + data.ID
                         }).done(function (result) {
@@ -409,7 +410,7 @@
                             $('#viewProfileUserBookPay').html(html2);
 
                             //$('#viewBooks').html(html);
-                            console.log(result);
+                            //console.log(result);
                             idUserPay = result.ID;
                         }).fail(function (x, t, e) {
                             console.log(e);
